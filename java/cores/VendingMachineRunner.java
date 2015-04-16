@@ -7,15 +7,12 @@ class VendingMachineRunner {
 
     private State state;
 
-    public static PortMap portMap;
     //TODO implement Serial Comms classes
     //TODO implement file maintainence class
     //TODO implement IO handler class
     //TODO implement systems class
 
     public static void main(String[] args) {
-        portMap = new PortMap();
-    
         while(true) //Infinite loop
             switch(state) {
             case sleeping:
