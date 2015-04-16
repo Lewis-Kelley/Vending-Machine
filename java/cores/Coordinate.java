@@ -4,4 +4,5 @@ package java.cores;
 class Coordinate {
 	public double x;
 	public double y;
+	public double z;
 }
