@@ -2,7 +2,7 @@ package java.cores;
 
 class VendingMachineRunner {
     private enum State {
-        sleeping, choosing, paying, returnMoney, delivering, delivered
+        SLEEPING, CHOOSING, PAYING, RETURN_MONEY, DELIVERING, DELIVERED
     }
 
     private State state;
@@ -15,22 +15,22 @@ class VendingMachineRunner {
     public static void main(String[] args) {
         while(true) //Infinite loop
             switch(state) {
-            case sleeping:
+            case SLEEPING:
                 //TODO implement sleeping state
                 break;
-            case choosing:
+            case CHOOSING:
                 //TODO implement choosing state
                 break;
-            case paying:
+            case PAYING:
                 //TODO implement paying state
                 break;
-            case returnMoney:
+            case RETURN_MONEY:
                 //TODO implement returnMoney state
                 break;
-            case delivering:
+            case DELIVERING:
             	//TODO implement delivering state
                 break;
-            case delivered:
+            case DELIVERED:
                 //TODO implement delivered state
                 break;
             }

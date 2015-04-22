@@ -6,7 +6,9 @@ class TouchScreen {
 		//TODO implement constructor
 	}
 	
-	//Returns coordinates of a touch, or null if no touch
+	/**
+	 * Returns coordinates of a touch, or null if no touch
+	*/
 	public Coordinate getTouch() {
 		//TODO implement
 	}
