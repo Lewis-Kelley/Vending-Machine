@@ -1,8 +1,8 @@
 package java.cores;
 
 class VendingMachineRunner {
-    private enum State {
-        SLEEPING, CHOOSING, PAYING, RETURN_MONEY, DELIVERING, DELIVERED
+    public enum State {
+        SLEEPING, MENU, SHOWING_SODA, PAYING, RETURN_MONEY, DELIVERING, DELIVERED
     }
 
     private State state;
@@ -18,8 +18,11 @@ class VendingMachineRunner {
             case SLEEPING:
                 //TODO implement sleeping state
                 break;
-            case CHOOSING:
-                //TODO implement choosing state
+            case MENU:
+                //TODO implement menu state
+                break;
+            case SHOWING_SODA:
+                //TODO implement showing soda state
                 break;
             case PAYING:
                 //TODO implement paying state
