@@ -8,8 +8,16 @@ class TouchScreen {
 	
 	/**
 	 * Returns coordinates of a touch, or null if no touch
-	*/
+	 */
 	public Coordinate getTouch() {
+		//TODO implement
+	}
+	
+	/**
+	 * Simply checks if the screen has been pressed.
+	 * Primarily used to exit SLEEP state.
+	 */
+	public boolean isTouched() {
 		//TODO implement
 	}
 	
