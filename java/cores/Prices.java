@@ -1,7 +1,7 @@
 package java.cores;
 
 class Prices {
-	private float[] prices;
+	private short[] prices;
 
 	/**
 	 * Initializes prices to the prices for each type of soda.
@@ -9,13 +9,13 @@ class Prices {
 	 * Also, there are no checks that each soda has a price and each price has a soda; programmer beware.
 	 */
 	public Prices() {
-		prices = {2.95, 1.95, 2.95, 3.95}; //TODO confirm prices
+		prices = {2, 1, 2, 3}; //TODO confirm prices
 	}
 	
 	/**
 	 * Returns the price for a given Soda object.
 	 */
-	public float getPrice(Soda soda) {
+	public short getPrice(Soda soda) {
 		return prices[soda.ordinal()];
 	}
 }
