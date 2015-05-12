@@ -1,30 +1,27 @@
 public class SerialListener
 {
-  
-  
   InputStream in;
   OutputStream out;
   static String msg;
   public SerialListener()
   {
-   
-    try {
-			  CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier("COM3");
-			  CommPort commPort = portID.open("thing" , 6000);
-			  SerialPort serialPort = (SerialPort) commPort;
+  	try {
+		CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier("COM3");
+		CommPort commPort = portID.open("thing" , 6000);
+		SerialPort serialPort = (SerialPort) commPort;
 			  
-			  out = serialPort.getOutputStream();
-			  in = serialPort.getInputStream();
-		} catch (NoSuchPortException e) {
-			  // TODO Auto-generated catch block
-			  e.printStackTrace();
-		} catch (PortInUseException e) {
-			  // TODO Auto-generated catch block
-			  e.printStackTrace();
-		} catch (IOException e) {
-			  // TODO Auto-generated catch block
-			  e.printStackTrace();
-		}
+		out = serialPort.getOutputStream();
+		in = serialPort.getInputStream();
+	} catch (NoSuchPortException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (PortInUseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 		
   }
   void run()
