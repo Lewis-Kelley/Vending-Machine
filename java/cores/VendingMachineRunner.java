@@ -2,7 +2,7 @@ package java.cores;
 
 class VendingMachineRunner {
     public enum State {
-        SLEEPING, MENU, SHOWING_SODA, PAYING, RETURN_MONEY, DELIVERING, DELIVERED
+        SLEEPING, MENU, SHOWING_SODA, PAYING, RETURN_MONEY, DELIVERING, DELIVERED, DISABLED
     }
 
     private State state;
@@ -35,6 +35,9 @@ class VendingMachineRunner {
                 break;
             case DELIVERED:
                 delivered();
+                break;
+            case DISABLED:
+                disabled();
                 break;
             }
     }
@@ -94,6 +97,13 @@ class VendingMachineRunner {
      * If timeout is reached, display "Needs maintainence" and disable.
      */
     private void delivered() {
+        //TODO implement
+    }
+    
+    /**
+     * Display "Needs maintaince" never leave state until rebooted.
+     */
+    private void disabled() {
         //TODO implement
     }
 }
