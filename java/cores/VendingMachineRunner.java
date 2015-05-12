@@ -2,7 +2,7 @@ package java.cores;
 
 class VendingMachineRunner {
     public enum State {
-        SLEEPING, MENU, SHOWING_SODA, PAYING, RETURN_MONEY, DELIVERING, DELIVERED, DISABLED
+        SLEEPING, MENU, SHOWING_SODA, PAYING, RETURN_MONEY, RETURNING_CHANGE, DELIVERING, DELIVERED, DISABLED
     }
 
     private State state;
@@ -30,6 +30,9 @@ class VendingMachineRunner {
             case RETURN_MONEY:
                 returnMoney();
                 break;
+            case RETURNING_CHANGE:
+                returnChange();
+                break;
             case DELIVERING:
             	delivering();
                 break;
@@ -43,21 +46,25 @@ class VendingMachineRunner {
     }
     
     /**
-     * Wait for input on touchscreen
+     * Display welcome screen and wait for touchscreen input.
      */
     private void sleeping() {
        //TODO implement 
     }
     
     /**
-     * Display menu and wait for selection
+     * Display menu screen.
+     * Ends when option selected or timeout is reached.
+     * If timeout is reached, return to sleeping state.
      */
     private void menu() {
         //TODO implement
     }
     
     /**
-     * Display picture of soda with a confirmation dialog
+     * Display picture of soda with a confirmation dialog.
+     * Ends when option selected or timeout is reached.
+     * If timeout is reached, return to sleeping state.
      */
     private void showingSoda() {
         //TODO implement
@@ -77,6 +84,13 @@ class VendingMachineRunner {
      * Display changes to "Come again" screen.
      */
     private void returnMoney() {
+        //TODO implement
+    }
+    
+    /**
+     * Return change over the actual cost of the soda.
+     */
+    private void returnChange() {
         //TODO implement
     }
     
