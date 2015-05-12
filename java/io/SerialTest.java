@@ -1,3 +1,5 @@
+//Pulled from the Arduino website: http://playground.arduino.cc/interfacing/java
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
