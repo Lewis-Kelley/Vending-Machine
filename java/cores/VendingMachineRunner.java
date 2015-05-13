@@ -2,7 +2,7 @@ package java.cores;
 
 class VendingMachineRunner {
     public enum State {
-        SLEEPING, MENU, SHOWING_SODA, PAYING, RETURN_MONEY, RETURNING_CHANGE, DELIVERING, DELIVERED, DISABLED
+        SLEEPING, MENU, SHOWING_SODA, PAYING, DELIVERING, DELIVERED, DISABLED
     }
 
     private State state;
@@ -26,12 +26,6 @@ class VendingMachineRunner {
                 break;
             case PAYING:
                 paying();
-                break;
-            case RETURN_MONEY:
-                returnMoney();
-                break;
-            case RETURNING_CHANGE:
-                returnChange();
                 break;
             case DELIVERING:
             	delivering();
@@ -77,21 +71,6 @@ class VendingMachineRunner {
      */
     private void paying() {
      //TODO implement
-    }
-     
-    /**
-     * Return input money when customer cancels order.
-     * Display changes to "Come again" screen.
-     */
-    private void returnMoney() {
-        //TODO implement
-    }
-    
-    /**
-     * Return change over the actual cost of the soda.
-     */
-    private void returnChange() {
-        //TODO implement
     }
     
     /**
