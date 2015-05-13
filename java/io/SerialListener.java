@@ -34,4 +34,16 @@ public class SerialListener
              this.msg = new String(buffer);
         }
   }
+  public send(String msg)
+	{
+		byte[] buffer = new byte[1024];
+		buffer = msg.getBytes();
+		
+		try {
+			this.out.write(buffer);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
