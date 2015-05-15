@@ -9,7 +9,7 @@ class Prices {
 	 * Also, there are no checks that each soda has a price and each price has a soda; programmer beware.
 	 */
 	public Prices() {
-		prices = {2, 1, 2, 3}; //TODO confirm prices
+		prices = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; //TODO confirm prices
 	}
 	
 	/**
