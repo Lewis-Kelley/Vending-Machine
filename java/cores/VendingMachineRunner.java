@@ -7,6 +7,9 @@ class VendingMachineRunner {
 
     private State state;
     private Soda GUIFlag;
+    private Coordinate coord;
+    
+    private Inventory inv;
 
     //TODO implement Serial Comms classes
     //TODO implement file maintainence class
@@ -14,6 +17,12 @@ class VendingMachineRunner {
     //TODO implement systems class
 
     public static void main(String[] args) {
+        state = State.SLEEPING;
+        GUIFlag = null;
+        coord = null;
+        
+        inv = new Inventory();
+        
         while(true) //Infinite loop
             switch(state) {
             case SLEEPING:
@@ -53,7 +62,8 @@ class VendingMachineRunner {
      * If timeout is reached, return to sleeping state.
      */
     private void menu() {
-        //TODO implement
+        if(GUIFlag != null)
+            coord = inv.removeCan(GUIFlag);
     }
     
     /**
@@ -62,7 +72,7 @@ class VendingMachineRunner {
      * cancel button to be pressed, or for a certain amount of time to pass with no input.
      */
     private void paying() {
-     //TODO implement
+        //TODO implement
     }
     
     /**
@@ -83,6 +93,7 @@ class VendingMachineRunner {
      */
     private void delivered() {
         //TODO implement
+        GUIFlag = null;
     }
     
     /**
