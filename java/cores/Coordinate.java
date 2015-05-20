@@ -1,12 +1,10 @@
-package java.cores;
-
 //A class just to make transfering coordinates easier
 class Coordinate {
-	public double x;
-	public double y;
-	public double z;
+	public int x;
+	public int y;
+	public int z;
 	
-	public Coordinate(double x, double y, double z) {
+	public Coordinate(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
