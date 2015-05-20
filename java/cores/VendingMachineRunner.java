@@ -6,6 +6,7 @@ class VendingMachineRunner {
     }
 
     private State state;
+    private Soda GUIFlag;
 
     //TODO implement Serial Comms classes
     //TODO implement file maintainence class
@@ -98,5 +99,12 @@ class VendingMachineRunner {
      */
     private void disabled() {
         //TODO implement
+    }
+    
+    /**
+     * Called by the VendingMachineGUI class to signify that an event has occured.
+     */
+    public void giveGUIFlag(Soda soda) {
+        GUIFlag = soda;
     }
 }
