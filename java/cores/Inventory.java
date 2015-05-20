@@ -50,7 +50,7 @@ class Inventory {
 	}
 	
 	/**
-	 * Returns Coordinate if can was removed, returns null if it couldn't find it
+	 * Returns Coordinate if can was found, returns null if it couldn't find it
 	 */
 	private Coordinate findSoda(Soda soda) {
 		for(short out = 0; ct < inv[][].length; out++)
