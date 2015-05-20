@@ -4,8 +4,8 @@ import java.io.*;
 
 class Inventory {
 	private final String FILENAME = "inventory.txt"; //TODO make actual file
-	private final ROWS = 15;
-	private final COLUMN = 5;
+	private final int  ROWS = 15;
+	private final int COLUMN = 5;
 	
 	private PrintWriter writer;
 	
@@ -15,21 +15,21 @@ class Inventory {
 	 * Initializes writer and each element in the array to null.
 	 */
 	public Inventory() {
-		writer = new PrintWriter(FILENAME)
+	    writer = new PrintWriter(FILENAME);
 		
-		for(Soda[][] 2d : inv)
-			for(Soda[] 1d : 2d)
-				for(Soda holder : 1d)
-					holder = null;
+	    for(Soda[][] plane : inv)
+		    for(Soda[] line : plane)
+			    for(Soda holder : line)
+				    holder = null;
 	}
 	
 	/**
 	 * Returns true if can was removed, returns false if it couldn't find it
 	 */
 	public boolean removeCan(Soda soda) {
-		for(Soda[][] 2d : inv)
-			for(Soda[] 1d : 2d)
-				for(Soda holder : 1d)
+		for(Soda[][] plane : inv)
+			for(Soda[] line : plane)
+				for(Soda holder : line55)
 					if(holder == soda) {
 						holder = null;
 						return true;
