@@ -2,7 +2,7 @@ package java.cores;
 
 class VendingMachineRunner {
     public enum State {
-        SLEEPING, MENU, SHOWING_SODA, PAYING, DELIVERING, DELIVERED, DISABLED
+        SLEEPING, MENU, PAYING, DELIVERING, DELIVERED, DISABLED
     }
 
     private State state;
@@ -53,15 +53,6 @@ class VendingMachineRunner {
      * If timeout is reached, return to sleeping state.
      */
     private void menu() {
-        //TODO implement
-    }
-    
-    /**
-     * Display picture of soda with a confirmation dialog.
-     * Ends when option selected or timeout is reached.
-     * If timeout is reached, return to sleeping state.
-     */
-    private void showingSoda() {
         //TODO implement
     }
     
