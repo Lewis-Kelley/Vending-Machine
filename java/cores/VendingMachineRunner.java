@@ -1,15 +1,13 @@
-package java.cores;
-
 class VendingMachineRunner {
     public enum State {
         SLEEPING, MENU, PAYING, DELIVERING, DELIVERED, DISABLED
     }
 
-    private State state;
-    private Soda GUIFlag;
-    private Coordinate coord;
+    private static State state;
+    private static Soda GUIFlag;
+    private static Coordinate coord;
     
-    private Inventory inv;
+    private static Inventory inv;
 
     //TODO implement Serial Comms classes
     //TODO implement file maintainence class
@@ -31,9 +29,6 @@ class VendingMachineRunner {
             case MENU:
                 menu();
                 break;
-            case SHOWING_SODA:
-                showingSoda();
-                break;
             case PAYING:
                 paying();
                 break;
@@ -52,7 +47,7 @@ class VendingMachineRunner {
     /**
      * Display welcome screen and wait for touchscreen input.
      */
-    private void sleeping() {
+    private static void sleeping() {
        //TODO implement 
     }
     
@@ -61,9 +56,10 @@ class VendingMachineRunner {
      * Ends when option selected or timeout is reached.
      * If timeout is reached, return to sleeping state.
      */
-    private void menu() {
-        if(GUIFlag != null)
-            coord = inv.removeCan(GUIFlag);
+    private static void menu() {
+        if(GUIFlag != null) {
+            coord = inv.findSoda(GUIFlag);
+	}
     }
     
     /**
@@ -71,7 +67,7 @@ class VendingMachineRunner {
      * Waits for total price to be inserted and confirm button to be pressed,
      * cancel button to be pressed, or for a certain amount of time to pass with no input.
      */
-    private void paying() {
+    private static void paying() {
         //TODO implement
     }
     
@@ -82,7 +78,7 @@ class VendingMachineRunner {
      * Arm will end up in release position, not home position.
      * If timeout is reached, return money and display "Needs maintainence" and disable.
      */
-    private void delivering() {
+    private static void delivering() {
         //TODO implement
     }
     
@@ -91,7 +87,7 @@ class VendingMachineRunner {
      * Ends when arm reaches home position or when timeout is reached.
      * If timeout is reached, display "Needs maintainence" and disable.
      */
-    private void delivered() {
+    private static void delivered() {
         //TODO implement
         GUIFlag = null;
     }
@@ -99,14 +95,14 @@ class VendingMachineRunner {
     /**
      * Display "Needs maintaince" never leave state until rebooted.
      */
-    private void disabled() {
+    private static void disabled() {
         //TODO implement
     }
     
     /**
      * Called by the VendingMachineGUI class to signify that an event has occured.
      */
-    public void giveGUIFlag(Soda soda) {
+    public static void giveGUIFlag(Soda soda) {
         GUIFlag = soda;
     }
 }
