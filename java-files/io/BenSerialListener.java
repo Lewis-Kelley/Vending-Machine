@@ -8,6 +8,11 @@ public class BenSerialListener
     {
 	/* Open the tty */
 	Runtime.getRuntime().exec("stty -F " + portname + " cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts").waitFor();
-	Runtime.getRuntime().exec("screen " + portname + " 9600").waitFor();
+	p = Runtime.getRuntime().exec("screen " + portname + " 9600");
+	p.waitFor();
+    }
+    void kill()
+    {
+	p.destroy();
     }
 }
