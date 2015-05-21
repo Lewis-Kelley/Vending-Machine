@@ -11,7 +11,7 @@ class Inventory {
     private Soda[][][] inv; //The array that actually holds the current inventory
 	
     /**
-     * Initializes writer and each element in the array to null.
+     * Initializes writer and each element in the array to Soda.EMPTY.
      */
     public Inventory() {
 	this("inventory.txt"); //TODO confirm filename
@@ -27,11 +27,11 @@ class Inventory {
 	    System.out.println("Failed to open PrintWriter");
 	}
 	
-	//Sets every member in the array to null
+	//Sets every member in the array to Soda.EMPTY
 	for(Soda[][] z : inv)
 	    for(Soda[] y : z)
-		for(Soda x : y)
-		    x = null;
+		for(short i = 0; i < y.length; i++)
+		    y[i] = Soda.EMPTY;
     }
     
     /**
@@ -43,7 +43,7 @@ class Inventory {
 	if(retVal == null)
 	    return null;
 	
-	inv[retVal.x][retVal.y][retVal.z] = null;
+	inv[retVal.x][retVal.y][retVal.z] = Soda.EMPTY;
 	return retVal;
     }
     
@@ -51,10 +51,10 @@ class Inventory {
      * Returns true if the can at the given coordinates existed, else returns false
      */
     public boolean removeSoda(Coordinate coord) {
-	if(inv[coord.x][coord.y][coord.z] == null)
+	if(inv[coord.x][coord.y][coord.z] == Soda.EMPTY)
 	    return false;
 	else {
-	    inv[coord.x][coord.y][coord.z] = null;
+	    inv[coord.x][coord.y][coord.z] = Soda.EMPTY;
 	    return true;
 	}
     }
@@ -63,7 +63,7 @@ class Inventory {
      * Adds a given soda to a given coordinate
      */
     public boolean addSoda(Coordinate coord, Soda soda) {
-	if(inv[coord.x][coord.y][coord.z] == null) {
+	if(inv[coord.x][coord.y][coord.z] == Soda.EMPTY) {
 	    inv[coord.x][coord.y][coord.z] = soda;
 	    return true;
 	} else
@@ -85,20 +85,20 @@ class Inventory {
     /**
      * Updates file with the current status of the inventory
      */
-    private void updateFile() {
+    public void updateFile() {
 	try {
 	    writer = new PrintWriter(fileVar); //Creates an object that reads from fileVar.
 	} catch(Exception e) {
 	    System.out.println("Failed to open PrintWriter");
 	}
-	
+
 	for(short column = 0; column < COLUMNS; column++)
 	    for(short row = 0; row < ROWS; row++)
 		writer.print(inv[column][row][0].toString() + " "); //Writes the Soda string and a space
-	
+
 	for(short column = 0; column < COLUMNS; column++)
 	    for(short row = 0; row < ROWS; row++)
-		writer.print(inv[column][row][0].toString() + " "); //Writes the Soda string and a space
+		writer.print(inv[column][row][1].toString() + " "); //Writes the Soda string and a space
     }
     
     /**
