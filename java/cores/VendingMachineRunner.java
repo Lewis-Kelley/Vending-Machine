@@ -1,5 +1,3 @@
-//This is a comment to see if GitHub is working in terminal!
-
 class VendingMachineRunner {
     public enum State {
         SLEEPING, MENU, PAYING, DELIVERING, DELIVERED, DISABLED
