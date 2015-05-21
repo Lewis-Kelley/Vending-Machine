@@ -1,3 +1,5 @@
+//This is a comment to test GitHub
+
 class VendingMachineRunner {
     public enum State {
         SLEEPING, MENU, PAYING, DELIVERING, DELIVERED, DISABLED
