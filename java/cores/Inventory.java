@@ -6,36 +6,38 @@ class Inventory {
 
     private String fileVar;
 	
-    private PrintWriter writer; //The object that will read from and write to the file
-	
+    private PrintWriter reader; //The object that will read from and write to the file
+    
     private Soda[][][] inv; //The array that actually holds the current inventory
 	
     /**
-     * Initializes writer and each element in the array to Soda.EMPTY.
+     * Initializes reader and each element in the array to Soda.EMPTY.
      */
-    public Inventory() {
-	this("inventory.txt"); //TODO confirm filename
+    public Inventory(boolean readAtStartup) {
+	this("inventory.txt", readAtStartup); //TODO confirm filename
     }
 
-    public Inventory(String fileVar) {
+    public Inventory(String fileVar, boolean readAtStartup) {
 	this.fileVar = fileVar;
 	inv = new Soda[COLUMNS][ROWS][2];
 
 	try {
-	    writer = new PrintWriter(fileVar); //Creates the object for the given filename
+	    reader = new PrintWriter(new FileWriter(fileVar, true)); //Creates the object for the given filename
 	} catch (Exception e) {
 	    System.out.println("Failed to open PrintWriter");
 	}
-	
-	//Sets every member in the array to Soda.EMPTY
-	for(Soda[][] z : inv)
-	    for(Soda[] y : z)
-		for(short i = 0; i < y.length; i++)
-		    y[i] = Soda.EMPTY;
+
+	if(readAtStartup)
+	    readFile();
+	else //Sets every member in the array to Soda.EMPTY
+	    for(Soda[][] z : inv)
+		for(Soda[] y : z)
+		    for(short i = 0; i < y.length; i++)
+			y[i] = Soda.EMPTY;
     }
 
     public void closeFile() {
-	writer.close();
+	reader.close();
     }
 
     /**
@@ -48,6 +50,7 @@ class Inventory {
 	    return null;
 	
 	inv[retVal.x][retVal.y][retVal.z] = Soda.EMPTY;
+	updateFile();
 	return retVal;
     }
     
@@ -55,10 +58,11 @@ class Inventory {
      * Returns true if the can at the given coordinates existed, else returns false
      */
     public boolean removeSoda(Coordinate coord) {
-	if(inv[coord.x][coord.y][coord.z] == Soda.EMPTY)
+	if(inv[coord.x][coord.y][coord.z] == Soda.EMPTY) 
 	    return false;
 	else {
 	    inv[coord.x][coord.y][coord.z] = Soda.EMPTY;
+	    updateFile();
 	    return true;
 	}
     }
@@ -90,10 +94,15 @@ class Inventory {
      * Updates file with the current status of the inventory
      */
     public void updateFile() {
+	PrintWriter writer;
+
+	reader.close();
+	
 	try {
-	    writer = new PrintWriter(fileVar); //Creates an object that reads from fileVar.
+	    writer = new PrintWriter(new FileWriter(fileVar, false));
 	} catch(Exception e) {
-	    System.out.println("Failed to open PrintWriter");
+	    System.out.println("PrintWriter failed to open");
+	    writer = null;
 	}
 
 	for(short column = 0; column < COLUMNS; column++)
@@ -103,6 +112,14 @@ class Inventory {
 	for(short column = 0; column < COLUMNS; column++)
 	    for(short row = 0; row < ROWS; row++)
 		writer.print(inv[column][row][1].name() + " "); //Writes the Soda string and a space
+
+	writer.close();
+
+	try {
+	    reader = new PrintWriter(new FileWriter(fileVar, true));
+	} catch(Exception e) {
+	    System.out.println("PrintWriter failed to open");
+	}
     }
     
     /**
