@@ -58,7 +58,7 @@ class VendingMachineRunner {
      */
     private static void menu() {
         if(GUIFlag != null) {
-            coord = inv.findSoda(GUIFlag);
+            coord = inv.removeSoda(GUIFlag);
 	}
     }
     
