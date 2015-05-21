@@ -33,7 +33,11 @@ class Inventory {
 		for(short i = 0; i < y.length; i++)
 		    y[i] = Soda.EMPTY;
     }
-    
+
+    public void closeFile() {
+	writer.close();
+    }
+
     /**
      * Returns the coordinate object of the can if it was removed, returns null if it couldn't find it
      */
@@ -94,17 +98,17 @@ class Inventory {
 
 	for(short column = 0; column < COLUMNS; column++)
 	    for(short row = 0; row < ROWS; row++)
-		writer.print(inv[column][row][0].toString() + " "); //Writes the Soda string and a space
+		writer.print(inv[column][row][0].name() + " "); //Writes the Soda string and a space
 
 	for(short column = 0; column < COLUMNS; column++)
 	    for(short row = 0; row < ROWS; row++)
-		writer.print(inv[column][row][1].toString() + " "); //Writes the Soda string and a space
+		writer.print(inv[column][row][1].name() + " "); //Writes the Soda string and a space
     }
     
     /**
      * Reads data from file into current inventory
      */
-    private void readFile() {
+    public void readFile() {
 	String data;
 	try {
 	    data = readFile(fileVar); //gets all the data in the file as one String
@@ -136,8 +140,9 @@ class Inventory {
     
     /**
      * Returns the full contents of a given file as a String
+     * (Stolen from internet)
      */
-    public String readFile(String fileName) throws IOException { //Stolen from the internet
+    private String readFile(String fileName) throws IOException {
 	BufferedReader br = new BufferedReader(new FileReader(fileName));
 	try {
 	    StringBuilder sb = new StringBuilder();
@@ -152,5 +157,23 @@ class Inventory {
 	} finally {
 	    br.close();
 	}
+    }
+
+    /**
+     * Returns a string with all the values in inv in order.
+     */
+    public String toString() {
+	String retVal = "";
+	
+	for(short ctZ = 0; ctZ < 2; ctZ++) {
+	    for(short ctY = 0; ctY < ROWS; ctY++) {
+		for(short ctX = 0; ctX < COLUMNS; ctX++)
+		    retVal += inv[ctX][ctY][ctZ].name() + " ";
+		retVal += "\n";
+	    }
+	    retVal += "\n ---\n";
+	}
+	
+	return retVal;
     }
 }
