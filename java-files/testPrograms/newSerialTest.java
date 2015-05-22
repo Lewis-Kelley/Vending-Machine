@@ -1,8 +1,9 @@
 public class newSerialTest
 {
-    SerialLister sl;
-    public static void main(String[] args)
+    public static void main(String[] args) throws java.io.IOException, InterruptedException
     {
-        sl.send("PEN15");
+	BenSerialListener sl = new BenSerialListener("/dev/ttyACM0");
+	sl.println("Hi");
+	System.out.println("Response to \"Hi\":\t" + sl.getLine());
     }
 }
