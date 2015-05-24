@@ -1,7 +1,7 @@
 import java.io.*;
 
 class Inventory {
-    private final int  ROWS = 15;
+    private final int ROWS = 15;
     private final int COLUMNS = 5;
 
     private String fileVar;
