@@ -1,3 +1,5 @@
+package javaFiles.cores;
+
 class VendingMachineRunner {
     public enum State {
         SLEEPING, MENU, PAYING, DELIVERING, DELIVERED, DISABLED

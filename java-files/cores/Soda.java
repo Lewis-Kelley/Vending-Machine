@@ -1,3 +1,5 @@
+package javaFiles.cores;
+
 enum Soda {
     BRISK_HALF_AND_HALF("Brisk Half-and-Half"), BRISK_RASPBERRY("Brisk Raspberry"), BRISK_LEMONADE("Brisk Lemonade"), BRISK_SWEET_TEA("Brisk Lemonade"),
 	PEPSI("Pepsi"), DIET_PEPSI("Diet Pepsi"), PEPSI_WILD_CHERRY("Pepsi Wild Cherry"), PEPSI_MAX("Pepsi Max"),

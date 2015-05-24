@@ -1,4 +1,4 @@
-package java.cores;
+package javaFiles.cores;
 
 class Prices {
 	private short[] prices;
