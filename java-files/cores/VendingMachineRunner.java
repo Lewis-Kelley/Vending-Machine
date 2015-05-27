@@ -11,8 +11,10 @@ class VendingMachineRunner {
     
     private static Inventory inv;
 
+    private static JFrame gui;
+    private static VendingGUI vGUI;
+
     //TODO implement Serial Comms classes
-    //TODO implement file maintainence class
     //TODO implement IO handler class
     //TODO implement systems class
 
@@ -23,6 +25,14 @@ class VendingMachineRunner {
         
         inv = new Inventory();
         
+	gui = new JFrame();
+	vGUI = new VendingGUI();
+
+	gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	gui.add(vGUI);
+	gui.pack();
+	gui.setVisible(true);
+
         while(true) //Infinite loop
             switch(state) {
             case SLEEPING:
