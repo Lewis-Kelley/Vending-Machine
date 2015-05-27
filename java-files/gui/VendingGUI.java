@@ -7,15 +7,17 @@ import javax.swing.ImageIcon;
 import java.awt.Font; 
 import javax.swing.plaf.FontUIResource; 
 
-public class VendingGUI extends JApplet implements ActionListener
+public class VendingGUI extends JPanel implements ActionListener
 {
-	private Container cp;
+	//private Container cp;
 	
 	private CardLayout cards;
 	
-	private JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, masterBrisk, masterPepsi, home, home2, home3, wildCherryButton, pepsiMax, sweetTea, masterDew, dietDew;
+	private JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, masterBrisk, masterPepsi, home, home2, home3, wildCherryButton, pepsiMax, sweetTea, masterDew, dietDew, yesButton, noButton;
 	
 	private JPanel cardOne, cardTwo, cardThree, cardFour, backPanel;
+	
+	public JLabel confirmPic = new JLabel();
 	
 	private ImageIcon mountainDew = new ImageIcon("mountainDew.png");
 	private ImageIcon mug = new ImageIcon("mug.png");
@@ -33,11 +35,15 @@ public class VendingGUI extends JApplet implements ActionListener
 	private ImageIcon genericBrisk = new ImageIcon("genericBrisk.png");
 	private ImageIcon dewDiet = new ImageIcon("dietDew.png");
 	private ImageIcon p = new ImageIcon("masterPepsi.png");
+	private ImageIcon noPic = new ImageIcon("no.png");
+	private ImageIcon yesPic = new ImageIcon("yes.png");
 	
 	private int option;
 	
-	public void init()
+	public void setUp()
 	{
+		this.setPreferredSize(new Dimension(690, 410));
+
 		b1 = new JButton(mountainDew);
 		b1.setBorderPainted(false);
 		b1.setContentAreaFilled(false);
@@ -146,6 +152,18 @@ public class VendingGUI extends JApplet implements ActionListener
 		//home.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.black));
 		home3.addActionListener(this);
 		
+		yesButton = new JButton(yesPic);
+		yesButton.setBorderPainted(false);
+		yesButton.setContentAreaFilled(false);
+		//home.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.black));
+		yesButton.addActionListener(this);
+		
+		noButton = new JButton(noPic);
+		noButton.setBorderPainted(false);
+		noButton.setContentAreaFilled(false);
+		//home.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.black));
+		noButton.addActionListener(this);
+		
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 		
 		JPanel cardOne = new JPanel();
@@ -164,18 +182,28 @@ public class VendingGUI extends JApplet implements ActionListener
 		cardFour.setLayout(new FlowLayout());//GridLayout(0,3));
 		//cardThree.setBackground(Color.orange);
 		
+		JPanel confirmation = new JPanel();
+		confirmation.setLayout(new GridLayout(1,0));
+		
+		
+		
+		//JLabel confirmPic = new JLabel();
+		//confirmPic.setBackground(back);
+		
+		
 		cards = new CardLayout();
 			
-		cp = this.getContentPane();
-		cp.setLayout(cards);
-		cp.setBackground(Color.blue);
+		//cp = this.getContentPane();
+		this.setLayout(cards);
+		this.setBackground(Color.blue);
 		
-		cp.add(cardOne, "FirstCard");
-		cp.add(cardTwo, "SecondCard");
-		cp.add(cardThree, "ThirdCard");
-		cp.add(cardFour, "FourthCard");
+		this.add(cardOne, "FirstCard");
+		this.add(cardTwo, "SecondCard");
+		this.add(cardThree, "ThirdCard");
+		this.add(cardFour, "FourthCard");
+		this.add(confirmation, "Confirmation");
 		
-		cards.show(cp, "FirstCard");
+		cards.show(this, "FirstCard");
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//		
 		
 		
@@ -201,8 +229,11 @@ public class VendingGUI extends JApplet implements ActionListener
 		cardOne.add(masterPepsi);
 		cardOne.add(masterBrisk);
 		cardOne.add(masterDew);		
+		
+		confirmation.add(yesButton);
+		confirmation.add(confirmPic);
+		confirmation.add(noButton);
 	}
-	
 	
 	
 	
@@ -211,94 +242,120 @@ public class VendingGUI extends JApplet implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		if(((JButton)e.getSource()).equals(masterBrisk))
-			cards.show(cp, "SecondCard");
+			cards.show(this, "SecondCard");
 		else if(((JButton)e.getSource()).equals(home))
-			cards.show(cp, "FirstCard");
+			cards.show(this, "FirstCard");
 		else if(((JButton)e.getSource()).equals(home2))
-			cards.show(cp, "FirstCard");
+			cards.show(this, "FirstCard");
 		else if(((JButton)e.getSource()).equals(home3))
-			cards.show(cp, "FirstCard");
+			cards.show(this, "FirstCard");
 		else if(((JButton)e.getSource()).equals(masterPepsi))
-			cards.show(cp, "ThirdCard");
+			cards.show(this, "ThirdCard");
 		else if(((JButton)e.getSource()).equals(masterDew))
-			cards.show(cp, "FourthCard");
+			cards.show(this, "FourthCard");
 		else if(((JButton)e.getSource()).equals(b1))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");
+			confirmPic = new JLabel(mountainDew);
+			cards.show(this, "Confirmation");
 		}
 		else if(((JButton)e.getSource()).equals(b2))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(b3))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");	
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");	
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(b4))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");	
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");
+			cards.show(this, "Confirmation");	
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(b5))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");	
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(b6))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");	
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");	
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(b7))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");	
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");	
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(b8))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");		
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");	
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(b9))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(sweetTea))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");	
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");	
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(wildCherryButton))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");	
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");	
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(pepsiMax))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");	
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");	
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 		else if(((JButton)e.getSource()).equals(dietDew))
 		{
-			UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
-			option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
-			cards.show(cp, "FirstCard");
+			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
+			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+			//cards.show(cp, "FirstCard");
+			cards.show(this, "Confirmation");
+			confirmPic.setIcon(mountainDew);
 		}
 	}
 }
