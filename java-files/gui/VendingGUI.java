@@ -13,11 +13,13 @@ public class VendingGUI extends JPanel implements ActionListener
 	
 	private CardLayout cards;
 	
+	private Soda can;
+	
 	private JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, masterBrisk, masterPepsi, home, home2, home3, wildCherryButton, pepsiMax, sweetTea, masterDew, dietDew, yesButton, noButton;
 	
 	private JPanel cardOne, cardTwo, cardThree, cardFour, backPanel;
 	
-	public JLabel confirmPic = new JLabel();
+	public JLabel youSure = new JLabel("Are you sure?");
 	
 	private ImageIcon mountainDew = new ImageIcon("mountainDew.png");
 	private ImageIcon mug = new ImageIcon("mug.png");
@@ -38,11 +40,13 @@ public class VendingGUI extends JPanel implements ActionListener
 	private ImageIcon noPic = new ImageIcon("no.png");
 	private ImageIcon yesPic = new ImageIcon("yes.png");
 	
-	private int option;
+	private int option, sodaType = 0;
 	
 	public void setUp()
 	{
 		this.setPreferredSize(new Dimension(690, 410));
+		
+		can = Soda.EMPTY;
 
 		b1 = new JButton(mountainDew);
 		b1.setBorderPainted(false);
@@ -231,7 +235,7 @@ public class VendingGUI extends JPanel implements ActionListener
 		cardOne.add(masterDew);		
 		
 		confirmation.add(yesButton);
-		confirmation.add(confirmPic);
+		confirmation.add(youSure);
 		confirmation.add(noButton);
 	}
 	
@@ -258,8 +262,8 @@ public class VendingGUI extends JPanel implements ActionListener
 			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");
-			confirmPic = new JLabel(mountainDew);
 			cards.show(this, "Confirmation");
+			sodaType = 1;
 		}
 		else if(((JButton)e.getSource()).equals(b2))
 		{
@@ -267,7 +271,7 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 2;
 		}
 		else if(((JButton)e.getSource()).equals(b3))
 		{
@@ -275,15 +279,15 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");	
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 3;
 		}
 		else if(((JButton)e.getSource()).equals(b4))
 		{
 			//UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("SERIF",Font.PLAIN,50))); // from http://stackoverflow.com/questions/4017042/how-to-enlarge-buttons-on-joptionpane-dialog-boxes
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");
-			cards.show(this, "Confirmation");	
-			confirmPic.setIcon(mountainDew);
+			cards.show(this, "Confirmation");
+			sodaType = 4;	
 		}
 		else if(((JButton)e.getSource()).equals(b5))
 		{
@@ -291,7 +295,7 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 5;
 		}
 		else if(((JButton)e.getSource()).equals(b6))
 		{
@@ -299,7 +303,7 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");	
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 6;
 		}
 		else if(((JButton)e.getSource()).equals(b7))
 		{
@@ -307,7 +311,7 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");	
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 7;
 		}
 		else if(((JButton)e.getSource()).equals(b8))
 		{
@@ -315,7 +319,7 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");	
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 8;
 		}
 		else if(((JButton)e.getSource()).equals(b9))
 		{
@@ -323,7 +327,7 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 9;
 		}
 		else if(((JButton)e.getSource()).equals(sweetTea))
 		{
@@ -331,7 +335,7 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");	
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 10;
 		}
 		else if(((JButton)e.getSource()).equals(wildCherryButton))
 		{
@@ -339,7 +343,7 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");	
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 11;
 		}
 		else if(((JButton)e.getSource()).equals(pepsiMax))
 		{
@@ -347,7 +351,7 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");	
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 12;
 		}
 		else if(((JButton)e.getSource()).equals(dietDew))
 		{
@@ -355,8 +359,77 @@ public class VendingGUI extends JPanel implements ActionListener
 			//option = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
 			//cards.show(cp, "FirstCard");
 			cards.show(this, "Confirmation");
-			confirmPic.setIcon(mountainDew);
+			sodaType = 13;
+		}
+		
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~		
+		
+		else if(((JButton)e.getSource()).equals(yesButton))
+		{
+			cards.show(this, "Confirmation");
+			switch(sodaType)
+			{
+				case 1:
+				can = Soda.MOUNTAIN_DEW;
+				break;
+				
+				case 2:
+				can = Soda.DIET_MUG;			
+				break;
+				
+				case 3:
+				can = Soda.PEPSI;			
+				break;
+				
+				case 4:
+				can = Soda.BRISK_LEMONADE;			
+				break;
+				
+				case 5:
+				can = Soda.BRISK_RASPBERRY;			
+				break;
+				
+				case 6:
+				can = Soda.DIET_CRUSH;			
+				break;
+				
+				case 7:
+				can = Soda.MOUNTAIN_DEW_CODE_RED;			
+				break;
+				
+				case 8:
+				can = Soda.DIET_PEPSI;			
+				break;
+				
+				case 9:
+				can = Soda.BRISK_HALF_AND_HALF;			
+				break;
+				
+				case 10:
+				can = Soda.BRISK_SWEET_TEA;			
+				break;
+				
+				case 11:
+				can = Soda.PEPSI_WILD_CHERRY;			
+				break;
+				
+				case 12:
+				can = Soda.PEPSI_MAX;			
+				break;
+				
+				case 13:
+				can = Soda.DIET_MOUNTAIN_DEW;			
+				break;
+			}
+			sodaType = 0;
+			cards.show(this, "FirstCard");
+					
+		}
+		else if(((JButton)e.getSource()).equals(noButton))
+		{
+			cards.show(this, "Confirmation");
+			sodaType = 0;
+			cards.show(this, "FirstCard");
 		}
 	}
 }
-		
