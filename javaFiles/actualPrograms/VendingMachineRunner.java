@@ -1,10 +1,18 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.*;
+import javax.swing.event.*;
+import javax.swing.ImageIcon;
+import java.awt.Font; 
+import javax.swing.plaf.FontUIResource; 
+
 class VendingMachineRunner {
     public enum State {
         SLEEPING, MENU, PAYING, DELIVERING, DELIVERED, DISABLED
     }
 
     private static State state;
-    private static Soda GUIFlag;
     private static Coordinate coord;
     
     private static Inventory inv;
@@ -17,21 +25,20 @@ class VendingMachineRunner {
     //TODO implement systems class
 
     public static void main(String[] args) {
-        state = State.SLEEPING;
-        GUIFlag = null;
+        state = State.MENU;
         coord = null;
         
-        inv = new Inventory();
+        inv = new Inventory(true);
         
 	gui = new JFrame();
 	vGUI = new VendingGUI();
-
+	vGUI.setUp();
 	gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	gui.add(vGUI);
 	gui.pack();
 	gui.setVisible(true);
 
-        while(true) //Infinite loop
+	// while(true) //Infinite loop
             switch(state) {
             case SLEEPING:
                 sleeping();
@@ -67,9 +74,7 @@ class VendingMachineRunner {
      * If timeout is reached, return to sleeping state.
      */
     private static void menu() {
-        if(GUIFlag != null) {
-            coord = inv.removeSoda(GUIFlag);
-	}
+        System.out.println(inv.removeSoda(Soda.DIET_MOUNTAIN_DEW));
     }
     
     /**
@@ -99,7 +104,6 @@ class VendingMachineRunner {
      */
     private static void delivered() {
         //TODO implement
-        GUIFlag = null;
     }
     
     /**
@@ -107,12 +111,5 @@ class VendingMachineRunner {
      */
     private static void disabled() {
         //TODO implement
-    }
-    
-    /**
-     * Called by the VendingMachineGUI class to signify that an event has occured.
-     */
-    public static void giveGUIFlag(Soda soda) {
-        GUIFlag = soda;
     }
 }
