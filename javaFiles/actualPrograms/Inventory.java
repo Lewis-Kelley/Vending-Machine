@@ -1,5 +1,3 @@
-package javaFiles.cores;
-
 import java.io.*;
 
 class Inventory {

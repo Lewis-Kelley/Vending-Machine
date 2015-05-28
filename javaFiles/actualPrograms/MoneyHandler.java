@@ -1,5 +1,3 @@
-package javaFiles.io;
-
 class MoneyHandler {
     /**
      * Initializes the ports for the physical money machine.
