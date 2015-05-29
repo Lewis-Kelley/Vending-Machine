@@ -3,7 +3,7 @@ SLUH Robotics misguided attempt at making an extravagant vending machine with an
 
 # Directories
 
-## java-files
+## javaFiles
 Contains all programs in java needed for the program running on the PC. Main is in cores/VendingMachineRunner.java.
 
 ## arduino
