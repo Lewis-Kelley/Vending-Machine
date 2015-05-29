@@ -38,7 +38,7 @@ class VendingMachineRunner {
 	gui.pack();
 	gui.setVisible(true);
 
-	// while(true) //Infinite loop
+	while(true) //Infinite loop
             switch(state) {
             case SLEEPING:
                 sleeping();
@@ -74,7 +74,7 @@ class VendingMachineRunner {
      * If timeout is reached, return to sleeping state.
      */
     private static void menu() {
-        System.out.println(inv.removeSoda(Soda.DIET_MOUNTAIN_DEW));
+       
     }
     
     /**
