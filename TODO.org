@@ -1,23 +1,20 @@
 * Software
-
 ** Internals
-
 *** TODO Main [1/5]
-    
     - [X] Implement Inventory
     - [ ] Implement GUI
     - [ ] Implement communications to arduino
     - [ ] Create main loop
     - [ ] Implement money machine communications
 
-*** DONE Inventory [3/3]
 
+*** DONE Inventory [3/3]
     - [X] Implement read from file into array
     - [X] Implement write to file from array
     - [X] Implement search function
 
-*** TODO GUI [1/2]
 
+*** TODO GUI [1/2]
     - [-] Create all necessary cards [2/4]
       - [X] Menu cards
       - [X] Confirm card
@@ -25,33 +22,64 @@
       - [ ] Soda not found card
     - [X] Create communication back to main
 
-*** TODO Communications [0/2]
 
+*** TODO Communications [0/2]
     - [ ] Send coordinates to Arduino
     - [ ] Arduino sends finished flag
       
 
 ** Hardware interactions
-
 *** TODO Arm [0/3]
-
     - [ ] Map min and max values on servos
     - [ ] Calculate needed angles given coordinates
     - [ ] Set servos to given positions
 
-*** TODO Money Machine [0/3]
 
+*** TODO Money Machine [0/3]
     - [ ] Establish communications between Money Machine and Arduino
     - [ ] Discern data from the wired signals
     - [ ] Control what bills it will accept (only $1)
 
-*** TODO Stepper [1/3]
 
+*** TODO Stepper [1/3]
     - [X] Move stepper
     - [ ] Set stepper to a given position
     - [ ] Make stepper stop upon receiving limit switch input
 
-*** TODO Touchscreen [0/2]
 
+*** TODO Touchscreen [0/2]
     - [ ] Confirm that GUI displays on the screen
     - [ ] Confirm that GUI accepts touchscreen input
+
+
+* Hardware
+** Electronics
+*** TODO Testing [1/4]
+   - [X] Test stepper wiring
+   - [ ] Test limit switch wiring
+   - [ ] Test touchscreen wiring
+   - [ ] Test servo wiring
+
+
+*** TODO Assembly [0/5]
+   - [ ] Wire steppers
+   - [ ] Wire limit switch
+   - [ ] Wire arduino
+   - [ ] Wire touchscreen
+   - [ ] Wire servos
+     
+
+** TODO Mechanics [2/4]
+   - [ ] Assemble arm
+   - [X] Assemble rails
+   - [X] Assemble steppers and belt system
+   - [ ] Build can chute and hatch
+
+
+** TODO Structure [1/6]
+   - [ ] Build the basic structure
+   - [X] Build the soda can racks
+   - [ ] Install acrylic
+   - [ ] Install all electronics, PC, and Arduino
+   - [ ] Install cooling system
+   - [ ] Make it look pretty
