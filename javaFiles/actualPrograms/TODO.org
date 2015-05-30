@@ -1,0 +1,57 @@
+* Software
+
+** Internals
+
+*** TODO Main [1/5]
+    
+    - [X] Implement Inventory
+    - [ ] Implement GUI
+    - [ ] Implement communications to arduino
+    - [ ] Create main loop
+    - [ ] Implement money machine communications
+
+*** DONE Inventory [3/3]
+
+    - [X] Implement read from file into array
+    - [X] Implement write to file from array
+    - [X] Implement search function
+
+*** TODO GUI [1/2]
+
+    - [-] Create all necessary cards [2/4]
+      - [X] Menu cards
+      - [X] Confirm card
+      - [ ] Waiting card
+      - [ ] Soda not found card
+    - [X] Create communication back to main
+
+*** TODO Communications [0/2]
+
+    - [ ] Send coordinates to Arduino
+    - [ ] Arduino sends finished flag
+      
+
+** Hardware interactions
+
+*** TODO Arm [0/3]
+
+    - [ ] Map min and max values on servos
+    - [ ] Calculate needed angles given coordinates
+    - [ ] Set servos to given positions
+
+*** TODO Money Machine [0/3]
+
+    - [ ] Establish communications between Money Machine and Arduino
+    - [ ] Discern data from the wired signals
+    - [ ] Control what bills it will accept (only $1)
+
+*** TODO Stepper [1/3]
+
+    - [X] Move stepper
+    - [ ] Set stepper to a given position
+    - [ ] Make stepper stop upon receiving limit switch input
+
+*** TODO Touchscreen [0/2]
+
+    - [ ] Confirm that GUI displays on the screen
+    - [ ] Confirm that GUI accepts touchscreen input

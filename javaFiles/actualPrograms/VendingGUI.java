@@ -330,7 +330,58 @@ public class VendingGUI extends JPanel implements ActionListener
      */
     public Soda getSoda()
     {
-	return can;
+	Soda retVal;
+
+	switch(can) {
+	case BRISK_HALF_AND_HALF:
+	    retVal = Soda.BRISK_HALF_AND_HALF;
+	    break;
+	case BRISK_RASPBERRY:
+	    retVal = Soda.BRISK_RASPBERRY;
+	    break;
+	case BRISK_LEMONADE:
+	    retVal = Soda.BRISK_LEMONADE;
+	    break;
+	case BRISK_SWEET_TEA:
+	    retVal = Soda.BRISK_SWEET_TEA;
+	    break;
+	case PEPSI:
+	    retVal = Soda.PEPSI;
+	    break;
+	case DIET_PEPSI:
+	    retVal = Soda.DIET_PEPSI;
+	    break;
+	case PEPSI_WILD_CHERRY:
+	    retVal = Soda.PEPSI_WILD_CHERRY;
+	    break;
+	case PEPSI_MAX:
+	    retVal = Soda.PEPSI_MAX;
+	    break;
+	case MOUNTAIN_DEW:
+	    retVal = Soda.MOUNTAIN_DEW;
+	    break;
+	case DIET_MOUNTAIN_DEW:
+	    retVal = Soda.DIET_MOUNTAIN_DEW;
+	    break;
+	case MOUNTAIN_DEW_CODE_RED:
+	    retVal = Soda.MOUNTAIN_DEW_CODE_RED;
+	    break;
+	case DIET_MOUNTAIN_DEW_CODE_RED:
+	    retVal = Soda.DIET_MOUNTAIN_DEW_CODE_RED;
+	    break;
+	case DIET_CRUSH:
+	    retVal = Soda.DIET_CRUSH;
+	    break;
+	case DIET_MUG:
+	    retVal = Soda.DIET_MUG;
+	    break;
+	default:
+	    retVal = Soda.EMPTY;
+	    break;
+	}
+	
+	can = Soda.EMPTY;
+	return retVal;
     }
 
     /**
@@ -502,7 +553,6 @@ public class VendingGUI extends JPanel implements ActionListener
 		    break;
 		}
 	    cards.show(VendingGUI.this, "ThanksPanel");
-
 	    sodaType = 0;
 	}
 	else

@@ -9,7 +9,7 @@ import javax.swing.plaf.FontUIResource;
 
 class VendingMachineRunner {
     public enum State {
-        SLEEPING, MENU, PAYING, DELIVERING, DELIVERED, DISABLED
+         MENU, PAYING, DELIVERING, DELIVERED, DISABLED
     }
 
     private static State state;
@@ -38,11 +38,8 @@ class VendingMachineRunner {
 	gui.pack();
 	gui.setVisible(true);
 
-	while(true) //Infinite loop
+	while(true) { //Infinite loop
             switch(state) {
-            case SLEEPING:
-                sleeping();
-                break;
             case MENU:
                 menu();
                 break;
@@ -59,6 +56,13 @@ class VendingMachineRunner {
                 disabled();
                 break;
             }
+	    
+	    try {
+		Thread.sleep(500);
+	    } catch(InterruptedException e) {
+		System.out.println(e);
+	    }
+	}
     }
     
     /**
@@ -74,7 +78,9 @@ class VendingMachineRunner {
      * If timeout is reached, return to sleeping state.
      */
     private static void menu() {
-
+	Soda holder = vGUI.getSoda();
+	if(!holder.equals(Soda.EMPTY))
+	System.out.println("In main, can is: " + holder);
     }
     
     /**
