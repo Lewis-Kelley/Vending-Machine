@@ -74,7 +74,7 @@ class VendingMachineRunner {
      * If timeout is reached, return to sleeping state.
      */
     private static void menu() {
-       
+
     }
     
     /**

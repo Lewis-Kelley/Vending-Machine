@@ -57,20 +57,20 @@ public class VendingGUI extends JPanel implements ActionListener
     {
 	this.setPreferredSize(new Dimension(690, 410));
 		
-	JLabel flipLabel = new JLabel(spinningCan);
+	flipLabel = new JLabel(spinningCan);
 	flipLabel.setIcon(spinningCan);
 		
 		
-	JLabel[] sodaOption = new JLabel[13];
-	JButton[] yesArray = new JButton[13];
-	JButton[] noArray = new JButton[13];
-	JPanel[] confirmArray = new JPanel[13];
-	JPanel[] holder = new JPanel[13];
-	JLabel[] youSure = new JLabel[13];
+	sodaOption = new JLabel[13];
+	yesArray = new JButton[13];
+	noArray = new JButton[13];
+	confirmArray = new JPanel[13];
+	holder = new JPanel[13];
+	youSure = new JLabel[13];
 		
 	can = Soda.EMPTY;
 		
-	ImageIcon pictureHolder = new ImageIcon();
+	pictureHolder = new ImageIcon();
 	
 	b1 = new JButton(mountainDew);
 	b1.setBorderPainted(false);
@@ -248,19 +248,19 @@ public class VendingGUI extends JPanel implements ActionListener
 		confirmArray[i].add(holder[i], BorderLayout.CENTER);
 	    }
 		
-	JPanel cardOne = new JPanel();
+	cardOne = new JPanel();
 	cardOne.setLayout(new FlowLayout());
 
-	JPanel cardTwo = new JPanel();
+	cardTwo = new JPanel();
 	cardTwo.setLayout(new FlowLayout());
 
-	JPanel cardThree = new JPanel();
+	cardThree = new JPanel();
 	cardThree.setLayout(new FlowLayout());
 		
-	JPanel cardFour = new JPanel();
+	cardFour = new JPanel();
 	cardFour.setLayout(new FlowLayout());
 		
-	JPanel thanksPanel = new JPanel();
+	thanksPanel = new JPanel();
 	thanksPanel.setLayout(new BorderLayout());
 				
 	cards = new CardLayout();
@@ -273,7 +273,7 @@ public class VendingGUI extends JPanel implements ActionListener
 	this.add(cardThree, "ThirdCard");
 	this.add(cardFour, "FourthCard");
 	this.add(thanksPanel, "ThanksPanel");
-		
+
 	for(int j = 0; j < 13; j++)
 	    {
 		this.add(confirmArray[j], j + "");
@@ -485,11 +485,13 @@ public class VendingGUI extends JPanel implements ActionListener
 		default:
 		    break;
 		}
-	    System.out.println("This should work");
 	    cards.show(VendingGUI.this, "ThanksPanel");
-			
-	    System.out.println(sodaType + "");
+
 	    sodaType = 0;
 	}
+	else
+	    {
+		System.out.println("Uncaught event. The event was: " + (JButton)e.getSource());
+	    }
     }
 }
