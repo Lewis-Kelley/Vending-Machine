@@ -11,22 +11,22 @@ public class VendingGUI extends JPanel implements ActionListener
 {	
     public CardLayout cards;
 	
-    public Soda can;
+    public Soda can; //Holds the currently selected can after the user confirms. Set to EMPTY when no can has been confirmed.
 	
-    public JLabel flipLabel;
+    public JLabel flipLabel; //Holds the spinning can gif
 	
-    public JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, masterBrisk, masterPepsi, home, home2, home3, wildCherryButton, pepsiMax, sweetTea, masterDew, dietDew;
+    public JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, masterBrisk, masterPepsi, home, home2, home3, wildCherryButton, pepsiMax, sweetTea, masterDew, dietDew; //All the various buttons used on each of the cards
 	
-    public JPanel cardOne, cardTwo, cardThree, cardFour, backPanel, thanksPanel;
+    public JPanel cardOne, cardTwo, cardThree, cardFour, backPanel, thanksPanel; //The various cards.
 	
-    public JLabel[] sodaOption = new JLabel[13];
-    public JButton[] yesArray = new JButton[13];
-    public JButton[] noArray = new JButton[13];
-    public JPanel[] confirmArray = new JPanel[13];
-    public JPanel[] holder = new JPanel[13];
-    public JLabel[] youSure = new JLabel[13];
+    public JLabel[] sodaOption = new JLabel[13]; //Holds the images for the soda icons on the confirm screen.
+    public JButton[] yesArray = new JButton[13]; //Holds the yes buttons
+    public JButton[] noArray = new JButton[13]; //Holds the no buttons
+    public JPanel[] confirmArray = new JPanel[13]; //Holds the yes, no, sodaOption, and youSure banners.
+    public JPanel[] holder = new JPanel[13]; //Used to line up the yes, no, and sodaOption labels and buttons
+    public JLabel[] youSure = new JLabel[13]; //The banner for the confirmation screen
 	
-	
+    //All the images in the program
     public ImageIcon mountainDew = new ImageIcon("mountainDew.png");
     public ImageIcon mug = new ImageIcon("mug.png");
     public ImageIcon pepsi = new ImageIcon("pepsi.png");
@@ -50,28 +50,30 @@ public class VendingGUI extends JPanel implements ActionListener
     public ImageIcon pictureHolder;
     public ImageIcon spinningCan = new ImageIcon("sodaSpin.gif");
 	
-	
+    //An int showing which soda has been selected, but not confirmed
     private int option, sodaType = 0;
 	
     public void setUp()
     {
 	this.setPreferredSize(new Dimension(690, 410));
-		
+
+	//Initialize flipLabel
 	flipLabel = new JLabel(spinningCan);
 	flipLabel.setIcon(spinningCan);
 		
-		
+	//Initialize all the confirmation screen arrays
 	sodaOption = new JLabel[13];
 	yesArray = new JButton[13];
 	noArray = new JButton[13];
 	confirmArray = new JPanel[13];
 	holder = new JPanel[13];
 	youSure = new JLabel[13];
-		
+
 	can = Soda.EMPTY;
 		
 	pictureHolder = new ImageIcon();
-	
+
+	//Initialize all the buttons
 	b1 = new JButton(mountainDew);
 	b1.setBorderPainted(false);
 	b1.setContentAreaFilled(false);
@@ -166,7 +168,8 @@ public class VendingGUI extends JPanel implements ActionListener
 	home3.setBorderPainted(false);
 	home3.setContentAreaFilled(false);
 	home3.addActionListener(this);
-		
+
+	//Setting up all the confirmation screens
 	for(int i = 0; i < 13; i++)
 	    {
 		yesArray[i] = new JButton(yesPic);
@@ -243,11 +246,13 @@ public class VendingGUI extends JPanel implements ActionListener
 		holder[i].add(yesArray[i]);
 		holder[i].add(sodaOption[i]);
 		holder[i].add(noArray[i]);
-			
+
+		//Add the combined attributes to the confirmArray
 		confirmArray[i].add(youSure[i], BorderLayout.NORTH);
 		confirmArray[i].add(holder[i], BorderLayout.CENTER);
 	    }
-		
+
+	//Create the cards
 	cardOne = new JPanel();
 	cardOne.setLayout(new FlowLayout());
 
@@ -264,7 +269,8 @@ public class VendingGUI extends JPanel implements ActionListener
 	thanksPanel.setLayout(new BorderLayout());
 				
 	cards = new CardLayout();
-			
+
+	//Add all the cards to the display
 	this.setLayout(cards);
 	this.setBackground(Color.blue);
 		
@@ -278,7 +284,8 @@ public class VendingGUI extends JPanel implements ActionListener
 	    {
 		this.add(confirmArray[j], j + "");
 	    }
-		
+
+	//Add all the buttons to all the cards
 	cards.show(this, "FirstCard");		
 		
 	cardTwo.add(home);
@@ -309,17 +316,26 @@ public class VendingGUI extends JPanel implements ActionListener
 		
 	thanksPanel.add(flipLabel, BorderLayout.CENTER);	
     }
-	
+
+    /**
+     * Returns the current value of sodaType.
+     */
     public int getSodaType()
     {
 	return sodaType;
     }
-	
+
+    /**
+     * Returns the current value of can then sets to EMPTY
+     */
     public Soda getSoda()
     {
 	return can;
     }
 
+    /**
+     * Deals with all actions.
+     */
     public void actionPerformed(ActionEvent e)
     {
 	if(((JButton)e.getSource()).equals(b1))
