@@ -14,9 +14,13 @@ public class BenSerialListener
     private BufferedInputStream in;
     private BufferedOutputStream out;
 
+    /*
+     * This class needs an device to communicate with,
+     * i.e. /dev/ttyACM0
+     * It opens it and then opens a GNU Screen process to communicate.
+     */
     public BenSerialListener(String portname) throws IOException, InterruptedException
     {
-	/* Open the tty */
 	Runtime.getRuntime().exec("stty -F " + portname + " cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts").waitFor();
 	p = Runtime.getRuntime().exec("screen " + portname + " 9600");
 	p.waitFor();
@@ -24,6 +28,9 @@ public class BenSerialListener
 	out = new BufferedOutputStream(p.getOutputStream());
     }
 
+    /*
+     * I will gladly let someone else take care of the errors.
+     */
     String getLine() throws IOException
     {
 	String output = "", s = "";
@@ -46,7 +53,7 @@ public class BenSerialListener
 	String s = input + "q";
 	byte[] array = s.getBytes();
 	out.write(array);
-	out.flush(); /* make sure it prints the buffer in the stream class */
+	out.flush();
     }
     void kill()
     {

@@ -1,7 +1,4 @@
-package java.io;
-import java.cores.Coordinate;
-
-class TouchScreen {
+public class TouchScreen {
 	public TouchScreen() {
 		//TODO implement constructor
 	}
@@ -10,7 +7,8 @@ class TouchScreen {
 	 * Returns coordinates of a touch, or null if no touch
 	 */
 	public Coordinate getTouch() {
-		//TODO implement
+	    //TODO implement
+		return null;
 	}
 	
 	/**
@@ -19,6 +17,7 @@ class TouchScreen {
 	 */
 	public boolean isTouched() {
 		//TODO implement
+		return false;
 	}
 	
 	//TODO implement other methods

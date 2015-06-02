@@ -7,7 +7,7 @@ class Prices {
 	 * Also, there are no checks that each soda has a price and each price has a soda; programmer beware.
 	 */
 	public Prices() {
-		prices = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; //TODO confirm prices
+		prices = new short[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; //TODO confirm prices
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 public class SerialListener
 {
-  InputStream in;
+    /*
+    InputStream in;
   OutputStream out;
   static String msg;
   public SerialListener()
@@ -34,7 +35,7 @@ public class SerialListener
              this.msg = new String(buffer);
         }
   }
-  public send(String msg)
+  public void send(String msg)
 	{
 		byte[] buffer = new byte[1024];
 		buffer = msg.getBytes();
@@ -45,5 +46,6 @@ public class SerialListener
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+		}
+*/
 }

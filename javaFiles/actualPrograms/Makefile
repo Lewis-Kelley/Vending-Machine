@@ -1,5 +1,5 @@
 JAR = jar
-JARFLAGS = cf
+JARFLAGS = cvfm
 JAVAC = javac
 JAVAFLAGS = -g
 SRC =	BenSerialListener.java \
@@ -8,7 +8,6 @@ SRC =	BenSerialListener.java \
 	Inventory.java \
 	MoneyHandler.java \
 	Prices.java \
-	SerialListener.java \
 	Soda.java \
 	Test.java \
 	TouchScreen.java \
@@ -41,10 +40,9 @@ RES =	back.png \
 CLS = $(SRC:.java=.class)
 
 all: $(CLS)
-	$(JAR) $(JARFLAGS) VendingMachine.jar ($CLS) ($RES)
+
 .SUFFIXES : .class .java
 .java.class :
 	$(JAVAC) $(JAVAFLAGS) $<
 clean:
 	$(RM) *.class
-	$(RM) VendingMachine.jar

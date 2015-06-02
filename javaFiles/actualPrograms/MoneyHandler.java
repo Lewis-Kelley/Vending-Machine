@@ -11,6 +11,7 @@ class MoneyHandler {
      */
     public byte getStatus() {
 	//TODO implement
+	return 0;
     }
 
     /**
