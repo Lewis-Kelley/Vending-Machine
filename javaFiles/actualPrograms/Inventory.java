@@ -81,7 +81,7 @@ class Inventory {
     /**
      * Returns Coordinate if can was found, returns null if it couldn't find it
      */
-    private Coordinate findSoda(Soda soda) {
+    public Coordinate findSoda(Soda soda) {
 	for(short ctZ = 0; ctZ < inv[0][0].length; ctZ++)
 	    for(short ctY = 0; ctY < inv[0].length; ctY++)
 		for(short ctX = 0; ctX < inv.length; ctX++)

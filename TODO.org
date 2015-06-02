@@ -14,13 +14,16 @@
     - [X] Implement search function
 
 
-*** TODO GUI [1/2]
-    - [-] Create all necessary cards [2/4]
+*** TODO GUI [1/3]
+    - [-] Create all necessary cards [2/6]
       - [X] Menu cards
       - [X] Confirm card
       - [ ] Waiting card
       - [ ] Soda not found card
+      - [ ] Paying card
+      - [ ] Disabled card
     - [X] Create communication back to main
+    - [ ] Resize to fullscreen
 
 
 *** TODO Communications [0/2]
@@ -47,9 +50,9 @@
     - [ ] Make stepper stop upon receiving limit switch input
 
 
-*** TODO Touchscreen [0/2]
-    - [ ] Confirm that GUI displays on the screen
-    - [ ] Confirm that GUI accepts touchscreen input
+*** TODO Touchscreen [2/2]
+    - [X] Confirm that GUI displays on the screen
+    - [X] Confirm that GUI accepts touchscreen input
 
 
 * Hardware
