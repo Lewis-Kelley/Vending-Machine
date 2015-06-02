@@ -103,10 +103,14 @@ public class VendingMachineRunner {
 	if(!holder.equals(Soda.EMPTY)) {
 	    coord = inv.findSoda(holder);
 	    
-	    if(coord == null)
+	    if(coord == null) {
 		state = State.NO_SODA;
-	    else
+		vGUI.setFoundStatus(-1);
+	    }
+	    else {
 		state = State.PAYING;
+		vGUI.setFoundStatus(1);
+	    }
 	}
     }
 

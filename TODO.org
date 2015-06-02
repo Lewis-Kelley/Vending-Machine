@@ -24,6 +24,7 @@
       - [ ] Disabled card
     - [X] Create communication back to main
     - [ ] Resize to fullscreen
+    - [ ] Confirm soda list
 
 
 *** TODO Communications [0/2]

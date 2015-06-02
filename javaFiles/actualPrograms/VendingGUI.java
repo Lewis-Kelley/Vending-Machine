@@ -52,6 +52,8 @@ public class VendingGUI extends JPanel implements ActionListener
 	
     //An int showing which soda has been selected, but not confirmed
     private int option, sodaType = 0;
+
+    private byte sodaExists = 0; //0 = no input, 1 = does exist, -1 = does not exist
 	
     public void setUp()
     {
@@ -70,6 +72,8 @@ public class VendingGUI extends JPanel implements ActionListener
 	youSure = new JLabel[13];
 
 	can = Soda.EMPTY;
+
+	sodaExists = 0;
 		
 	pictureHolder = new ImageIcon();
 
@@ -384,6 +388,10 @@ public class VendingGUI extends JPanel implements ActionListener
 	return retVal;
     }
 
+    public void setFoundStatus(byte status) {
+	sodaExists = status;
+    }
+    
     /**
      * Deals with all actions.
      */
@@ -479,8 +487,8 @@ public class VendingGUI extends JPanel implements ActionListener
 		((JButton)e.getSource()).equals(noArray[10]) ||
 		((JButton)e.getSource()).equals(noArray[11]) ||
 		((JButton)e.getSource()).equals(noArray[12])) {
-	    	    sodaType = 0;
-		    cards.show(VendingGUI.this, "FirstCard");
+	    sodaType = 0;
+	    cards.show(VendingGUI.this, "FirstCard");
 	}
 	    
 	else if(((JButton)e.getSource()).equals(yesArray[0]) ||
