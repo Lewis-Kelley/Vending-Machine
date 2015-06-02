@@ -4,13 +4,8 @@ JAVAC = javac
 JAVAFLAGS = -g
 SRC =	BenSerialListener.java \
 	Coordinate.java \
-	Display.java \
 	Inventory.java \
-	MoneyHandler.java \
-	Prices.java \
 	Soda.java \
-	Test.java \
-	TouchScreen.java \
 	VendingGUI.java \
 	VendingMachineRunner.java
 RES =	back.png \
@@ -35,7 +30,6 @@ RES =	back.png \
 	wildCherry.png \
 	yes.png \
 	youSure.png \
-	VendingGUI.html
 
 CLS = $(SRC:.java=.class)
 
