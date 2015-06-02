@@ -56,6 +56,10 @@
     - [X] Confirm that GUI accepts touchscreen input
 
 
+*** TODO Claw [0/2]
+    - [ ] Map open and close positions
+    - [ ] Implement into main code
+
 * Hardware
 ** Electronics
 *** TODO Testing [1/4]
