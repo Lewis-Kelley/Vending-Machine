@@ -39,11 +39,11 @@
     - [ ] Set servos to given positions
 
 
-*** TODO Money Machine [0/3]
+*** TODO Money Machine [1/4]
     - [ ] Establish communications between Money Machine and Arduino
     - [ ] Discern data from the wired signals
-    - [ ] Control what bills it will accept (only $1)
-
+    - [X] Control what bills it will accept (only $1)
+    - [ ] Control when it can accept money
 
 *** TODO Stepper [1/3]
     - [X] Move stepper
