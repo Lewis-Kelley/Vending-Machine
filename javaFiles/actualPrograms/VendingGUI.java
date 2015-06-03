@@ -1,3 +1,11 @@
+/**
+ * Things to do:
+ * - Change the confirm Y/N screen to a payment screen.
+ * - Wait for payment to proceed to the wait screen.
+ * - Create an "Out of stock" card
+ * - Possibly create a "Disabled" card if we can detect an issue.
+ */
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
