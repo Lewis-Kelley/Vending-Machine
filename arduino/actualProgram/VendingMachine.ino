@@ -5,6 +5,8 @@ const int STEPPER_MAIN = 9;
 const int STEPPER_DIR  = 8;
 
 const int BACK_LIM_SWITCH = 2;
+const int FRONT_LIM_SWITCH = 3;
+const int MONEY_MCH = 4;
 
 Servo center;
 Servo middle;
@@ -20,27 +22,29 @@ const int dirB = 13;
 
 int x = 0;
 
+int holder[10];
+
 /**
  * Called once to set everything up.
  */
 void setup() {
-	Serial.begin(9600);
-	// set the PWM and brake pins so that the direction pins  // can be used to control the motor:
-	pinMode(pwmA, OUTPUT);
-	pinMode(pwmB, OUTPUT);
-	pinMode(brakeA, OUTPUT);
-	pinMode(brakeB, OUTPUT);
-	digitalWrite(pwmA, HIGH);
-	digitalWrite(pwmB, HIGH);
-	digitalWrite(brakeA, LOW);
-	digitalWrite(brakeB, LOW);
+    Serial.begin(9600);
+    // set the PWM and brake pins so that the direction pins  // can be used to control the motor:
+    pinMode(pwmA, OUTPUT);
+    pinMode(pwmB, OUTPUT);
+    pinMode(brakeA, OUTPUT);
+    pinMode(brakeB, OUTPUT);
+    digitalWrite(pwmA, HIGH);
+    digitalWrite(pwmB, HIGH);
+    digitalWrite(brakeA, LOW);
+    digitalWrite(brakeB, LOW);
 
-	// initialize the serial port:
-	Serial.begin(9600);
+    // initialize the serial port:
+    Serial.begin(9600);
 
-	center.attach(9);
-	middle.attach(10);
-	far.attach(11);
+    center.attach(9);
+    middle.attach(10);
+    far.attach(11);
 }
 
 /**
@@ -50,22 +54,61 @@ void loop() {
 }
 
 /**
+ * Waits for a $1 bill to be entered.
+ */
+void waitForMoney() {
+    while(true) {
+	digitalWrite(MONEY_MCH, HIGH);
+
+	updateHolder();
+
+	if(sumHolder() < 7)
+	    break;
+
+	delay(15);
+    }
+}
+
+/**
+ * Slides each cell og holder up, and resets holder[0] to
+ * the current sensor value.
+ */
+void updateHolder() {
+    for(short i = 9; i > 0; i--)
+	holder[i] = holder[i - 1];
+  
+    holder[0] = digitalRead(MONEY_MCH);
+}
+
+/**
+ * Returns the total sum of holder.
+ */
+short  sumHolder() {
+    short sum = 0;
+    
+    for(short i = 0; i < 10; i++)
+	sum += holder[i];
+
+    return sum;
+}
+
+/**
  * Moves stepper back until the limit switch is triggered.
  */
 void railReturnHome() {
-	digitalWrite(STEPPER_DIR, HIGH);
+    digitalWrite(STEPPER_DIR, HIGH);
 
-	while(true) {
-		if(analogRead(1) > 950)
-			break;
+    while(true) {
+	if(analogRead(1) > 950)
+	    break;
 
-		for(short i = 0; i < 10; i++) {
-			digitalWrite(STEPPER_MAIN, LOW);
-			delayMicroseconds(TIME_DELAY);
-			digitalWrite(STEPPER_MAIN, HIGH);
-			delayMicroseconds(TIME_DELAY);
-		}
+	for(short i = 0; i < 10; i++) {
+	    digitalWrite(STEPPER_MAIN, LOW);
+	    delayMicroseconds(TIME_DELAY);
+	    digitalWrite(STEPPER_MAIN, HIGH);
+	    delayMicroseconds(TIME_DELAY);
 	}
+    }
 }
 
 /**
@@ -73,14 +116,14 @@ void railReturnHome() {
  * Value 0 is home position.
  */
 void railToPos(int value) {
-	digitalWrite(STEPPER_DIR, LOW);
+    digitalWrite(STEPPER_DIR, LOW);
 
-	for(short i = 0; i < value; i++) {
-		digitalWrite(STEPPER_MAIN, LOW);
-		delayMicroseconds(TIME_DELAY);
-		digitalWrite(STEPPER_MAIN, HIGH);
-		delayMicroseconds(TIME_DELAY);
-	}
+    for(short i = 0; i < value; i++) {
+	digitalWrite(STEPPER_MAIN, LOW);
+	delayMicroseconds(TIME_DELAY);
+	digitalWrite(STEPPER_MAIN, HIGH);
+	delayMicroseconds(TIME_DELAY);
+    }
 }
 
 /**
@@ -101,9 +144,9 @@ void armsToDropoff() {
  * Moves arms to 3 values. First is central arm, and so on.
  */
 void setArms(int first, int second, int third) { //May need to stagger into steps so the arms don't bang against the sides.
-     center.writeMicroseconds(first);
-     middle.writeMicroseconds(second);
-     far.writeMicroseconds(third);
+    center.writeMicroseconds(first);
+    middle.writeMicroseconds(second);
+    far.writeMicroseconds(third);
 }
 
 /**
