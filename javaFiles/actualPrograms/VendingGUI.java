@@ -3,6 +3,7 @@
  * - Wait for payment to proceed to the wait screen.
  * - Create an "Out of stock" card
  * - Possibly create a "Disabled" card if we can detect an issue.
+ * - Make it fullscreen
  */
 
 import java.awt.*;
@@ -20,7 +21,7 @@ public class VendingGUI extends JPanel implements ActionListener
     {
 	public void run()
 	{
-	    cards.show(VendingGUI.this, "ThanksPanel");
+	    cards.show(VendingGUI.this, "PayPanel");
 	    spinningCan.getImage().flush();
 	}
     }
@@ -50,7 +51,7 @@ public class VendingGUI extends JPanel implements ActionListener
 	
     public JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, masterBrisk, masterPepsi, home, home2, home3, wildCherryButton, pepsiMax, sweetTea, masterDew, dietDew; //All the various buttons used on each of the cards
 	
-    public JPanel cardOne, cardTwo, cardThree, cardFour, backPanel, thanksPanel; //The various cards.
+    public JPanel cardOne, cardTwo, cardThree, cardFour, backPanel, payPanel; //The various cards.
 	
     public JLabel[] sodaOption = new JLabel[13]; //Holds the images for the soda icons on the confirm screen.
     public JButton[] cancelArray = new JButton[13]; //Holds the cancel buttons
@@ -86,7 +87,7 @@ public class VendingGUI extends JPanel implements ActionListener
 	
     public void setUp()
     {
-	this.setPreferredSize(new Dimension(690, 410));
+	this.setPreferredSize(new Dimension(1680, 1050));
 
 	//Initialize flipLabel
 	flipLabel = new JLabel(spinningCan);
@@ -288,9 +289,9 @@ public class VendingGUI extends JPanel implements ActionListener
 	cardFour.setLayout(new FlowLayout());
 	cardFour.setBackground(Color.white);
 		
-	thanksPanel = new JPanel();
-	thanksPanel.setLayout(new BorderLayout());
-	thanksPanel.setBackground(Color.white);
+	payPanel = new JPanel();
+	payPanel.setLayout(new BorderLayout());
+	payPanel.setBackground(Color.white);
 	
 	cards = new CardLayout();
 
@@ -302,7 +303,7 @@ public class VendingGUI extends JPanel implements ActionListener
 	this.add(cardTwo, "SecondCard");
 	this.add(cardThree, "ThirdCard");
 	this.add(cardFour, "FourthCard");
-	this.add(thanksPanel, "ThanksPanel");
+	this.add(payPanel, "PayPanel");
 
 	for(int j = 0; j < 13; j++)
 	    {
@@ -338,7 +339,7 @@ public class VendingGUI extends JPanel implements ActionListener
 	cardOne.add(masterBrisk);
 	cardOne.add(masterDew);	
 		
-	thanksPanel.add(flipLabel, BorderLayout.CENTER);	
+	payPanel.add(flipLabel, BorderLayout.CENTER);	
     }
 
     /**

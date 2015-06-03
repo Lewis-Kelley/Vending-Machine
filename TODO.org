@@ -14,16 +14,16 @@
     - [X] Implement search function
 
 
-*** TODO GUI [1/4]
-    - [-] Create all necessary cards [2/6]
+*** TODO GUI [2/4]
+    - [-] Create all necessary cards [3/6]
       - [X] Menu cards
       - [X] Confirm card
       - [ ] Waiting card
       - [ ] Soda not found card
-      - [ ] Paying card
+      - [X] Paying card
       - [ ] Disabled card
     - [X] Create communication back to main
-    - [ ] Resize to fullscreen
+    - [X] Resize to fullscreen
     - [ ] Confirm soda list
 
 
@@ -39,11 +39,12 @@
     - [ ] Set servos to given positions
 
 
-*** TODO Money Machine [4/4]
+*** DONE Money Machine [4/4]
     - [X] Establish communications between Money Machine and Arduino
     - [X] Discern data from the wired signals
     - [X] Control what bills it will accept (only $1)
     - [X] Control when it can accept money
+
 
 *** TODO Stepper [2/3]
     - [X] Move stepper
@@ -51,7 +52,7 @@
     - [X] Make stepper stop upon receiving limit switch input
 
 
-*** TODO Touchscreen [2/2]
+*** DONE Touchscreen [2/2]
     - [X] Confirm that GUI displays on the screen
     - [X] Confirm that GUI accepts touchscreen input
 
@@ -63,19 +64,19 @@
 
 * Hardware
 ** Electronics
-*** TODO Testing [4/4]
+*** DONE Testing [4/4]
    - [X] Test stepper wiring
    - [X] Test limit switch wiring
    - [X] Test touchscreen wiring
    - [X] Test servo wiring
 
 
-*** TODO Assembly [5/5]
+*** TODO Assembly [2/5]
    - [X] Wire steppers
    - [X] Wire limit switch
-   - [X] Wire arduino
-   - [X] Wire touchscreen
-   - [X] Wire servos
+   - [ ] Wire arduino
+   - [ ] Wire touchscreen
+   - [ ] Wire servos
      
 
 ** TODO Mechanics [2/4]
@@ -85,10 +86,10 @@
    - [ ] Build can chute and hatch
 
 
-** TODO Structure [1/6]
-   - [ ] Build the basic structure
+** TODO Structure [2/6]
+   - [X] Build the basic structure
    - [X] Build the soda can racks
    - [ ] Install acrylic
    - [ ] Install all electronics, PC, and Arduino
    - [ ] Install cooling system
-   - [ ] Make it look pretty (aka put Will A inside of it)
+   - [ ] Make it look pretty
