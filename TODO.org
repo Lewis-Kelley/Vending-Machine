@@ -40,10 +40,10 @@
 
 
 *** TODO Money Machine [2/4]
-    - [ ] Establish communications between Money Machine and Arduino
+    - [X] Establish communications between Money Machine and Arduino
     - [X] Discern data from the wired signals
     - [X] Control what bills it will accept (only $1)
-    - [ ] Control when it can accept money
+    - [X] Control when it can accept money
 
 *** TODO Stepper [2/3]
     - [X] Move stepper
@@ -65,17 +65,17 @@
 ** Electronics
 *** TODO Testing [1/4]
    - [X] Test stepper wiring
-   - [ ] Test limit switch wiring
-   - [ ] Test touchscreen wiring
-   - [ ] Test servo wiring
+   - [X] Test limit switch wiring
+   - [X] Test touchscreen wiring
+   - [X] Test servo wiring
 
 
 *** TODO Assembly [0/5]
-   - [ ] Wire steppers
-   - [ ] Wire limit switch
-   - [ ] Wire arduino
-   - [ ] Wire touchscreen
-   - [ ] Wire servos
+   - [X] Wire steppers
+   - [X] Wire limit switch
+   - [X] Wire arduino
+   - [X] Wire touchscreen
+   - [X] Wire servos
      
 
 ** TODO Mechanics [2/4]
@@ -91,4 +91,4 @@
    - [ ] Install acrylic
    - [ ] Install all electronics, PC, and Arduino
    - [ ] Install cooling system
-   - [ ] Make it look pretty
+   - [ ] Make it look pretty (aka put Will A inside of it)
