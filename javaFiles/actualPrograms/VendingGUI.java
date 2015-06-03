@@ -9,6 +9,32 @@ import javax.swing.plaf.FontUIResource;
 
 public class VendingGUI extends JPanel implements ActionListener
 {	
+    private class AnimatedRunner implements Runnable
+    {
+	public void run()
+	{
+	    cards.show(VendingGUI.this, "ThanksPanel");
+	    spinningCan.getImage().flush();
+	}
+    }
+
+    private class WaitToReturn implements Runnable
+    {
+	public void run()
+	{
+	    try
+		{
+		    Thread.sleep(10000);
+		}
+	    catch (Exception e)
+		{
+		    System.out.println("Problem waiting for gif to end.");
+		}
+
+	    cards.show(VendingGUI.this, "FirstCard");
+	}
+    }
+
     public CardLayout cards;
 	
     public Soda can; //Holds the currently selected can after the user confirms. Set to EMPTY when no can has been confirmed.
@@ -259,19 +285,24 @@ public class VendingGUI extends JPanel implements ActionListener
 	//Create the cards
 	cardOne = new JPanel();
 	cardOne.setLayout(new FlowLayout());
-
+	cardOne.setBackground(Color.white);
+	
 	cardTwo = new JPanel();
 	cardTwo.setLayout(new FlowLayout());
-
+	cardTwo.setBackground(Color.white);
+	
 	cardThree = new JPanel();
 	cardThree.setLayout(new FlowLayout());
-		
+	cardThree.setBackground(Color.white);
+	
 	cardFour = new JPanel();
 	cardFour.setLayout(new FlowLayout());
+	cardFour.setBackground(Color.white);
 		
 	thanksPanel = new JPanel();
 	thanksPanel.setLayout(new BorderLayout());
-				
+	thanksPanel.setBackground(Color.white);
+	
 	cards = new CardLayout();
 
 	//Add all the cards to the display
@@ -560,7 +591,10 @@ public class VendingGUI extends JPanel implements ActionListener
 		default:
 		    break;
 		}
-	    cards.show(VendingGUI.this, "ThanksPanel");
+	    
+	    (new Thread(new AnimatedRunner())).start();
+	    (new Thread(new WaitToReturn())).start();
+	    
 	    sodaType = 0;
 	}
 	else
