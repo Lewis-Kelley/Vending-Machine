@@ -28,7 +28,10 @@ public class VendingMachineRunner {
 	coord = null;
 	inv = new Inventory(true);
 
+	Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 	gui = new JFrame();
+	gui.setSize(size);
+	gui.setUndecorated(true);
 	vGUI = new VendingGUI();
 	vGUI.setUp();
 	gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,11 +108,11 @@ public class VendingMachineRunner {
 	    
 	    if(coord == null) {
 		state = State.NO_SODA;
-		vGUI.setFoundStatus(-1);
+		vGUI.setFoundStatus((byte)-1);
 	    }
 	    else {
 		state = State.PAYING;
-		vGUI.setFoundStatus(1);
+		vGUI.setFoundStatus((byte)1);
 	    }
 	}
     }
