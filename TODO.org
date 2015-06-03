@@ -14,7 +14,7 @@
     - [X] Implement search function
 
 
-*** TODO GUI [1/3]
+*** TODO GUI [1/4]
     - [-] Create all necessary cards [2/6]
       - [X] Menu cards
       - [X] Confirm card
@@ -39,7 +39,7 @@
     - [ ] Set servos to given positions
 
 
-*** TODO Money Machine [2/4]
+*** TODO Money Machine [4/4]
     - [X] Establish communications between Money Machine and Arduino
     - [X] Discern data from the wired signals
     - [X] Control what bills it will accept (only $1)
@@ -63,14 +63,14 @@
 
 * Hardware
 ** Electronics
-*** TODO Testing [1/4]
+*** TODO Testing [4/4]
    - [X] Test stepper wiring
    - [X] Test limit switch wiring
    - [X] Test touchscreen wiring
    - [X] Test servo wiring
 
 
-*** TODO Assembly [0/5]
+*** TODO Assembly [5/5]
    - [X] Wire steppers
    - [X] Wire limit switch
    - [X] Wire arduino
