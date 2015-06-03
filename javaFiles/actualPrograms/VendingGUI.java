@@ -1,6 +1,5 @@
 /**
  * Things to do:
- * - Change the confirm Y/N screen to a payment screen.
  * - Wait for payment to proceed to the wait screen.
  * - Create an "Out of stock" card
  * - Possibly create a "Disabled" card if we can detect an issue.
@@ -54,11 +53,9 @@ public class VendingGUI extends JPanel implements ActionListener
     public JPanel cardOne, cardTwo, cardThree, cardFour, backPanel, thanksPanel; //The various cards.
 	
     public JLabel[] sodaOption = new JLabel[13]; //Holds the images for the soda icons on the confirm screen.
-    public JButton[] yesArray = new JButton[13]; //Holds the yes buttons
-    public JButton[] noArray = new JButton[13]; //Holds the no buttons
-    public JPanel[] confirmArray = new JPanel[13]; //Holds the yes, no, sodaOption, and youSure banners.
-    public JPanel[] holder = new JPanel[13]; //Used to line up the yes, no, and sodaOption labels and buttons
-    public JLabel[] youSure = new JLabel[13]; //The banner for the confirmation screen
+    public JButton[] cancelArray = new JButton[13]; //Holds the cancel buttons
+    public JPanel[] confirmArray = new JPanel[13]; //Holds the cancel, sodaOption, and pay $1 banners.
+    public JLabel[] pay = new JLabel[13]; //The banner for the confirmation screen
 	
     //All the images in the program
     public ImageIcon mountainDew = new ImageIcon("mountainDew.png");
@@ -77,11 +74,9 @@ public class VendingGUI extends JPanel implements ActionListener
     public ImageIcon genericBrisk = new ImageIcon("genericBrisk.png");
     public ImageIcon dewDiet = new ImageIcon("dietDew.png");
     public ImageIcon p = new ImageIcon("masterPepsi.png");
-    public ImageIcon noPic = new ImageIcon("no.png");
-    public ImageIcon yesPic = new ImageIcon("yes.png");
-    public ImageIcon sure = new ImageIcon("youSure.png");
+    public ImageIcon cancelPic = new ImageIcon("cancel.png");
+    public ImageIcon sure = new ImageIcon("pay.png");
 	
-    public ImageIcon pictureHolder;
     public ImageIcon spinningCan = new ImageIcon("sodaSpin.gif");
 	
     //An int showing which soda has been selected, but not confirmed
@@ -99,18 +94,14 @@ public class VendingGUI extends JPanel implements ActionListener
 		
 	//Initialize all the confirmation screen arrays
 	sodaOption = new JLabel[13];
-	yesArray = new JButton[13];
-	noArray = new JButton[13];
+	cancelArray = new JButton[13];
 	confirmArray = new JPanel[13];
-	holder = new JPanel[13];
-	youSure = new JLabel[13];
+	pay = new JLabel[13];
 
 	can = Soda.EMPTY;
 
 	sodaExists = 0;
 		
-	pictureHolder = new ImageIcon();
-
 	//Initialize all the buttons
 	b1 = new JButton(mountainDew);
 	b1.setBorderPainted(false);
@@ -210,15 +201,10 @@ public class VendingGUI extends JPanel implements ActionListener
 	//Setting up all the confirmation screens
 	for(int i = 0; i < 13; i++)
 	    {
-		yesArray[i] = new JButton(yesPic);
-		yesArray[i].setBorderPainted(false);
-		yesArray[i].setContentAreaFilled(false);
-		yesArray[i].addActionListener(this);
-		
-		noArray[i] = new JButton(noPic);
-		noArray[i].setBorderPainted(false);
-		noArray[i].setContentAreaFilled(false);
-		noArray[i].addActionListener(this);
+		cancelArray[i] = new JButton(cancelPic);
+		cancelArray[i].setBorderPainted(false);
+		cancelArray[i].setContentAreaFilled(false);
+		cancelArray[i].addActionListener(this);
 			
 		switch(i)
 		    {
@@ -274,20 +260,15 @@ public class VendingGUI extends JPanel implements ActionListener
 			sodaOption[i] = new JLabel(dewDiet);			
 			break;
 		    }
-		youSure[i] = new JLabel(sure);
-			
-		holder[i] = new JPanel();
+		pay[i] = new JLabel(sure);
 			
 		confirmArray[i] = new JPanel();
 		confirmArray[i].setLayout(new BorderLayout());
 			
-		holder[i].add(yesArray[i]);
-		holder[i].add(sodaOption[i]);
-		holder[i].add(noArray[i]);
-
 		//Add the combined attributes to the confirmArray
-		confirmArray[i].add(youSure[i], BorderLayout.NORTH);
-		confirmArray[i].add(holder[i], BorderLayout.CENTER);
+		confirmArray[i].add(pay[i], BorderLayout.NORTH);
+		confirmArray[i].add(sodaOption[i], BorderLayout.CENTER);
+		confirmArray[i].add(cancelArray[i], BorderLayout.SOUTH);
 	    }
 
 	//Create the cards
@@ -496,11 +477,10 @@ public class VendingGUI extends JPanel implements ActionListener
 		cards.show(VendingGUI.this, "11");
 		sodaType = 12;
 	    }
-	else if(((JButton)e.getSource()).equals(dietDew))
-	    {
-		cards.show(VendingGUI.this, "12");
-		sodaType = 13;
-	    }
+	else if(((JButton)e.getSource()).equals(dietDew)) {
+	    cards.show(VendingGUI.this, "12");
+	    sodaType = 13;
+	}
 	else if(((JButton)e.getSource()).equals(masterBrisk))
 	    cards.show(VendingGUI.this, "SecondCard");
 	else if(((JButton)e.getSource()).equals(home))
@@ -513,101 +493,24 @@ public class VendingGUI extends JPanel implements ActionListener
 	    cards.show(VendingGUI.this, "ThirdCard");
 	else if(((JButton)e.getSource()).equals(masterDew))
 	    cards.show(VendingGUI.this, "FourthCard");
-	else if(((JButton)e.getSource()).equals(noArray[0]) ||
-		((JButton)e.getSource()).equals(noArray[1]) ||
-		((JButton)e.getSource()).equals(noArray[2]) ||
-		((JButton)e.getSource()).equals(noArray[3]) ||
-		((JButton)e.getSource()).equals(noArray[4]) ||
-		((JButton)e.getSource()).equals(noArray[5]) ||
-		((JButton)e.getSource()).equals(noArray[6]) ||
-		((JButton)e.getSource()).equals(noArray[7]) ||
-		((JButton)e.getSource()).equals(noArray[8]) ||
-		((JButton)e.getSource()).equals(noArray[9]) ||
-		((JButton)e.getSource()).equals(noArray[10]) ||
-		((JButton)e.getSource()).equals(noArray[11]) ||
-		((JButton)e.getSource()).equals(noArray[12])) {
+	else if(((JButton)e.getSource()).equals(cancelArray[0]) ||
+		((JButton)e.getSource()).equals(cancelArray[1]) ||
+		((JButton)e.getSource()).equals(cancelArray[2]) ||
+		((JButton)e.getSource()).equals(cancelArray[3]) ||
+		((JButton)e.getSource()).equals(cancelArray[4]) ||
+		((JButton)e.getSource()).equals(cancelArray[5]) ||
+		((JButton)e.getSource()).equals(cancelArray[6]) ||
+		((JButton)e.getSource()).equals(cancelArray[7]) ||
+		((JButton)e.getSource()).equals(cancelArray[8]) ||
+		((JButton)e.getSource()).equals(cancelArray[9]) ||
+		((JButton)e.getSource()).equals(cancelArray[10]) ||
+		((JButton)e.getSource()).equals(cancelArray[11]) ||
+		((JButton)e.getSource()).equals(cancelArray[12])) {
 	    sodaType = 0;
 	    cards.show(VendingGUI.this, "FirstCard");
 	}
-	    
-	else if(((JButton)e.getSource()).equals(yesArray[0]) ||
-		((JButton)e.getSource()).equals(yesArray[1]) ||
-		((JButton)e.getSource()).equals(yesArray[2]) ||
-		((JButton)e.getSource()).equals(yesArray[3]) ||
-		((JButton)e.getSource()).equals(yesArray[4]) ||
-		((JButton)e.getSource()).equals(yesArray[5]) ||
-		((JButton)e.getSource()).equals(yesArray[6]) ||
-		((JButton)e.getSource()).equals(yesArray[7]) ||
-		((JButton)e.getSource()).equals(yesArray[8]) ||
-		((JButton)e.getSource()).equals(yesArray[9]) ||
-		((JButton)e.getSource()).equals(yesArray[10]) ||
-		((JButton)e.getSource()).equals(yesArray[11]) ||
-		((JButton)e.getSource()).equals(yesArray[12])) {
-	    switch(sodaType)
-		{
-		case 1:
-		    can = Soda.MOUNTAIN_DEW;
-		    break;
-				    
-		case 2:
-		    can = Soda.DIET_MUG;			
-		    break;
-				    
-		case 3:
-		    can = Soda.PEPSI;			
-		    break;
-				    
-		case 4:
-		    can = Soda.BRISK_LEMONADE;			
-		    break;
-				    
-		case 5:
-		    can = Soda.BRISK_RASPBERRY;			
-		    break;
-				    
-		case 6:
-		    can = Soda.DIET_CRUSH;			
-		    break;
-				    
-		case 7:
-		    can = Soda.MOUNTAIN_DEW_CODE_RED;			
-		    break;
-				    
-		case 8:
-		    can = Soda.DIET_PEPSI;			
-		    break;
-				    
-		case 9:
-		    can = Soda.BRISK_HALF_AND_HALF;			
-		    break;
-				    
-		case 10:
-		    can = Soda.BRISK_SWEET_TEA;			
-		    break;
-				
-		case 11:
-		    can = Soda.PEPSI_WILD_CHERRY;			
-		    break;
-				
-		case 12:
-		    can = Soda.PEPSI_MAX;			
-		    break;
-				
-		case 13:
-		    can = Soda.DIET_MOUNTAIN_DEW;			
-		    break;
-		default:
-		    break;
-		}
-	    
-	    (new Thread(new AnimatedRunner())).start();
-	    (new Thread(new WaitToReturn())).start();
-	    
-	    sodaType = 0;
+	else {
+	    System.out.println("Uncaught event. The event was: " + (JButton)e.getSource());
 	}
-	else
-	    {
-		System.out.println("Uncaught event. The event was: " + (JButton)e.getSource());
-	    }
     }
 }
