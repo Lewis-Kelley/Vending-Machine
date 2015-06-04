@@ -406,55 +406,239 @@ public class VendingGUI extends JPanel implements ActionListener {
      */
     public void actionPerformed(ActionEvent e)
     {
-	if(((JButton)e.getSource()).equals(mountainDewButton))
-	    {
+	if(((JButton)e.getSource()).equals(mountainDewButton)) {
+	    can = Soda.MOUNTAIN_DEW;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
+	    }
+	    
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "0");
-		//can = Soda.
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;
+	}
+	else if(((JButton)e.getSource()).equals(mugButton)) {
+	    can = Soda.DIET_MUG;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
 	    }
-	else if(((JButton)e.getSource()).equals(mugButton))
-	    {
+
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "1");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;
+	}
+	else if(((JButton)e.getSource()).equals(pepsiButton)) {
+	    can = Soda.PEPSI;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
 	    }
-	else if(((JButton)e.getSource()).equals(pepsiButton))
-	    {
+
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "2");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;
+	}
+	else if(((JButton)e.getSource()).equals(briskLemonadeButton)) {
+	    can = Soda.BRISK_LEMONADE;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
 	    }
-	else if(((JButton)e.getSource()).equals(briskLemonadeButton))
-	    {
+
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "3");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;
+	}
+	else if(((JButton)e.getSource()).equals(briskRaspberryButton)) {
+	    can = Soda.BRISK_RASPBERRY;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
 	    }
-	else if(((JButton)e.getSource()).equals(briskRaspberryButton))
-	    {
+
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "4");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;
+	}
+	else if(((JButton)e.getSource()).equals(crushButton)) {
+	    can = Soda.DIET_CRUSH;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
 	    }
-	else if(((JButton)e.getSource()).equals(crushButton))
-	    {
+
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "5");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;
+	}
+	else if(((JButton)e.getSource()).equals(codeRedButton)) {
+	    can = Soda.MOUNTAIN_DEW_CODE_RED;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
 	    }
-	else if(((JButton)e.getSource()).equals(codeRedButton))
-	    {
+
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "6");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;
+	}
+	else if(((JButton)e.getSource()).equals(dietPepsiButton)) {	
+	    can = Soda.DIET_PEPSI;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
 	    }
-	else if(((JButton)e.getSource()).equals(dietPepsiButton))
-	    {	
+
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "7");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;
+	}
+	else if(((JButton)e.getSource()).equals(briskHalfButton)) {
+	    can  = Soda. BRISK_HALF_AND_HALF;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
 	    }
-	else if(((JButton)e.getSource()).equals(briskHalfButton))
-	    {
+
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "8");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;	    
+	}
+	else if(((JButton)e.getSource()).equals(briskTeaButton)) {
+	    can = Soda.BRISK_SWEET_TEA;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
 	    }
-	else if(((JButton)e.getSource()).equals(briskTeaButton))
-	    {
+	    
+	    if(sodaExists == 1)
 		cards.show(VendingGUI.this, "9");
-	    }
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;
+	}
 	else if(((JButton)e.getSource()).equals(wildCherryButton)) {
-	    cards.show(VendingGUI.this, "10");
+	    can = Soda.PEPSI_WILD_CHERRY;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
+	    }
+	    
+	    if(sodaExists == 1)
+		cards.show(VendingGUI.this, "10");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;	    
 	}
 	else if(((JButton)e.getSource()).equals(pepsiMaxButton)) {
-	    cards.show(VendingGUI.this, "11");
+	    can  = Soda.PEPSI_MAX;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
+	    }
+
+	    if(sodaExists == 1)
+		cards.show(VendingGUI.this, "11");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;	    
 	}
 	else if(((JButton)e.getSource()).equals(dietDewButton)) {
-	    cards.show(VendingGUI.this, "12");
+	    can  = Soda.DIET_MOUNTAIN_DEW;
+
+	    while(sodaExists == 0) { //Wait for update from main
+		try {
+		    Thread.sleep(500);
+		} catch(InterruptedException error) {
+		    System.err.println(error);
+		}
+	    }
+	    
+	    if(sodaExists == 1)
+		cards.show(VendingGUI.this, "12");
+	    else
+		cards.show(VendingGUI.this, "NoSodaPanel");
+
+	    sodaExists = 0;	    
 	}
 	else if(((JButton)e.getSource()).equals(masterBriskButton))
 	    cards.show(VendingGUI.this, "BriskPanel");

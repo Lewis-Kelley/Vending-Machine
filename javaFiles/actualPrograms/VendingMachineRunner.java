@@ -8,19 +8,20 @@ import java.awt.Font;
 import javax.swing.plaf.FontUIResource;
 
 public class VendingMachineRunner {
-    public enum State { MENU, NO_SODA, PAYING, DELIVERING, DELIVERED, DISABLED };
+    public enum State { MENU, DELIVERING, DELIVERED, DISABLED };
 
     private State state;
     private Coordinate coord;
     private Inventory inv;
 
+    private Soda selCan;
+    
     private JFrame gui;
     private VendingGUI vGUI;
 
     /*	private BenSerialListener serial; */
 
     //TODO implement IO handler class
-    //TODO implement systems class
 
     public VendingMachineRunner()
     {
@@ -28,6 +29,8 @@ public class VendingMachineRunner {
 	coord = null;
 	inv = new Inventory(true);
 
+	selCan = null;
+	
 	Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 	gui = new JFrame();
 	gui.setSize(size);
@@ -49,12 +52,6 @@ public class VendingMachineRunner {
 	    case MENU:
 		vmr.menu();
 		break;
-	    case NO_SODA:
-		vmr.noSoda();
-		break;
-	    case PAYING:
-		vmr.paying();
-		break;
 	    case DELIVERING:
 		vmr.delivering();
 		break;
@@ -65,6 +62,7 @@ public class VendingMachineRunner {
 		vmr.disabled();
 		break;
 	    }
+	    
 	    try {
 		Thread.sleep(500);
 	    } catch(InterruptedException e) {
@@ -96,41 +94,22 @@ public class VendingMachineRunner {
     }
 
     /**
-     * Display menu screen.
-     * Ends when option selected or timeout is reached.
+     * Ends when option selected.
      * If timeout is reached, return to sleeping state.
      */
     private void menu() {
-	Soda holder = vGUI.getSoda();
+	selCan = vGUI.getSoda();
 	
-	if(!holder.equals(Soda.EMPTY)) {
-	    coord = inv.findSoda(holder);
+	if(!selCan.equals(Soda.EMPTY)) {
+	    System.out.println("Registered soda " + selCan);
 	    
-	    if(coord == null) {
-		state = State.NO_SODA;
+	    coord = inv.findSoda(selCan);
+	    
+	    if(coord == null)
 		vGUI.setFoundStatus((byte)-1);
-	    }
-	    else {
-		state = State.PAYING;
+	    else
 		vGUI.setFoundStatus((byte)1);
-	    }
 	}
-    }
-
-    /**
-     * Tell the vGUI to display the Out of Stock card, then return to menu.
-     */
-    private void noSoda() {
-	//TODO implement
-    }
-    
-    /**
-     * Continue showing the soda picture with a new confirm dialog while the customer pays.
-     * Waits for total price to be inserted and confirm button to be pressed,
-     * cancel button to be pressed, or for a certain amount of time to pass with no input.
-     */
-    private void paying() {
-	//TODO implement
     }
 
     /**
