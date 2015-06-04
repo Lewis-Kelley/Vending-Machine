@@ -14,13 +14,10 @@ import javax.swing.ImageIcon;
 import java.awt.Font; 
 import javax.swing.plaf.FontUIResource; 
 
-public class VendingGUI extends JPanel implements ActionListener
-{	
-    private class AnimatedRunner implements Runnable
-    {
-	public void run()
-	{
-	    cards.show(VendingGUI.this, "PayPanel");
+public class VendingGUI extends JPanel implements ActionListener {	
+    private class AnimatedRunner implements Runnable {
+	public void run() {
+	    cards.show(VendingGUI.this, "WaitPanel");
 	    spinningCan.getImage().flush();
 	}
     }
@@ -35,7 +32,7 @@ public class VendingGUI extends JPanel implements ActionListener
 		System.out.println("Problem waiting for gif to end.");
 	    }
 
-	    cards.show(VendingGUI.this, "FirstCard");
+	    cards.show(VendingGUI.this, "MenuPanel");
 	}
     }
 
@@ -46,29 +43,27 @@ public class VendingGUI extends JPanel implements ActionListener
     public JLabel flipLabel; //Holds the spinning can gif
     public JLabel noSodaLabel; //Holds the noSoda image
 	
-    public JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, masterBrisk, masterPepsi, home, home2, home3, wildCherryButton, pepsiMax, sweetTea, masterDew, dietDew; //All the various buttons used on each of the cards
+    public JButton mountainDewButton, mugButton, pepsiButton, briskLemonadeButton, briskRaspberryButton, crushButton, codeRedButton, dietPepsiButton, briskHalfButton, masterBriskButton, masterPepsiButton, briskHome, pepsiHome, dewHome, wildCherryButton, pepsiMaxButton, briskTeaButton, masterDewButton, dietDewButton; //All the various buttons used on each of the cards
 	
-    public JPanel cardOne, cardTwo, cardThree, cardFour, backPanel, payPanel, noSodaPanel; //The various cards.
+    public JPanel menuPanel, briskPanel, pepsiPanel, mountainDewPanel, waitPanel, noSodaPanel; //The various cards.
     
     public JLabel[] sodaOption = new JLabel[13]; //Holds the images for the soda icons on the confirm screen.
     public JButton[] cancelArray = new JButton[13]; //Holds the cancel buttons
-    public JPanel[] confirmArray = new JPanel[13]; //Holds the cancel, sodaOption, and pay $1 banners.
+    public JPanel[] payPanels = new JPanel[13]; //Holds the cancel, sodaOption, and pay $1 banners.
     public JLabel[] pay = new JLabel[13]; //The banner for the confirmation screen
 
-    public JLabel outOfStock; //Holds the out of stock image
-    
     //All the images in the program
     public ImageIcon mountainDew = new ImageIcon("mountainDew.png");
     public ImageIcon mug = new ImageIcon("mug.png");
     public ImageIcon pepsi = new ImageIcon("pepsi.png");
-    public ImageIcon brisk = new ImageIcon("lemonade.png");
+    public ImageIcon briskLemonade= new ImageIcon("lemonade.png");
     public ImageIcon briskRaspberry = new ImageIcon("raspberry.png");
     public ImageIcon briskHalf = new ImageIcon("half.png");
     public ImageIcon dietPepsi = new ImageIcon("dietPepsi.png");
     public ImageIcon codeRed = new ImageIcon("codeRed.png");
     public ImageIcon crush = new ImageIcon("crush.png");
     public ImageIcon back = new ImageIcon("back.png");
-    public ImageIcon b = new ImageIcon("masterBrisk.png");
+    public ImageIcon brisk = new ImageIcon("masterBrisk.png");
     public ImageIcon cherry = new ImageIcon("wildCherry.png");
     public ImageIcon max = new ImageIcon("max.png");
     public ImageIcon genericBrisk = new ImageIcon("genericBrisk.png");
@@ -97,7 +92,7 @@ public class VendingGUI extends JPanel implements ActionListener
 	//Initialize all the confirmation screen arrays
 	sodaOption = new JLabel[13];
 	cancelArray = new JButton[13];
-	confirmArray = new JPanel[13];
+	payPanels = new JPanel[13];
 	pay = new JLabel[13];
 
 	can = Soda.EMPTY;
@@ -105,100 +100,100 @@ public class VendingGUI extends JPanel implements ActionListener
 	sodaExists = 0;
 		
 	//Initialize all the buttons
-	b1 = new JButton(mountainDew);
-	b1.setBorderPainted(false);
-	b1.setContentAreaFilled(false);
-	b1.addActionListener(this);
+	mountainDewButton = new JButton(mountainDew);
+	mountainDewButton.setBorderPainted(false);
+	mountainDewButton.setContentAreaFilled(false);
+	mountainDewButton.addActionListener(this);
 
-	b2 = new JButton(mug);
-	b2.setBorderPainted(false);
-	b2.setContentAreaFilled(false);
-	b2.addActionListener(this);
+	mugButton = new JButton(mug);
+	mugButton.setBorderPainted(false);
+	mugButton.setContentAreaFilled(false);
+	mugButton.addActionListener(this);
 		 
-	b3 = new JButton(pepsi);
-	b3.setBorderPainted(false);
-	b3.setContentAreaFilled(false);
-	b3.addActionListener(this);
+	pepsiButton = new JButton(pepsi);
+	pepsiButton.setBorderPainted(false);
+	pepsiButton.setContentAreaFilled(false);
+	pepsiButton.addActionListener(this);
 		
-	b4 = new JButton(brisk);
-	b4.setBorderPainted(false);
-	b4.setContentAreaFilled(false);
-	b4.addActionListener(this);
+	briskLemonadeButton = new JButton(briskLemonade);
+	briskLemonadeButton.setBorderPainted(false);
+	briskLemonadeButton.setContentAreaFilled(false);
+	briskLemonadeButton.addActionListener(this);
 		
-	b5 = new JButton(briskRaspberry);
-	b5.setBorderPainted(false);
-	b5.setContentAreaFilled(false);
-	b5.addActionListener(this);
+	briskRaspberryButton = new JButton(briskRaspberry);
+	briskRaspberryButton.setBorderPainted(false);
+	briskRaspberryButton.setContentAreaFilled(false);
+	briskRaspberryButton.addActionListener(this);
 
-	b6 = new JButton(crush);
-	b6.setBorderPainted(false);
-	b6.setContentAreaFilled(false);
-	b6.addActionListener(this);
+	crushButton = new JButton(crush);
+	crushButton.setBorderPainted(false);
+	crushButton.setContentAreaFilled(false);
+	crushButton.addActionListener(this);
 		 
-	b7 = new JButton(codeRed);
-	b7.setBorderPainted(false);
-	b7.setContentAreaFilled(false);
-	b7.addActionListener(this);
+	codeRedButton = new JButton(codeRed);
+	codeRedButton.setBorderPainted(false);
+	codeRedButton.setContentAreaFilled(false);
+	codeRedButton.addActionListener(this);
 		
-	b8 = new JButton(dietPepsi);
-	b8.setBorderPainted(false);
-	b8.setContentAreaFilled(false);
-	b8.addActionListener(this);
+	dietPepsiButton = new JButton(dietPepsi);
+	dietPepsiButton.setBorderPainted(false);
+	dietPepsiButton.setContentAreaFilled(false);
+	dietPepsiButton.addActionListener(this);
 		
-	b9 = new JButton(briskHalf);
-	b9.setBorderPainted(false);
-	b9.setContentAreaFilled(false);
-	b9.addActionListener(this);
+	briskHalfButton = new JButton(briskHalf);
+	briskHalfButton.setBorderPainted(false);
+	briskHalfButton.setContentAreaFilled(false);
+	briskHalfButton.addActionListener(this);
 		
-	sweetTea = new JButton(b);
-	sweetTea.setBorderPainted(false);
-	sweetTea.setContentAreaFilled(false);
-	sweetTea.addActionListener(this);
+	briskTeaButton = new JButton(brisk);
+	briskTeaButton.setBorderPainted(false);
+	briskTeaButton.setContentAreaFilled(false);
+	briskTeaButton.addActionListener(this);
 		
 	wildCherryButton = new JButton(cherry);
 	wildCherryButton.setBorderPainted(false);
 	wildCherryButton.setContentAreaFilled(false);
 	wildCherryButton.addActionListener(this);
 	
-	pepsiMax = new JButton(max);
-	pepsiMax.setBorderPainted(false);
-	pepsiMax.setContentAreaFilled(false);
-	pepsiMax.addActionListener(this);
+	pepsiMaxButton = new JButton(max);
+	pepsiMaxButton.setBorderPainted(false);
+	pepsiMaxButton.setContentAreaFilled(false);
+	pepsiMaxButton.addActionListener(this);
 		
-	dietDew = new JButton(dewDiet);
-	dietDew.setBorderPainted(false);
-	dietDew.setContentAreaFilled(false);
-	dietDew.addActionListener(this);
+	dietDewButton = new JButton(dewDiet);
+	dietDewButton.setBorderPainted(false);
+	dietDewButton.setContentAreaFilled(false);
+	dietDewButton.addActionListener(this);
 		
-	masterBrisk = new JButton(genericBrisk);
-	masterBrisk.setBorderPainted(false);
-	masterBrisk.setContentAreaFilled(false);
-	masterBrisk.addActionListener(this);
+	masterBriskButton = new JButton(genericBrisk);
+	masterBriskButton.setBorderPainted(false);
+	masterBriskButton.setContentAreaFilled(false);
+	masterBriskButton.addActionListener(this);
 	
-	masterPepsi = new JButton(p);
-	masterPepsi.setBorderPainted(false);
-	masterPepsi.setContentAreaFilled(false);
-	masterPepsi.addActionListener(this);
+	masterPepsiButton = new JButton(p);
+	masterPepsiButton.setBorderPainted(false);
+	masterPepsiButton.setContentAreaFilled(false);
+	masterPepsiButton.addActionListener(this);
 		
-	masterDew = new JButton(mountainDew);
-	masterDew.setBorderPainted(false);
-	masterDew.setContentAreaFilled(false);
-	masterDew.addActionListener(this);
+	masterDewButton = new JButton(mountainDew);
+	masterDewButton.setBorderPainted(false);
+	masterDewButton.setContentAreaFilled(false);
+	masterDewButton.addActionListener(this);
 		
-	home = new JButton(back);
-	home.setBorderPainted(false);
-	home.setContentAreaFilled(false);
-	home.addActionListener(this);
+	briskHome = new JButton(back);
+	briskHome.setBorderPainted(false);
+	briskHome.setContentAreaFilled(false);
+	briskHome.addActionListener(this);
 		
-	home2 = new JButton(back);
-	home2.setBorderPainted(false);
-	home2.setContentAreaFilled(false);
-	home2.addActionListener(this);
+	pepsiHome = new JButton(back);
+	pepsiHome.setBorderPainted(false);
+	pepsiHome.setContentAreaFilled(false);
+	pepsiHome.addActionListener(this);
 		
-	home3 = new JButton(back);
-	home3.setBorderPainted(false);
-	home3.setContentAreaFilled(false);
-	home3.addActionListener(this);
+	dewHome = new JButton(back);
+	dewHome.setBorderPainted(false);
+	dewHome.setContentAreaFilled(false);
+	dewHome.addActionListener(this);
 
 	//Setting up all the payment screens
 	for(int i = 0; i < 13; i++) {
@@ -221,7 +216,7 @@ public class VendingGUI extends JPanel implements ActionListener
 		break;
 				
 	    case 3:
-		sodaOption[i] = new JLabel(brisk);			
+		sodaOption[i] = new JLabel(briskLemonade);			
 		break;
 				
 	    case 4:
@@ -245,7 +240,7 @@ public class VendingGUI extends JPanel implements ActionListener
 		break;
 				
 	    case 9:
-		sodaOption[i] = new JLabel(b);			
+		sodaOption[i] = new JLabel(brisk);			
 		break;
 				
 	    case 10:
@@ -262,35 +257,35 @@ public class VendingGUI extends JPanel implements ActionListener
 	    }
 	    pay[i] = new JLabel(sure);
 			
-	    confirmArray[i] = new JPanel();
-	    confirmArray[i].setLayout(new BorderLayout());
+	    payPanels[i] = new JPanel();
+	    payPanels[i].setLayout(new BorderLayout());
 			
-	    //Add the combined attributes to the confirmArray
-	    confirmArray[i].add(pay[i], BorderLayout.NORTH);
-	    confirmArray[i].add(sodaOption[i], BorderLayout.CENTER);
-	    confirmArray[i].add(cancelArray[i], BorderLayout.SOUTH);
+	    //Add the combined attributes to the payPanels
+	    payPanels[i].add(pay[i], BorderLayout.NORTH);
+	    payPanels[i].add(sodaOption[i], BorderLayout.CENTER);
+	    payPanels[i].add(cancelArray[i], BorderLayout.SOUTH);
 	}
 
 	//Create the cards
-	cardOne = new JPanel();
-	cardOne.setLayout(new FlowLayout());
-	cardOne.setBackground(Color.white);
+	menuPanel = new JPanel();
+	menuPanel.setLayout(new FlowLayout());
+	menuPanel.setBackground(Color.white);
 	
-	cardTwo = new JPanel();
-	cardTwo.setLayout(new FlowLayout());
-	cardTwo.setBackground(Color.white);
+	briskPanel = new JPanel();
+	briskPanel.setLayout(new FlowLayout());
+	briskPanel.setBackground(Color.white);
 	
-	cardThree = new JPanel();
-	cardThree.setLayout(new FlowLayout());
-	cardThree.setBackground(Color.white);
+	pepsiPanel = new JPanel();
+	pepsiPanel.setLayout(new FlowLayout());
+	pepsiPanel.setBackground(Color.white);
 	
-	cardFour = new JPanel();
-	cardFour.setLayout(new FlowLayout());
-	cardFour.setBackground(Color.white);
+	mountainDewPanel = new JPanel();
+	mountainDewPanel.setLayout(new FlowLayout());
+	mountainDewPanel.setBackground(Color.white);
 		
-	payPanel = new JPanel();
-	payPanel.setLayout(new FlowLayout());
-	payPanel.setBackground(Color.white);
+	waitPanel = new JPanel();
+	waitPanel.setLayout(new FlowLayout());
+	waitPanel.setBackground(Color.white);
 
 	noSodaPanel = new JPanel();
 	noSodaPanel.setLayout(new BorderLayout());
@@ -302,47 +297,43 @@ public class VendingGUI extends JPanel implements ActionListener
 	this.setLayout(cards);
 	this.setBackground(Color.blue);
 		
-	this.add(cardOne, "FirstCard");
-	this.add(cardTwo, "SecondCard");
-	this.add(cardThree, "ThirdCard");
-	this.add(cardFour, "FourthCard");
-	this.add(payPanel, "PayPanel");
+	this.add(menuPanel, "MenuPanel");
+	this.add(briskPanel, "BriskPanel");
+	this.add(pepsiPanel, "PepsiPanel");
+	this.add(mountainDewPanel, "MountainDewPanel");
+	this.add(waitPanel, "WaitPanel");
 	this.add(noSodaPanel, "NoSodaPanel");
 
-	for(int j = 0; j < 13; j++) {
-	    this.add(confirmArray[j], j + "");
-	}
+	for(int j = 0; j < 13; j++)
+	    this.add(payPanels[j], j + "");
 		
 	//Add all the buttons to all the cards
-	cards.show(this, "FirstCard");		
+	cards.show(this, "MenuPanel");		
 		
-	cardTwo.add(home);
-	cardTwo.add(b4);
-	cardTwo.add(b5);
-	cardTwo.add(b9);
+	briskPanel.add(briskHome);
+	briskPanel.add(briskLemonadeButton);
+	briskPanel.add(briskRaspberryButton);
+	briskPanel.add(briskHalfButton);			
+	briskPanel.add(briskTeaButton);
 		
-	cardTwo.add(pepsiMax);
+	pepsiPanel.add(pepsiHome);
+	pepsiPanel.add(pepsiButton);
+	pepsiPanel.add(dietPepsiButton);
+	pepsiPanel.add(wildCherryButton);
+	pepsiPanel.add(pepsiMaxButton);
 		
-	cardTwo.add(sweetTea);
+	mountainDewPanel.add(dewHome);
+	mountainDewPanel.add(mountainDewButton);
+	mountainDewPanel.add(codeRedButton);
+	mountainDewPanel.add(dietDewButton);
 		
-	cardThree.add(home2);
-	cardThree.add(b3);
-	cardThree.add(b8);
-	cardThree.add(wildCherryButton);
-	cardThree.add(pepsiMax);
+	menuPanel.add(mugButton);
+	menuPanel.add(crushButton);
+	menuPanel.add(masterPepsiButton);
+	menuPanel.add(masterBriskButton);
+	menuPanel.add(masterDewButton);
 		
-	cardFour.add(home3);
-	cardFour.add(b1);
-	cardFour.add(b7);
-	cardFour.add(dietDew);
-		
-	cardOne.add(b2);
-	cardOne.add(b6);
-	cardOne.add(masterPepsi);
-	cardOne.add(masterBrisk);
-	cardOne.add(masterDew);
-		
-	payPanel.add(flipLabel, BorderLayout.CENTER);	
+	waitPanel.add(flipLabel, BorderLayout.CENTER);	
 
 	noSodaPanel.add(noSodaLabel, BorderLayout.CENTER);
     }
@@ -415,68 +406,68 @@ public class VendingGUI extends JPanel implements ActionListener
      */
     public void actionPerformed(ActionEvent e)
     {
-	if(((JButton)e.getSource()).equals(b1))
+	if(((JButton)e.getSource()).equals(mountainDewButton))
 	    {
 		cards.show(VendingGUI.this, "0");
 		//can = Soda.
 	    }
-	else if(((JButton)e.getSource()).equals(b2))
+	else if(((JButton)e.getSource()).equals(mugButton))
 	    {
 		cards.show(VendingGUI.this, "1");
 	    }
-	else if(((JButton)e.getSource()).equals(b3))
+	else if(((JButton)e.getSource()).equals(pepsiButton))
 	    {
 		cards.show(VendingGUI.this, "2");
 	    }
-	else if(((JButton)e.getSource()).equals(b4))
+	else if(((JButton)e.getSource()).equals(briskLemonadeButton))
 	    {
 		cards.show(VendingGUI.this, "3");
 	    }
-	else if(((JButton)e.getSource()).equals(b5))
+	else if(((JButton)e.getSource()).equals(briskRaspberryButton))
 	    {
 		cards.show(VendingGUI.this, "4");
 	    }
-	else if(((JButton)e.getSource()).equals(b6))
+	else if(((JButton)e.getSource()).equals(crushButton))
 	    {
 		cards.show(VendingGUI.this, "5");
 	    }
-	else if(((JButton)e.getSource()).equals(b7))
+	else if(((JButton)e.getSource()).equals(codeRedButton))
 	    {
 		cards.show(VendingGUI.this, "6");
 	    }
-	else if(((JButton)e.getSource()).equals(b8))
+	else if(((JButton)e.getSource()).equals(dietPepsiButton))
 	    {	
 		cards.show(VendingGUI.this, "7");
 	    }
-	else if(((JButton)e.getSource()).equals(b9))
+	else if(((JButton)e.getSource()).equals(briskHalfButton))
 	    {
 		cards.show(VendingGUI.this, "8");
 	    }
-	else if(((JButton)e.getSource()).equals(sweetTea))
+	else if(((JButton)e.getSource()).equals(briskTeaButton))
 	    {
 		cards.show(VendingGUI.this, "9");
 	    }
 	else if(((JButton)e.getSource()).equals(wildCherryButton)) {
 	    cards.show(VendingGUI.this, "10");
 	}
-	else if(((JButton)e.getSource()).equals(pepsiMax)) {
+	else if(((JButton)e.getSource()).equals(pepsiMaxButton)) {
 	    cards.show(VendingGUI.this, "11");
 	}
-	else if(((JButton)e.getSource()).equals(dietDew)) {
+	else if(((JButton)e.getSource()).equals(dietDewButton)) {
 	    cards.show(VendingGUI.this, "12");
 	}
-	else if(((JButton)e.getSource()).equals(masterBrisk))
-	    cards.show(VendingGUI.this, "SecondCard");
-	else if(((JButton)e.getSource()).equals(home))
-	    cards.show(VendingGUI.this, "FirstCard");
-	else if(((JButton)e.getSource()).equals(home2))
-	    cards.show(VendingGUI.this, "FirstCard");
-	else if(((JButton)e.getSource()).equals(home3))
-	    cards.show(VendingGUI.this, "FirstCard");
-	else if(((JButton)e.getSource()).equals(masterPepsi))
-	    cards.show(VendingGUI.this, "ThirdCard");
-	else if(((JButton)e.getSource()).equals(masterDew))
-	    cards.show(VendingGUI.this, "FourthCard");
+	else if(((JButton)e.getSource()).equals(masterBriskButton))
+	    cards.show(VendingGUI.this, "BriskPanel");
+	else if(((JButton)e.getSource()).equals(briskHome))
+	    cards.show(VendingGUI.this, "MenuPanel");
+	else if(((JButton)e.getSource()).equals(pepsiHome))
+	    cards.show(VendingGUI.this, "MenuPanel");
+	else if(((JButton)e.getSource()).equals(dewHome))
+	    cards.show(VendingGUI.this, "MenuPanel");
+	else if(((JButton)e.getSource()).equals(masterPepsiButton))
+	    cards.show(VendingGUI.this, "PepsiPanel");
+	else if(((JButton)e.getSource()).equals(masterDewButton))
+	    cards.show(VendingGUI.this, "MountainDewPanel");
 	else if(((JButton)e.getSource()).equals(cancelArray[0]) ||
 		((JButton)e.getSource()).equals(cancelArray[1]) ||
 		((JButton)e.getSource()).equals(cancelArray[2]) ||
@@ -490,7 +481,7 @@ public class VendingGUI extends JPanel implements ActionListener
 		((JButton)e.getSource()).equals(cancelArray[10]) ||
 		((JButton)e.getSource()).equals(cancelArray[11]) ||
 		((JButton)e.getSource()).equals(cancelArray[12])) {
-	    cards.show(VendingGUI.this, "FirstCard");
+	    cards.show(VendingGUI.this, "MenuPanel");
 	}
 	else {
 	    System.out.println("Uncaught event. The event was: " + (JButton)e.getSource());
