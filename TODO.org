@@ -1,8 +1,8 @@
 * Software
 ** Internals
-*** TODO Main [1/5]
+*** TODO Main [2/5]
     - [X] Implement Inventory
-    - [ ] Implement GUI
+    - [X] Implement GUI
     - [ ] Implement communications to arduino
     - [ ] Create main loop
     - [ ] Implement money machine communications
@@ -27,9 +27,17 @@
     - [ ] Confirm soda list
 
 
-*** TODO Communications [0/2]
-    - [ ] Send coordinates to Arduino
-    - [ ] Arduino sends finished flag
+*** TODO Communications [1/3]
+    - [X] Establish communications
+    - [ ] Implement all necessary communications from Arduino to Computer
+      - [ ] Received money
+      - [ ] Finished delivery
+      - [ ] Error
+    - [ ] Implement all necessary communications from Computer to Arduino
+      - [ ] Accept money
+      - [ ] Stop accepting money
+      - [ ] Coordinates
+      - [ ] Interrupt
       
 
 ** Hardware interactions
@@ -73,7 +81,7 @@
 
 *** TODO Assembly [2/5]
    - [X] Wire steppers
-   - [X] Wire limit switch
+   - [X] Wire limit switches
    - [ ] Wire arduino
    - [ ] Wire touchscreen
    - [ ] Wire servos
