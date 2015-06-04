@@ -76,7 +76,8 @@ public class VendingGUI extends JPanel implements ActionListener {
     public ImageIcon spinningCan = new ImageIcon("sodaSpin.gif");
 	
     private byte sodaExists = 0; //0 = no input, 1 = does exist, -1 = does not exist
-	
+    private boolean needMoney;
+    
     public void setUp()
     {
 	this.setPreferredSize(new Dimension(1680, 1050));
@@ -397,8 +398,15 @@ public class VendingGUI extends JPanel implements ActionListener {
 	return retVal;
     }
 
+    /**
+     * Two methods for main to use to communicate.
+     */
     public void setFoundStatus(byte status) {
 	sodaExists = status;
+    }
+
+    public boolean getMoneyStatus() {
+	return needMoney;
     }
     
     /**
@@ -417,9 +425,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 	    
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "0");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
@@ -435,9 +444,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "1");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
@@ -453,9 +463,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "2");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
@@ -471,9 +482,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "3");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
@@ -489,9 +501,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "4");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
@@ -507,9 +520,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "5");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
@@ -525,9 +539,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "6");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
@@ -543,9 +558,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "7");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
@@ -561,9 +577,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "8");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;	    
@@ -579,9 +596,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 	    
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "9");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
@@ -597,9 +615,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 	    
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "10");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;	    
@@ -615,9 +634,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "11");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;	    
@@ -633,9 +653,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 		}
 	    }
 	    
-	    if(sodaExists == 1)
+	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "12");
-	    else
+		needMoney = true;
+	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;	    
@@ -666,6 +687,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		((JButton)e.getSource()).equals(cancelArray[11]) ||
 		((JButton)e.getSource()).equals(cancelArray[12])) {
 	    cards.show(VendingGUI.this, "MenuPanel");
+	    needMoney = false;
 	}
 	else {
 	    System.out.println("Uncaught event. The event was: " + (JButton)e.getSource());

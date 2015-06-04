@@ -1,12 +1,21 @@
 #include <Stepper.h>
 #include <Servo.h>
 
+const int BUF_SIZE 256
+    
 const int STEPPER_MAIN = 9;
 const int STEPPER_DIR  = 8;
 
+const int MONEY_HOLDER_SIZE = 10;
+
 const int BACK_LIM_SWITCH = 2;
 const int FRONT_LIM_SWITCH = 3;
-const int MONEY_MCH = 4;
+const int MONEY_MCH_OUTPUT = 4;
+const int MONEY_MCH_INPUT = 5;
+
+char buffer[BUF_SIZE]; //Holds messsages from the computer
+int bufLen;
+int sentString;
 
 Servo center;
 Servo middle;
@@ -20,10 +29,8 @@ const int brakeB = 8;
 const int dirA = 12;
 const int dirB = 13;
 
-int x = 0;
-
-int holder[10];
-
+int moneyHolder[MONEY_HOLDER_SIZE];
+bool acceptMoney;
 /**
  * Called once to set everything up.
  */
@@ -39,18 +46,65 @@ void setup() {
     digitalWrite(brakeA, LOW);
     digitalWrite(brakeB, LOW);
 
+    pinMode(MONEY_MCH_OUTPUT, INPUT);
+    pinMode(MONEY_MCH_INPUT, OUTPUT);
+
     // initialize the serial port:
     Serial.begin(9600);
 
     center.attach(9);
     middle.attach(10);
     far.attach(11);
+
+    accpetMoney = false;
 }
 
 /**
  * Called every tick. Place a delay if need be.
  */
 void loop() {
+    if(acceptMoney) {
+	digitalWrite(MONEY_MCH_OUTPUT, HIGH);
+	checkForMoney();
+    } else
+	digitalWrite(MONEY_MCH_INPUT, LOW);
+}
+
+/**
+ * Handles reading from serial.
+ */
+void serialEvent() {
+    char c;
+    while (Serial.available() && buf_len < BUF_SIZE) {
+	c = (char)Serial.read();
+	if (c == (char)'q') {
+	    sent_string = 1;
+	    Serial.println("String: \"" + String(buffer) + "\"");
+	    return;
+	}
+	buffer[buf_len++] = c;
+    }
+}
+
+/**
+ * Sends string back to the computer.
+ */
+void sendString(String s) {
+    Serial.println(s);
+}
+
+
+/**
+ * Checks for money to be added.
+ * If money is added, it sends that to main and changes acceptMoney to false.
+ */
+void checkForMoney() {
+    updateHolder();
+    if(sumHolder() < 7) {
+	resetHolder();
+	Serial.println("GMNY");
+	needMoney = false;
+    }
 }
 
 /**
@@ -74,10 +128,10 @@ void waitForMoney() {
  * the current sensor value.
  */
 void updateHolder() {
-    for(short i = 9; i > 0; i--)
-	holder[i] = holder[i - 1];
+    for(short i = MONEY_HOLDER_SIZE - 1; i > 0; i--)
+	moneyHolder[i] = moneyHolder[i - 1];
   
-    holder[0] = digitalRead(MONEY_MCH);
+    moneyHolder[0] = digitalRead(MONEY_MCH);
 }
 
 /**
@@ -87,7 +141,7 @@ short  sumHolder() {
     short sum = 0;
     
     for(short i = 0; i < 10; i++)
-	sum += holder[i];
+	sum += moneyHolder[i];
 
     return sum;
 }

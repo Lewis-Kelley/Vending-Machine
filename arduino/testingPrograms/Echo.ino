@@ -11,8 +11,7 @@ void setup() {
 void loop() {
 }
 
-void serialEvent()
-{
+void serialEvent() {
     char c;
     while (Serial.available() && buf_len < BUF_SIZE) {
 	c = (char)Serial.read();

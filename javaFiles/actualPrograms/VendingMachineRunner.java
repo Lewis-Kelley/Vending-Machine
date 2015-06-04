@@ -19,7 +19,7 @@ public class VendingMachineRunner {
     private JFrame gui;
     private VendingGUI vGUI;
 
-    /*	private BenSerialListener serial; */
+    private BenSerialListener serial;
 
     //TODO implement IO handler class
 
@@ -41,7 +41,12 @@ public class VendingMachineRunner {
 	gui.add(vGUI);
 	gui.pack();
 	gui.setVisible(true);
-	/*		serial = new BenSerialListener("/dev/ttyACM0"); */
+
+	try {
+	    serial = new BenSerialListener("/dev/ttyACM0");
+	} catch(Exception e) {
+	    System.out.println("Couldn't create serial listener program");
+	}
     }
     
     public static void main(String[] args) {
@@ -87,13 +92,6 @@ public class VendingMachineRunner {
     }
     
     /**
-     * Display welcome screen and wait for touchscreen input.
-     */
-    private void sleeping() {
-	//TODO implement
-    }
-
-    /**
      * Ends when option selected.
      * If timeout is reached, return to sleeping state.
      */
@@ -101,8 +99,6 @@ public class VendingMachineRunner {
 	selCan = vGUI.getSoda();
 	
 	if(!selCan.equals(Soda.EMPTY)) {
-	    System.out.println("Registered soda " + selCan);
-	    
 	    coord = inv.findSoda(selCan);
 	    
 	    if(coord == null)
