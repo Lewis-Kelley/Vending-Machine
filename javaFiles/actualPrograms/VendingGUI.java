@@ -3,7 +3,6 @@
  * - Wait for payment to proceed to the wait screen.
  * - Create an "Out of stock" card
  * - Possibly create a "Disabled" card if we can detect an issue.
- * - Make it fullscreen
  */
 
 import java.awt.*;
@@ -30,14 +29,11 @@ public class VendingGUI extends JPanel implements ActionListener
     {
 	public void run()
 	{
-	    try
-		{
-		    Thread.sleep(10000);
-		}
-	    catch (Exception e)
-		{
-		    System.out.println("Problem waiting for gif to end.");
-		}
+	    try {
+		Thread.sleep(10000);
+	    } catch (Exception e) {
+		System.out.println("Problem waiting for gif to end.");
+	    }
 
 	    cards.show(VendingGUI.this, "FirstCard");
 	}
@@ -48,16 +44,19 @@ public class VendingGUI extends JPanel implements ActionListener
     public Soda can; //Holds the currently selected can after the user confirms. Set to EMPTY when no can has been confirmed.
 	
     public JLabel flipLabel; //Holds the spinning can gif
+    public JLabel noSodaLabel; //Holds the noSoda image
 	
     public JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, masterBrisk, masterPepsi, home, home2, home3, wildCherryButton, pepsiMax, sweetTea, masterDew, dietDew; //All the various buttons used on each of the cards
 	
-    public JPanel cardOne, cardTwo, cardThree, cardFour, backPanel, payPanel; //The various cards.
-	
+    public JPanel cardOne, cardTwo, cardThree, cardFour, backPanel, payPanel, noSodaPanel; //The various cards.
+    
     public JLabel[] sodaOption = new JLabel[13]; //Holds the images for the soda icons on the confirm screen.
     public JButton[] cancelArray = new JButton[13]; //Holds the cancel buttons
     public JPanel[] confirmArray = new JPanel[13]; //Holds the cancel, sodaOption, and pay $1 banners.
     public JLabel[] pay = new JLabel[13]; //The banner for the confirmation screen
-	
+
+    public JLabel outOfStock; //Holds the out of stock image
+    
     //All the images in the program
     public ImageIcon mountainDew = new ImageIcon("mountainDew.png");
     public ImageIcon mug = new ImageIcon("mug.png");
@@ -77,11 +76,12 @@ public class VendingGUI extends JPanel implements ActionListener
     public ImageIcon p = new ImageIcon("masterPepsi.png");
     public ImageIcon cancelPic = new ImageIcon("cancel.png");
     public ImageIcon sure = new ImageIcon("pay.png");
+    public ImageIcon noSoda = new ImageIcon("noSoda.png");
 	
     public ImageIcon spinningCan = new ImageIcon("sodaSpin.gif");
 	
     //An int showing which soda has been selected, but not confirmed
-    private int option, sodaType = 0;
+    private int option;
 
     private byte sodaExists = 0; //0 = no input, 1 = does exist, -1 = does not exist
 	
@@ -92,7 +92,11 @@ public class VendingGUI extends JPanel implements ActionListener
 	//Initialize flipLabel
 	flipLabel = new JLabel(spinningCan);
 	flipLabel.setIcon(spinningCan);
-		
+
+	//Initialize noSodaLabel
+	noSodaLabel = new JLabel(noSoda);
+	noSodaLabel.setIcon(noSoda);
+	
 	//Initialize all the confirmation screen arrays
 	sodaOption = new JLabel[13];
 	cancelArray = new JButton[13];
@@ -199,78 +203,76 @@ public class VendingGUI extends JPanel implements ActionListener
 	home3.setContentAreaFilled(false);
 	home3.addActionListener(this);
 
-	//Setting up all the confirmation screens
-	for(int i = 0; i < 13; i++)
-	    {
-		cancelArray[i] = new JButton(cancelPic);
-		cancelArray[i].setBorderPainted(false);
-		cancelArray[i].setContentAreaFilled(false);
-		cancelArray[i].addActionListener(this);
+	//Setting up all the payment screens
+	for(int i = 0; i < 13; i++) {
+	    cancelArray[i] = new JButton(cancelPic);
+	    cancelArray[i].setBorderPainted(false);
+	    cancelArray[i].setContentAreaFilled(false);
+	    cancelArray[i].addActionListener(this);
 			
-		switch(i)
-		    {
-		    case 0:
-			sodaOption[i] = new JLabel(mountainDew);
-			break;
+	    switch(i) {
+	    case 0:
+		sodaOption[i] = new JLabel(mountainDew);
+		break;
 				
-		    case 1:
-			sodaOption[i] = new JLabel(mug);			
-			break;
+	    case 1:
+		sodaOption[i] = new JLabel(mug);			
+		break;
 				
-		    case 2:
-			sodaOption[i] = new JLabel(pepsi);			
-			break;
+	    case 2:
+		sodaOption[i] = new JLabel(pepsi);			
+		break;
 				
-		    case 3:
-			sodaOption[i] = new JLabel(brisk);			
-			break;
+	    case 3:
+		sodaOption[i] = new JLabel(brisk);			
+		break;
 				
-		    case 4:
-			sodaOption[i] = new JLabel(briskRaspberry);		
-			break;
+	    case 4:
+		sodaOption[i] = new JLabel(briskRaspberry);		
+		break;
 				
-		    case 5:
-			sodaOption[i] = new JLabel(crush);			
-			break;
+	    case 5:
+		sodaOption[i] = new JLabel(crush);			
+		break;
 				
-		    case 6:
-			sodaOption[i] = new JLabel(codeRed);			
-			break;
+	    case 6:
+		sodaOption[i] = new JLabel(codeRed);			
+		break;
 				
-		    case 7:
-			sodaOption[i] = new JLabel(dietPepsi);			
-			break;
+	    case 7:
+		sodaOption[i] = new JLabel(dietPepsi);			
+		break;
 				
-		    case 8:
-			sodaOption[i] = new JLabel(briskHalf);			
-			break;
+	    case 8:
+		sodaOption[i] = new JLabel(briskHalf);			
+		break;
 				
-		    case 9:
-			sodaOption[i] = new JLabel(b);			
-			break;
+	    case 9:
+		sodaOption[i] = new JLabel(b);			
+		break;
 				
-		    case 10:
-			sodaOption[i] = new JLabel(cherry);		
-			break;
+	    case 10:
+		sodaOption[i] = new JLabel(cherry);		
+		break;
 				
-		    case 11:
-			sodaOption[i] = new JLabel(max);			
-			break;
+	    case 11:
+		sodaOption[i] = new JLabel(max);			
+		break;
 				
-		    case 12:
-			sodaOption[i] = new JLabel(dewDiet);			
-			break;
-		    }
-		pay[i] = new JLabel(sure);
-			
-		confirmArray[i] = new JPanel();
-		confirmArray[i].setLayout(new BorderLayout());
-			
-		//Add the combined attributes to the confirmArray
-		confirmArray[i].add(pay[i], BorderLayout.NORTH);
-		confirmArray[i].add(sodaOption[i], BorderLayout.CENTER);
-		confirmArray[i].add(cancelArray[i], BorderLayout.SOUTH);
+	    case 12:
+		sodaOption[i] = new JLabel(dewDiet);			
+		break;
 	    }
+	    pay[i] = new JLabel(sure);
+			
+	    confirmArray[i] = new JPanel();
+	    confirmArray[i].setLayout(new BorderLayout());
+			
+	    //Add the combined attributes to the confirmArray
+	    confirmArray[i].add(pay[i], BorderLayout.NORTH);
+	    confirmArray[i].add(sodaOption[i], BorderLayout.CENTER);
+	    confirmArray[i].add(cancelArray[i], BorderLayout.SOUTH);
+	}
 
 	//Create the cards
 	cardOne = new JPanel();
@@ -290,8 +292,12 @@ public class VendingGUI extends JPanel implements ActionListener
 	cardFour.setBackground(Color.white);
 		
 	payPanel = new JPanel();
-	payPanel.setLayout(new BorderLayout());
+	payPanel.setLayout(new FlowLayout());
 	payPanel.setBackground(Color.white);
+
+	noSodaPanel = new JPanel();
+	noSodaPanel.setLayout(new BorderLayout());
+	noSodaPanel.setBackground(Color.white);
 	
 	cards = new CardLayout();
 
@@ -304,12 +310,12 @@ public class VendingGUI extends JPanel implements ActionListener
 	this.add(cardThree, "ThirdCard");
 	this.add(cardFour, "FourthCard");
 	this.add(payPanel, "PayPanel");
+	this.add(noSodaPanel, "NoSodaPanel");
 
-	for(int j = 0; j < 13; j++)
-	    {
-		this.add(confirmArray[j], j + "");
-	    }
-
+	for(int j = 0; j < 13; j++) {
+	    this.add(confirmArray[j], j + "");
+	}
+		
 	//Add all the buttons to all the cards
 	cards.show(this, "FirstCard");		
 		
@@ -337,17 +343,11 @@ public class VendingGUI extends JPanel implements ActionListener
 	cardOne.add(b6);
 	cardOne.add(masterPepsi);
 	cardOne.add(masterBrisk);
-	cardOne.add(masterDew);	
+	cardOne.add(masterDew);
 		
 	payPanel.add(flipLabel, BorderLayout.CENTER);	
-    }
 
-    /**
-     * Returns the current value of sodaType.
-     */
-    public int getSodaType()
-    {
-	return sodaType;
+	noSodaPanel.add(noSodaLabel, BorderLayout.CENTER);
     }
 
     /**
@@ -421,66 +421,52 @@ public class VendingGUI extends JPanel implements ActionListener
 	if(((JButton)e.getSource()).equals(b1))
 	    {
 		cards.show(VendingGUI.this, "0");
-		sodaType = 1;
+		//can = Soda.
 	    }
 	else if(((JButton)e.getSource()).equals(b2))
 	    {
 		cards.show(VendingGUI.this, "1");
-		sodaType = 2;
 	    }
 	else if(((JButton)e.getSource()).equals(b3))
 	    {
 		cards.show(VendingGUI.this, "2");
-		sodaType = 3;
 	    }
 	else if(((JButton)e.getSource()).equals(b4))
 	    {
 		cards.show(VendingGUI.this, "3");
-		sodaType = 4;	
 	    }
 	else if(((JButton)e.getSource()).equals(b5))
 	    {
 		cards.show(VendingGUI.this, "4");
-		sodaType = 5;
 	    }
 	else if(((JButton)e.getSource()).equals(b6))
 	    {
 		cards.show(VendingGUI.this, "5");
-		sodaType = 6;
 	    }
 	else if(((JButton)e.getSource()).equals(b7))
 	    {
 		cards.show(VendingGUI.this, "6");
-		sodaType = 7;
 	    }
 	else if(((JButton)e.getSource()).equals(b8))
 	    {	
 		cards.show(VendingGUI.this, "7");
-		sodaType = 8;
 	    }
 	else if(((JButton)e.getSource()).equals(b9))
 	    {
 		cards.show(VendingGUI.this, "8");
-		sodaType = 9;
 	    }
 	else if(((JButton)e.getSource()).equals(sweetTea))
 	    {
 		cards.show(VendingGUI.this, "9");
-		sodaType = 10;
 	    }
-	else if(((JButton)e.getSource()).equals(wildCherryButton))
-	    {
-		cards.show(VendingGUI.this, "10");
-		sodaType = 11;
-	    }
-	else if(((JButton)e.getSource()).equals(pepsiMax))
-	    {
-		cards.show(VendingGUI.this, "11");
-		sodaType = 12;
-	    }
+	else if(((JButton)e.getSource()).equals(wildCherryButton)) {
+	    cards.show(VendingGUI.this, "10");
+	}
+	else if(((JButton)e.getSource()).equals(pepsiMax)) {
+	    cards.show(VendingGUI.this, "11");
+	}
 	else if(((JButton)e.getSource()).equals(dietDew)) {
 	    cards.show(VendingGUI.this, "12");
-	    sodaType = 13;
 	}
 	else if(((JButton)e.getSource()).equals(masterBrisk))
 	    cards.show(VendingGUI.this, "SecondCard");
@@ -507,7 +493,6 @@ public class VendingGUI extends JPanel implements ActionListener
 		((JButton)e.getSource()).equals(cancelArray[10]) ||
 		((JButton)e.getSource()).equals(cancelArray[11]) ||
 		((JButton)e.getSource()).equals(cancelArray[12])) {
-	    sodaType = 0;
 	    cards.show(VendingGUI.this, "FirstCard");
 	}
 	else {
