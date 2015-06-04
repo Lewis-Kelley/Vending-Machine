@@ -80,9 +80,6 @@ public class VendingGUI extends JPanel implements ActionListener
 	
     public ImageIcon spinningCan = new ImageIcon("sodaSpin.gif");
 	
-    //An int showing which soda has been selected, but not confirmed
-    private int option;
-
     private byte sodaExists = 0; //0 = no input, 1 = does exist, -1 = does not exist
 	
     public void setUp()
