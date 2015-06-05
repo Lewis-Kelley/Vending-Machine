@@ -1,7 +1,7 @@
 #include <Stepper.h>
 #include <Servo.h>
 
-const int BUF_SIZE 256
+const int BUF_SIZE 256;
     
 const int STEPPER_MAIN = 9;
 const int STEPPER_DIR  = 8;
@@ -12,6 +12,8 @@ const int BACK_LIM_SWITCH = 2;
 const int FRONT_LIM_SWITCH = 3;
 const int MONEY_MCH_OUTPUT = 4;
 const int MONEY_MCH_INPUT = 5;
+
+bool cont; //Variable to control if the program should halt
 
 char buffer[BUF_SIZE]; //Holds messsages from the computer
 int bufLen;
@@ -29,8 +31,10 @@ const int brakeB = 8;
 const int dirA = 12;
 const int dirB = 13;
 
+//Variables to help with the money machine
 int moneyHolder[MONEY_HOLDER_SIZE];
 bool acceptMoney;
+
 /**
  * Called once to set everything up.
  */
@@ -46,6 +50,7 @@ void setup() {
     digitalWrite(brakeA, LOW);
     digitalWrite(brakeB, LOW);
 
+    //Initialize MoneyMachine pins
     pinMode(MONEY_MCH_OUTPUT, INPUT);
     pinMode(MONEY_MCH_INPUT, OUTPUT);
 
@@ -63,11 +68,13 @@ void setup() {
  * Called every tick. Place a delay if need be.
  */
 void loop() {
-    if(acceptMoney) {
-	digitalWrite(MONEY_MCH_OUTPUT, HIGH);
-	checkForMoney();
-    } else
-	digitalWrite(MONEY_MCH_INPUT, LOW);
+    if(cont) {
+	if(acceptMoney) {
+	    digitalWrite(MONEY_MCH_OUTPUT, HIGH);
+	    checkForMoney();
+	} else
+	    digitalWrite(MONEY_MCH_OUTPUT, LOW);
+    }
 }
 
 /**
@@ -84,6 +91,22 @@ void serialEvent() {
 	}
 	buffer[buf_len++] = c;
     }
+
+    readMsg();
+}
+
+/**
+ * Updates proper variables according to
+ * the transmitted code.
+ */
+void readMsg() {
+    if((String)buffer.equals("STOP"))
+	cont = false;
+    //else if(buffer[0] == '#')
+    else if((String)buffer.equals("NMNY"))
+	needMoney = true;
+    else if((String)buffer.equals("CNCL"))
+	needMoney = false;
 }
 
 /**

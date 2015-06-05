@@ -43,7 +43,7 @@ public class VendingGUI extends JPanel implements ActionListener {
     public JLabel flipLabel; //Holds the spinning can gif
     public JLabel noSodaLabel; //Holds the noSoda image
 	
-    public JButton mountainDewButton, mugButton, pepsiButton, briskLemonadeButton, briskRaspberryButton, crushButton, codeRedButton, dietPepsiButton, briskHalfButton, masterBriskButton, masterPepsiButton, briskHome, pepsiHome, dewHome, wildCherryButton, pepsiMaxButton, briskTeaButton, masterDewButton, dietDewButton; //All the various buttons used on each of the cards
+    public JButton mountainDewButton, mugButton, pepsiButton, briskLemonadeButton, briskRaspberryButton, crushButton, codeRedButton, dietPepsiButton, briskHalfButton, masterBriskButton, masterPepsiButton, briskHome, pepsiHome, dewHome, wildCherryButton, pepsiMaxButton, briskTeaButton, masterDewButton, dietDewButton, noSodaBackButton; //All the various buttons used on each of the cards
 	
     public JPanel menuPanel, briskPanel, pepsiPanel, mountainDewPanel, waitPanel, noSodaPanel; //The various cards.
     
@@ -78,8 +78,7 @@ public class VendingGUI extends JPanel implements ActionListener {
     private byte sodaExists = 0; //0 = no input, 1 = does exist, -1 = does not exist
     private boolean needMoney;
     
-    public void setUp()
-    {
+    public void setUp() {
 	this.setPreferredSize(new Dimension(1680, 1050));
 
 	//Initialize flipLabel
@@ -195,6 +194,11 @@ public class VendingGUI extends JPanel implements ActionListener {
 	dewHome.setBorderPainted(false);
 	dewHome.setContentAreaFilled(false);
 	dewHome.addActionListener(this);
+
+	noSodaBackButton = new JButton(back);
+	noSodaBackButton.setBorderPainted(false);
+	noSodaBackButton.setContentAreaFilled(false);
+	noSodaBackButton.addActionListener(this);
 
 	//Setting up all the payment screens
 	for(int i = 0; i < 13; i++) {
@@ -336,14 +340,14 @@ public class VendingGUI extends JPanel implements ActionListener {
 		
 	waitPanel.add(flipLabel, BorderLayout.CENTER);	
 
-	noSodaPanel.add(noSodaLabel, BorderLayout.CENTER);
+	noSodaPanel.add(noSodaLabel, BorderLayout.NORTH);
+	noSodaPanel.add(noSodaBackButton, BorderLayout.SOUTH);
     }
 
     /**
      * Returns the current value of can then sets to EMPTY
      */
-    public Soda getSoda()
-    {
+    public Soda getSoda() {
 	Soda retVal;
 
 	switch(can) {
@@ -399,7 +403,7 @@ public class VendingGUI extends JPanel implements ActionListener {
     }
 
     /**
-     * Two methods for main to use to communicate.
+     * Methods for main to use to communicate.
      */
     public void setFoundStatus(byte status) {
 	sodaExists = status;
@@ -412,8 +416,7 @@ public class VendingGUI extends JPanel implements ActionListener {
     /**
      * Deals with all actions.
      */
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 	if(((JButton)e.getSource()).equals(mountainDewButton)) {
 	    can = Soda.MOUNTAIN_DEW;
 
@@ -673,6 +676,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	    cards.show(VendingGUI.this, "PepsiPanel");
 	else if(((JButton)e.getSource()).equals(masterDewButton))
 	    cards.show(VendingGUI.this, "MountainDewPanel");
+	else if (((JButton)e.getSource()).equals(noSodaBackButton))
+	    cards.show(VendingGUI.this, "MenuPanel");
 	else if(((JButton)e.getSource()).equals(cancelArray[0]) ||
 		((JButton)e.getSource()).equals(cancelArray[1]) ||
 		((JButton)e.getSource()).equals(cancelArray[2]) ||
