@@ -114,10 +114,10 @@ public class VendingMachineRunner {
 	if(vGUI.getMoneyStatus()) { //If at pay screen
 	    String comm = "";
 
-	    try  {
+	    try {
 		serial.println("NMNY");
 	    } catch(Exception e) {
-		System.out.println("Error communicating with arduino");
+		System.out.println("Error sending \"NMNY\" with arduino");
 	    }
 
 	    while(vGUI.getMoneyStatus()) {
@@ -130,8 +130,10 @@ public class VendingMachineRunner {
 		if(!comm.equals("")) {
 		    if(comm.equals("STOP"))
 			cont = false;
-		    if(comm.equals("GMNY"))
+		    else if(comm.equals("GMNY"))
 			vGUI.setReceivedStatus(true);
+		    else
+			System.out.println("Arduino says: " + comm);
 		}
 
 		try {
