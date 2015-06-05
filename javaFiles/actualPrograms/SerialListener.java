@@ -1,14 +1,13 @@
-public class SerialListener
+public class SerialListener implements Runnable
 {
-    /*
-    InputStream in;
+  InputStream in;
   OutputStream out;
   static String msg;
   public SerialListener()
   {
   	try {
 		CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier("COM3");
-		CommPort commPort = portID.open("thing" , 6000);
+		CommPort commPort = portID.open("name" , 6000);
 		SerialPort serialPort = (SerialPort) commPort;
 			  
 		out = serialPort.getOutputStream();
@@ -47,5 +46,4 @@ public class SerialListener
 			e.printStackTrace();
 		}
 		}
-*/
 }
