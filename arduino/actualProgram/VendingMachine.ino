@@ -1,7 +1,8 @@
 #include <Stepper.h>
 #include <Servo.h>
 
-const int BUF_SIZE 256;
+const int TIME_DELAY = 200;
+const int BUF_SIZE = 256;
     
 const int STEPPER_MAIN = 9;
 const int STEPPER_DIR  = 8;
@@ -15,7 +16,7 @@ const int MONEY_MCH_INPUT = 5;
 
 bool cont; //Variable to control if the program should halt
 
-char buffer[BUF_SIZE]; //Holds messsages from the computer
+char commBuffer[BUF_SIZE]; //Holds messsages from the computer
 int bufLen;
 int sentString;
 
@@ -61,7 +62,7 @@ void setup() {
     middle.attach(10);
     far.attach(11);
 
-    accpetMoney = false;
+    acceptMoney = false;
 }
 
 /**
@@ -82,14 +83,14 @@ void loop() {
  */
 void serialEvent() {
     char c;
-    while (Serial.available() && buf_len < BUF_SIZE) {
+    while (Serial.available() && bufLen < BUF_SIZE) {
 	c = (char)Serial.read();
 	if (c == (char)'q') {
-	    sent_string = 1;
-	    Serial.println("String: \"" + String(buffer) + "\"");
+	    sentString = 1;
+	    Serial.println("String: \"" + String(commBuffer) + "\"");
 	    return;
 	}
-	buffer[buf_len++] = c;
+	commBuffer[bufLen++] = c;
     }
 
     readMsg();
@@ -100,13 +101,13 @@ void serialEvent() {
  * the transmitted code.
  */
 void readMsg() {
-    if((String)buffer.equals("STOP"))
+    if(((String)commBuffer).equals("STOP"))
 	cont = false;
-    //else if(buffer[0] == '#')
-    else if((String)buffer.equals("NMNY"))
-	needMoney = true;
-    else if((String)buffer.equals("CNCL"))
-	needMoney = false;
+    //else if(commBuffer[0] == '#')
+    else if(((String)commBuffer).equals("NMNY"))
+	acceptMoney = true;
+    else if(((String)commBuffer).equals("CNCL"))
+	acceptMoney = false;
 }
 
 /**
@@ -126,7 +127,7 @@ void checkForMoney() {
     if(sumHolder() < 7) {
 	resetHolder();
 	Serial.println("GMNY");
-	needMoney = false;
+	acceptMoney = false;
     }
 }
 
@@ -135,7 +136,7 @@ void checkForMoney() {
  */
 void waitForMoney() {
     while(true) {
-	digitalWrite(MONEY_MCH, HIGH);
+	digitalWrite(MONEY_MCH_OUTPUT, HIGH);
 
 	updateHolder();
 
@@ -154,7 +155,7 @@ void updateHolder() {
     for(short i = MONEY_HOLDER_SIZE - 1; i > 0; i--)
 	moneyHolder[i] = moneyHolder[i - 1];
   
-    moneyHolder[0] = digitalRead(MONEY_MCH);
+    moneyHolder[0] = digitalRead(MONEY_MCH_INPUT);
 }
 
 /**
@@ -167,6 +168,11 @@ short  sumHolder() {
 	sum += moneyHolder[i];
 
     return sum;
+}
+
+void resetHolder() {
+    for(short i = 0; i < MONEY_HOLDER_SIZE; i++)
+      moneyHolder[i] = 1;
 }
 
 /**
