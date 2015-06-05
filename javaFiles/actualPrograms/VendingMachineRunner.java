@@ -106,6 +106,11 @@ public class VendingMachineRunner {
 	    else
 		vGUI.setFoundStatus((byte)1);
 	}
+
+	//TESTING CODE. DELETE ASAP
+	if(vGUI.getMoneyStatus())
+	    vGUI.setReceivedStatus(true);
+	//END TESTING CODE
     }
 
     /**

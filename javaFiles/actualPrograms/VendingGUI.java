@@ -22,10 +22,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	}
     }
 
-    private class WaitToReturn implements Runnable
-    {
-	public void run()
-	{
+    private class WaitToReturn implements Runnable {
+	public void run() {
 	    try {
 		Thread.sleep(10000);
 	    } catch (Exception e) {
@@ -33,6 +31,25 @@ public class VendingGUI extends JPanel implements ActionListener {
 	    }
 
 	    cards.show(VendingGUI.this, "MenuPanel");
+	}
+    }
+
+    private class WaitForMoney implements Runnable {
+	public void run() {
+	    while(needMoney) {
+		if(receivedMoney) {
+		    (new Thread(new AnimatedRunner())).start();
+		    (new Thread(new WaitToReturn())).start();
+		    receivedMoney = false;
+		    needMoney = false;
+		}
+		
+		try {
+		    Thread.sleep(100);
+		} catch(Exception e) {
+		    System.out.println("Error waiting in WaitForMoney");
+		}
+	    }
 	}
     }
 
@@ -77,6 +94,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 	
     private byte sodaExists = 0; //0 = no input, 1 = does exist, -1 = does not exist
     private boolean needMoney;
+    private boolean receivedMoney;
     
     public void setUp() {
 	this.setPreferredSize(new Dimension(1680, 1050));
@@ -98,6 +116,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	can = Soda.EMPTY;
 
 	sodaExists = 0;
+	needMoney = false;
+	receivedMoney = false;
 		
 	//Initialize all the buttons
 	mountainDewButton = new JButton(mountainDew);
@@ -409,6 +429,10 @@ public class VendingGUI extends JPanel implements ActionListener {
 	sodaExists = status;
     }
 
+    public void setReceivedStatus(boolean status) {
+	receivedMoney = status;
+    }
+    
     public boolean getMoneyStatus() {
 	return needMoney;
     }
@@ -435,6 +459,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(mugButton)) {
 	    can = Soda.DIET_MUG;
@@ -454,6 +479,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(pepsiButton)) {
 	    can = Soda.PEPSI;
@@ -473,6 +499,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(briskLemonadeButton)) {
 	    can = Soda.BRISK_LEMONADE;
@@ -492,6 +519,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(briskRaspberryButton)) {
 	    can = Soda.BRISK_RASPBERRY;
@@ -511,6 +539,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(crushButton)) {
 	    can = Soda.DIET_CRUSH;
@@ -530,6 +559,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(codeRedButton)) {
 	    can = Soda.MOUNTAIN_DEW_CODE_RED;
@@ -549,6 +579,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(dietPepsiButton)) {	
 	    can = Soda.DIET_PEPSI;
@@ -568,6 +599,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(briskHalfButton)) {
 	    can  = Soda. BRISK_HALF_AND_HALF;
@@ -586,7 +618,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
-	    sodaExists = 0;	    
+	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(briskTeaButton)) {
 	    can = Soda.BRISK_SWEET_TEA;
@@ -606,6 +639,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
 	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(wildCherryButton)) {
 	    can = Soda.PEPSI_WILD_CHERRY;
@@ -624,7 +658,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
-	    sodaExists = 0;	    
+	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(pepsiMaxButton)) {
 	    can  = Soda.PEPSI_MAX;
@@ -643,7 +678,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
-	    sodaExists = 0;	    
+	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(dietDewButton)) {
 	    can  = Soda.DIET_MOUNTAIN_DEW;
@@ -662,7 +698,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	    } else
 		cards.show(VendingGUI.this, "NoSodaPanel");
 
-	    sodaExists = 0;	    
+	    sodaExists = 0;
+	    (new Thread(new WaitForMoney())).start();
 	}
 	else if(((JButton)e.getSource()).equals(masterBriskButton))
 	    cards.show(VendingGUI.this, "BriskPanel");
