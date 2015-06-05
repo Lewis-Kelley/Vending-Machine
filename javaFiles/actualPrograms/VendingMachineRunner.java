@@ -10,6 +10,8 @@ import javax.swing.plaf.FontUIResource;
 public class VendingMachineRunner {
     public enum State { MENU, DELIVERING, DELIVERED, DISABLED };
 
+    private static boolean cont;
+    
     private State state;
     private Coordinate coord;
     private Inventory inv;
@@ -25,6 +27,8 @@ public class VendingMachineRunner {
 
     public VendingMachineRunner()
     {
+	cont = true;
+	
 	state = State.MENU;
 	coord = null;
 	inv = new Inventory(true);
@@ -52,7 +56,7 @@ public class VendingMachineRunner {
     public static void main(String[] args) {
 	VendingMachineRunner vmr = new VendingMachineRunner();
 
-	while(true) {
+	while(cont) {
 	    switch(vmr.getState()) {
 	    case MENU:
 		vmr.menu();
@@ -107,10 +111,37 @@ public class VendingMachineRunner {
 		vGUI.setFoundStatus((byte)1);
 	}
 
-	//TESTING CODE. DELETE ASAP
-	if(vGUI.getMoneyStatus())
-	    vGUI.setReceivedStatus(true);
-	//END TESTING CODE
+	if(vGUI.getMoneyStatus()) { //If at pay screen
+	    String comm = "";
+
+	    try  {
+		serial.println("NMNY");
+	    } catch(Exception e) {
+		System.out.println("Error communicating with arduino");
+	    }
+
+	    while(vGUI.getMoneyStatus()) {
+		try {
+		    comm = serial.getLine();
+		} catch(Exception e) {
+		    System.out.println("Error reading from arduino");
+		}
+
+		if(!comm.equals("")) {
+		    if(comm.equals("STOP"))
+			cont = false;
+		    if(comm.equals("GMNY"))
+			vGUI.setReceivedStatus(true);
+		}
+
+		try {
+		    Thread.sleep(100);
+		} catch(Exception e) {
+		    System.out.println("Couldn't wait for moneyStatus");
+		}
+	    }
+	}
+	    
     }
 
     /**

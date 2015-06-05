@@ -25,7 +25,7 @@ public class VendingGUI extends JPanel implements ActionListener {
     private class WaitToReturn implements Runnable {
 	public void run() {
 	    try {
-		Thread.sleep(10000);
+		Thread.sleep(5000);
 	    } catch (Exception e) {
 		System.out.println("Problem waiting for gif to end.");
 	    }
@@ -37,11 +37,13 @@ public class VendingGUI extends JPanel implements ActionListener {
     private class WaitForMoney implements Runnable {
 	public void run() {
 	    while(needMoney) {
+		System.out.println(receivedMoney);
 		if(receivedMoney) {
-		    (new Thread(new AnimatedRunner())).start();
-		    (new Thread(new WaitToReturn())).start();
 		    receivedMoney = false;
 		    needMoney = false;
+
+		    (new Thread(new AnimatedRunner())).start();
+		    (new Thread(new WaitToReturn())).start();
 		}
 		
 		try {
