@@ -103,11 +103,17 @@ void serialEvent() {
 void readMsg() {
     if(((String)commBuffer).equals("STOP"))
 	cont = false;
-    //else if(commBuffer[0] == '#')
-    else if(((String)commBuffer).equals("NMNY"))
+    else if(commBuffer[0] == '#') {
+	
+    }
+    else if(((String)commBuffer).equals("NMNY")) {
+	Serial.println("Acknowledged need money");
 	acceptMoney = true;
-    else if(((String)commBuffer).equals("CNCL"))
+    }
+    else if(((String)commBuffer).equals("CNCL")) {
+	Serial.print("Acknowledged cancel");
 	acceptMoney = false;
+    }
 }
 
 /**
