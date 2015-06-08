@@ -37,7 +37,6 @@ public class VendingGUI extends JPanel implements ActionListener {
     private class WaitForMoney implements Runnable {
 	public void run() {
 	    while(needMoney) {
-		System.out.println(receivedMoney);
 		if(receivedMoney) {
 		    receivedMoney = false;
 		    needMoney = false;
@@ -99,7 +98,7 @@ public class VendingGUI extends JPanel implements ActionListener {
     private boolean receivedMoney;
     
     public void setUp() {
-	this.setPreferredSize(new Dimension(1680, 1050));
+	this.setPreferredSize(new Dimension(1024, 768));
 
 	//Initialize flipLabel
 	flipLabel = new JLabel(spinningCan);
