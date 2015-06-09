@@ -53,16 +53,12 @@ public class VendingMachineRunner {
 	}
 
 	try {
-	    serial.println("STRT");
-	} catch(Exception e) {
-	    System.out.println("Error writing to arduino");
-	}
-
-	try {
 	    int ct = 0;
 	    
 	    String line;
 	    do {
+		serial.println("STRT");
+		
 		if(ct++ % 100 == 0)
 		    System.out.println(ct);
 		line = serial.getLine();
