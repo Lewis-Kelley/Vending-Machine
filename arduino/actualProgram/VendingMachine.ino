@@ -14,6 +14,7 @@ const int FRONT_LIM_SWITCH = 3;
 const int MONEY_MCH_OUTPUT = 4;
 const int MONEY_MCH_INPUT = 5;
 
+bool start; //Variable to check communications at startup
 bool cont; //Variable to control if the program should halt
 
 char commBuffer[BUF_SIZE]; //Holds messsages from the computer
@@ -40,6 +41,8 @@ bool acceptMoney;
  * Called once to set everything up.
  */
 void setup() {
+    start = false;
+  
     Serial.begin(9600);
     // set the PWM and brake pins so that the direction pins  // can be used to control the motor:
     pinMode(pwmA, OUTPUT);
@@ -55,14 +58,14 @@ void setup() {
     pinMode(MONEY_MCH_OUTPUT, INPUT);
     pinMode(MONEY_MCH_INPUT, OUTPUT);
 
-    // initialize the serial port:
-    Serial.begin(9600);
-
     center.attach(9);
     middle.attach(10);
     far.attach(11);
 
     acceptMoney = false;
+    
+    while(!start)
+      delay(50);
 }
 
 /**
@@ -87,7 +90,6 @@ void serialEvent() {
 	c = (char)Serial.read();
 	if (c == (char)'q') {
 	    sentString = 1;
-	    Serial.println("String: \"" + String(commBuffer) + "\"");
 	    return;
 	}
 	commBuffer[bufLen++] = c;
@@ -103,6 +105,10 @@ void serialEvent() {
 void readMsg() {
     if(((String)commBuffer).equals("STOP"))
 	cont = false;
+    else if (((String)commBuffer).equals("STRT")) {
+        start = true;
+        Serial.println("STRT");
+    }
     else if(commBuffer[0] == '#') {
 	
     }
