@@ -4,24 +4,30 @@ Same row means
 mutually
 exclusive.
 
-A --> C | C --> A
------------------
-        |  Need
-	|  Money
-	| (NMNY)
------------------
- Got    | Cancel
- Money  |
- (GMNY) | (CNCL)
- ----------------
-	| Coords
-	|
-	| (#---)
-----------------
-Finished|
-Delivery|
- (FNDL) |
-----------------
- Error  | Inter-
- 	| rupt
- (STOP)	| (STOP)
+-------------------
+|A --> C | C --> A|
+|-----------------|
+|Start   |Start	  |
+|Program |Program |
+|(STRT)  |(STRT)  |
+|-----------------|
+|        |  Need  |
+| 	 |  Money |
+|	 | (NMNY) |
+|-----------------|
+| Got    | Cancel |
+| Money  |  	  |
+| (GMNY) | (CNCL) |
+|-----------------|
+|	 | Coords |
+|	 | 	  |
+|	 | (#---) |
+|-----------------|
+|Finished|	  |
+|Delivery|	  |
+| (FNDL) |	  |
+|-----------------|
+| Error  | Inter- |
+| 	 | rupt	  |
+| (STOP) | (STOP) |
+-------------------
