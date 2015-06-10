@@ -19,7 +19,7 @@ public class BenSerialListener
 	 * i.e. /dev/ttyACM0
 	 * It opens it and then opens a GNU Screen process to communicate.
 	 */
-	public BenSerialListener(String portname) throws IOException, InterruptedException
+    	public BenSerialListener(String portname) throws IOException, InterruptedException
 	{
 		Runtime.getRuntime().exec("stty -F " + portname + " cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts").waitFor();
 		p = Runtime.getRuntime().exec("screen " + portname + " 9600");

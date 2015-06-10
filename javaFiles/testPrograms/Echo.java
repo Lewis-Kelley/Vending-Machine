@@ -1,5 +1,5 @@
-class Echo {
-    public static void main(String[] args) {
+public class Echo {
+    public Echo() {
 	BenSerialListener serial;
 
 	try {
@@ -19,5 +19,9 @@ class Echo {
 	} catch(Exception e) {
 	    System.out.println("Couldn't create serial listener program");
 	}
+    }
+    
+    public static void main(String[] args) {
+	new Echo();
     }
 }
