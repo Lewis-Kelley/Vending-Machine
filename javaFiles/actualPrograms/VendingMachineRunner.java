@@ -59,7 +59,7 @@ public class VendingMachineRunner {
 	    try {
 		serial.println("STRT");
 	    } catch(Exception e) {
-		System.err.println("Error writing STRT to arduino");
+		    System.err.println("Error writing STRT to arduino\n" + e.toString() + ":\t" + e.getStackTrace());
 	    }
 	    
 	    if(ct++ % 100 == 0)
@@ -67,7 +67,7 @@ public class VendingMachineRunner {
 	    try {
 		line = serial.getLine();
 	    } catch(Exception e) {
-		System.err.println("Error reading from arduino");
+		    System.err.println("Error reading from arduino\n" + e.toString());
 	    }
 	    try {
 		Thread.sleep(5);

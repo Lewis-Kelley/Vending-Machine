@@ -11,8 +11,6 @@ public class BenSerialListener
 	 */
 
 	private Process p;
-	private BufferedInputStream in;
-	private BufferedOutputStream out;
 
 	/*
 	 * This class needs an device to communicate with,
@@ -23,8 +21,6 @@ public class BenSerialListener
 	{
 		Runtime.getRuntime().exec("stty -F " + portname + " cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts").waitFor();
 		p = Runtime.getRuntime().exec("screen " + portname + " 9600");
-		in = new BufferedInputStream(p.getInputStream());
-		out = new BufferedOutputStream(p.getOutputStream());
 	}
 
 	/*
@@ -41,7 +37,7 @@ public class BenSerialListener
 	{
 		String output = "", s = "";
 		byte buffer[] = new byte[4];
-		while (in.read(buffer, 0, 4) >= 0) {
+		while (p.getInputStream().read(buffer, 0, 4) >= 0) {
 			s = new String(buffer);
 			if (s.indexOf('\n') < 0)
 				output += s;
@@ -58,13 +54,7 @@ public class BenSerialListener
 	{
 		String s = input + "q";
 		byte[] array = s.getBytes();
-
-		for(byte num : array)
-		    System.out.print(num);
-		System.out.println();
-		
-		out.write(array);
-		out.flush();
+		p.getOutputStream().write(array);
 	}
 	public void kill()
 	{
