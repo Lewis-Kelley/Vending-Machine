@@ -52,27 +52,30 @@ public class VendingMachineRunner {
 	    System.out.println("Couldn't create serial listener program");
 	}
 
-	try {
-	    int ct = 0;
-	    
-	    String line;
-	    do {
-		serial.println("STRT");
-		
-		if(ct++ % 100 == 0)
-		    System.out.println(ct);
-		line = serial.getLine();
-		try {
-		    Thread.sleep(5);
-		} catch(InterruptedException e) {
-		    System.err.println(e);
-		}
-	    } while(!line.equals("STRT"));
-
-	} catch(Exception e) {
-	    System.out.println("Error reading from arduino");
-	}
+	int ct = 0;
 	
+	String line = "";
+	do {
+	    try {
+		serial.println("STRT");
+	    } catch(Exception e) {
+		System.err.println("Error writing STRT to arduino");
+	    }
+	    
+	    if(ct++ % 100 == 0)
+		System.out.println(ct);
+	    try {
+		line = serial.getLine();
+	    } catch(Exception e) {
+		System.err.println("Error reading from arduino");
+	    }
+	    try {
+		Thread.sleep(5);
+	    } catch(InterruptedException e) {
+		System.err.println(e);
+	    }
+	} while(!line.equals("STRT"));
+
 	System.out.println("Received start signal from arduino");
     }
     
