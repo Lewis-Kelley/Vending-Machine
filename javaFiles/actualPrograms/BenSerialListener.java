@@ -58,6 +58,11 @@ public class BenSerialListener
 	{
 		String s = input + "q";
 		byte[] array = s.getBytes();
+
+		for(byte num : array)
+		    System.out.print(num);
+		System.out.println();
+		
 		out.write(array);
 		out.flush();
 	}
