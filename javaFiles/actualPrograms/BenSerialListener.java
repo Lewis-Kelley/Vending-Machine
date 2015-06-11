@@ -10,7 +10,7 @@ public class BenSerialListener
 	 * grumble grumble
 	 */
 
-	private Process p;
+	public Process p;
 
 	/*
 	 * This class needs an device to communicate with,

@@ -3,7 +3,7 @@
 
 const int TIME_DELAY = 200;
 const int BUF_SIZE = 256;
-    
+
 const int STEPPER_MAIN = 9;
 const int STEPPER_DIR  = 8;
 
@@ -41,8 +41,8 @@ bool acceptMoney;
  * Called once to set everything up.
  */
 void setup() {
-    start = false;
-  
+	start = false;
+
     Serial.begin(9600);
     // set the PWM and brake pins so that the direction pins  // can be used to control the motor:
     pinMode(pwmA, OUTPUT);
@@ -63,22 +63,19 @@ void setup() {
     far.attach(11);
 
     acceptMoney = false;
-    
-    while(!start)
-      delay(50);
 }
 
 /**
  * Called every tick. Place a delay if need be.
  */
 void loop() {
-    if(cont) {
-	if(acceptMoney) {
-	    digitalWrite(MONEY_MCH_OUTPUT, HIGH);
-	    checkForMoney();
-	} else
-	    digitalWrite(MONEY_MCH_OUTPUT, LOW);
-    }
+		if(cont && start) {
+				if(acceptMoney) {
+						digitalWrite(MONEY_MCH_OUTPUT, HIGH);
+						checkForMoney();
+				} else
+						digitalWrite(MONEY_MCH_OUTPUT, LOW);
+		}
 }
 
 /**

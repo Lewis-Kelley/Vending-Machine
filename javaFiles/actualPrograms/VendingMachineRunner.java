@@ -11,13 +11,13 @@ public class VendingMachineRunner {
     public enum State { MENU, DELIVERING, DELIVERED, DISABLED };
 
     private static boolean cont;
-    
+
     private State state;
     private Coordinate coord;
     private Inventory inv;
 
     private Soda selCan;
-    
+
     private JFrame gui;
     private VendingGUI vGUI;
 
@@ -28,13 +28,13 @@ public class VendingMachineRunner {
     public VendingMachineRunner()
     {
 	cont = true;
-	
+
 	state = State.MENU;
 	coord = null;
 	inv = new Inventory(true);
 
 	selCan = null;
-	
+
 	Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 	gui = new JFrame();
 	gui.setSize(size);
@@ -53,21 +53,23 @@ public class VendingMachineRunner {
 	}
 
 	int ct = 0;
-	
+
 	String line = "";
 	do {
 	    try {
 		serial.println("STRT");
 	    } catch(Exception e) {
 		    System.err.println("Error writing STRT to arduino\n" + e.toString() + ":\t" + e.getStackTrace());
+		    break;
 	    }
-	    
+
 	    if(ct++ % 100 == 0)
 		System.out.println(ct);
 	    try {
 		line = serial.getLine();
 	    } catch(Exception e) {
 		    System.err.println("Error reading from arduino\n" + e.toString());
+		    break;
 	    }
 	    try {
 		Thread.sleep(5);
@@ -78,7 +80,7 @@ public class VendingMachineRunner {
 
 	System.out.println("Received start signal from arduino");
     }
-    
+
     public static void main(String[] args) {
 	VendingMachineRunner vmr = new VendingMachineRunner();
 
