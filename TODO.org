@@ -15,10 +15,10 @@
 
 
 *** TODO GUI [2/4]
-    - [-] Create all necessary cards [3/6]
+    - [-] Create all necessary cards [4/6]
       - [X] Menu cards
       - [X] Confirm card
-      - [ ] Waiting card
+      - [X] Waiting card
       - [ ] Soda not found card
       - [X] Paying card
       - [ ] Disabled card
@@ -30,10 +30,12 @@
 *** TODO Communications [1/3]
     - [X] Establish communications
     - [ ] Implement all necessary communications from Arduino to Computer
+      - [ ] Start
       - [ ] Received money
       - [ ] Finished delivery
       - [ ] Error
     - [ ] Implement all necessary communications from Computer to Arduino
+      - [ ] Start
       - [ ] Accept money
       - [ ] Stop accepting money
       - [ ] Coordinates
