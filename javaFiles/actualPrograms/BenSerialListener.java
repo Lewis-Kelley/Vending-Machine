@@ -35,14 +35,13 @@ public class BenSerialListener
 	 */
 	public String getLine() throws IOException
 	{
-		String output = "", s = "";
-		byte buffer[] = new byte[4];
-		while (p.getInputStream().read(buffer, 0, 4) >= 0) {
-			s = new String(buffer);
-			if (s.indexOf('\n') < 0)
-				output += s;
-			else
-				return output + s.substring(0, s.indexOf('\n'));
+		String output = "";
+		int buffer = -1;
+		while (p.getInputStream().available() > 0) {
+				buffer = p.getInputStream().read();
+				if ((char)buffer == '\n')
+						return output;
+				output += (char)buffer;
 		}
 		return output;
 	}
@@ -53,8 +52,7 @@ public class BenSerialListener
 	public void println(String input) throws IOException
 	{
 		String s = input + "q";
-		byte[] array = s.getBytes();
-		p.getOutputStream().write(array);
+		p.getOutputStream().write(s.getBytes());
 	}
 	public void kill()
 	{
