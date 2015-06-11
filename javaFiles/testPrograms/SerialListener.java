@@ -66,9 +66,10 @@ public class SerialListener implements Runnable
   public static void main(String[] args)
   {
 	  SerialListener sl = new SerialListener();
-	  //sl.send("a");
-	  //System.out.println("finished");
-	  //sl.finished();
+	  sl.send("STRT");
+	  System.out.println("finished");
+	  sl.finished();
+	  /*
 	  Thread t = new Thread(sl, "Listener");
 	  t.start();
 	  String current = "";
@@ -88,4 +89,5 @@ public class SerialListener implements Runnable
 			}
 		  }
 	  }
+	  */
 }
