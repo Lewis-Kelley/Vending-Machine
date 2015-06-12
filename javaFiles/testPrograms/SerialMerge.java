@@ -102,17 +102,23 @@ public class SerialMerge implements SerialPortEventListener
 	  e.printStackTrace();
       }
   }
-  public void finished()
-  {
-	  this.serialPort.close();
+  public void finished() {
+      this.serialPort.close();
   }
-  public static void main(String[] args)
-  {
-	  SerialMerge main = new SerialMerge();
-	  //Good Proper Code for sending
-	  
-	  main.send("STRT");
-	  System.out.println("finished");
-	  main.finished();
-  }
+
+    public static void main(String[] args) throws Exception {
+	SerialTest main = new SerialTest();
+	main.initialize();
+	Thread t=new Thread() {
+		public void run() {
+		    //the following line will keep this app alive for 1000 seconds,
+		    //waiting for events to occur and responding to them (printing incoming messages to console).
+		    try {Thread.sleep(1000000);} catch (InterruptedException ie) {}
+		}
+	    };
+	t.start();
+	main.send("STRT");
+	main.close();
+	System.out.println("Started");
+    }
 }
