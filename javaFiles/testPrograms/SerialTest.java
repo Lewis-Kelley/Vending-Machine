@@ -3,6 +3,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.IOException;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -105,6 +106,17 @@ public class SerialTest implements SerialPortEventListener {
 	    // Ignore all the other eventTypes, but you should consider the other ones.
 	}
 
+		public void send(String msg) {
+				byte[] buffer = new byte[1024];
+				buffer = msg.getBytes();
+
+				try {
+						this.output.write(buffer);
+				} catch (IOException e) {
+						e.printStackTrace();
+				}
+		}
+
 	public static void main(String[] args) throws Exception {
 		SerialTest main = new SerialTest();
 		main.initialize();
@@ -117,5 +129,7 @@ public class SerialTest implements SerialPortEventListener {
 		};
 		t.start();
 		System.out.println("Started");
+		main.send("STRT");
+		main.close();
 	}
 }
