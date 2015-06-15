@@ -129,7 +129,7 @@ public class SerialTest implements SerialPortEventListener {
 		};
 		t.start();
 		System.out.println("Started");
-		main.send("STRT");
-		main.close();
+		//main.send("STRT");
+		//main.close();
 	}
 }
