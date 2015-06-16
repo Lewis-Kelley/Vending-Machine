@@ -1,9 +1,12 @@
 public class SerialTester {
-    static SerialWrite writer;
-    static SerialRead reader;
-
+    //static SerialWrite writer;
+    //static SerialRead reader;
+    static SerialMerge serial;
+    
     public static void main(String[] args) {
-	writer = new SerialWrite();
+	//writer = new SerialWrite();
+	serial = new SerialMerge();
+	serial.initialize();
 	
 	Thread t = new Thread() {
 		public void run() {
@@ -12,15 +15,10 @@ public class SerialTester {
 	    };
 	t.start();
 	for(short ct = 0; ct < 100; ct++) {
-	//while(true) {
-	    writer.send("STRT");
+	    //while(true) {
+	    serial.send("STRT");
 	    try {Thread.sleep(50);} catch (InterruptedException ie) {}
 	}
-	System.out.println("Closing");
-	writer.close();
-
-	reader = new SerialRead();
-	reader.initialize();
 
 	System.out.println("Started");
     }
