@@ -3,7 +3,7 @@ import gnu.io.*;
 import java.util.Enumeration;
 
 public class SerialMerge implements SerialPortEventListener {
-
+		private String input;
 		SerialPort serialPort;
 		OutputStream out;
 		static String msg;
@@ -43,10 +43,7 @@ public class SerialMerge implements SerialPortEventListener {
 		  }*/
 
 		public void initialize() {
-				// the next line is for Raspberry Pi and
-				// gets us into the while loop and was suggested here was suggested http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
-				//System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
-
+				input = "";
 				CommPortIdentifier portId = null;
 				Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
@@ -100,6 +97,7 @@ public class SerialMerge implements SerialPortEventListener {
 						e.printStackTrace();
 				}
 		}
+
 		public void close() {
 				this.serialPort.close();
 		}
@@ -111,11 +109,17 @@ public class SerialMerge implements SerialPortEventListener {
 				if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 						try {
 								String inputLine=in.readLine();
-								System.out.println(inputLine);
+								input = new String(inputLine);
 						} catch (Exception e) {
 								System.err.println(e.toString());
 						}
 				}
 				// Ignore all the other eventTypes, but you should consider the other ones.
+		}
+
+		public String getLine() {
+				String holder = new String(input);
+				input = "";
+				return holder;
 		}
 }

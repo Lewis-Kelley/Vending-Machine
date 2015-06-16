@@ -11,21 +11,21 @@ import javax.swing.*;
 import java.util.*;
 import javax.swing.event.*;
 import javax.swing.ImageIcon;
-import java.awt.Font; 
-import javax.swing.plaf.FontUIResource; 
+import java.awt.Font;
+import javax.swing.plaf.FontUIResource;
 
-public class VendingGUI extends JPanel implements ActionListener {	
+public class VendingGUI extends JPanel implements ActionListener {
     private class AnimatedRunner implements Runnable {
-	public void run() {
-	    cards.show(VendingGUI.this, "WaitPanel");
-	    spinningCan.getImage().flush();
-	}
+			public void run() {
+					cards.show(VendingGUI.this, "WaitPanel");
+					spinningCan.getImage().flush();
+			}
     }
 
     private class WaitToReturn implements Runnable {
 	public void run() {
 	    try {
-		Thread.sleep(5000);
+				Thread.sleep(5000);
 	    } catch (Exception e) {
 		System.out.println("Problem waiting for gif to end.");
 	    }
@@ -44,7 +44,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		    (new Thread(new AnimatedRunner())).start();
 		    (new Thread(new WaitToReturn())).start();
 		}
-		
+
 		try {
 		    Thread.sleep(100);
 		} catch(Exception e) {
@@ -55,16 +55,16 @@ public class VendingGUI extends JPanel implements ActionListener {
     }
 
     public CardLayout cards;
-	
+
     public Soda can; //Holds the currently selected can after the user confirms. Set to EMPTY when no can has been confirmed.
-	
+
     public JLabel flipLabel; //Holds the spinning can gif
     public JLabel noSodaLabel; //Holds the noSoda image
-	
+
     public JButton mountainDewButton, mugButton, pepsiButton, briskLemonadeButton, briskRaspberryButton, crushButton, codeRedButton, dietPepsiButton, briskHalfButton, masterBriskButton, masterPepsiButton, briskHome, pepsiHome, dewHome, wildCherryButton, pepsiMaxButton, briskTeaButton, masterDewButton, dietDewButton, noSodaBackButton; //All the various buttons used on each of the cards
-	
+
     public JPanel menuPanel, briskPanel, pepsiPanel, mountainDewPanel, waitPanel, noSodaPanel; //The various cards.
-    
+
     public JLabel[] sodaOption = new JLabel[13]; //Holds the images for the soda icons on the confirm screen.
     public JButton[] cancelArray = new JButton[13]; //Holds the cancel buttons
     public JPanel[] payPanels = new JPanel[13]; //Holds the cancel, sodaOption, and pay $1 banners.
@@ -90,13 +90,14 @@ public class VendingGUI extends JPanel implements ActionListener {
     public ImageIcon cancelPic = new ImageIcon("cancel.png");
     public ImageIcon sure = new ImageIcon("pay.png");
     public ImageIcon noSoda = new ImageIcon("noSoda.png");
-	
+
     public ImageIcon spinningCan = new ImageIcon("sodaSpin.gif");
-	
+
     private byte sodaExists = 0; //0 = no input, 1 = does exist, -1 = does not exist
     private boolean needMoney;
     private boolean receivedMoney;
-    
+	private boolean cancelled;
+
     public void setUp() {
 	this.setPreferredSize(new Dimension(1024, 768));
 
@@ -107,7 +108,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 	//Initialize noSodaLabel
 	noSodaLabel = new JLabel(noSoda);
 	noSodaLabel.setIcon(noSoda);
-	
+
 	//Initialize all the confirmation screen arrays
 	sodaOption = new JLabel[13];
 	cancelArray = new JButton[13];
@@ -119,7 +120,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	sodaExists = 0;
 	needMoney = false;
 	receivedMoney = false;
-		
+	cancelled = false;
+
 	//Initialize all the buttons
 	mountainDewButton = new JButton(mountainDew);
 	mountainDewButton.setBorderPainted(false);
@@ -130,17 +132,17 @@ public class VendingGUI extends JPanel implements ActionListener {
 	mugButton.setBorderPainted(false);
 	mugButton.setContentAreaFilled(false);
 	mugButton.addActionListener(this);
-		 
+
 	pepsiButton = new JButton(pepsi);
 	pepsiButton.setBorderPainted(false);
 	pepsiButton.setContentAreaFilled(false);
 	pepsiButton.addActionListener(this);
-		
+
 	briskLemonadeButton = new JButton(briskLemonade);
 	briskLemonadeButton.setBorderPainted(false);
 	briskLemonadeButton.setContentAreaFilled(false);
 	briskLemonadeButton.addActionListener(this);
-		
+
 	briskRaspberryButton = new JButton(briskRaspberry);
 	briskRaspberryButton.setBorderPainted(false);
 	briskRaspberryButton.setContentAreaFilled(false);
@@ -150,67 +152,67 @@ public class VendingGUI extends JPanel implements ActionListener {
 	crushButton.setBorderPainted(false);
 	crushButton.setContentAreaFilled(false);
 	crushButton.addActionListener(this);
-		 
+
 	codeRedButton = new JButton(codeRed);
 	codeRedButton.setBorderPainted(false);
 	codeRedButton.setContentAreaFilled(false);
 	codeRedButton.addActionListener(this);
-		
+
 	dietPepsiButton = new JButton(dietPepsi);
 	dietPepsiButton.setBorderPainted(false);
 	dietPepsiButton.setContentAreaFilled(false);
 	dietPepsiButton.addActionListener(this);
-		
+
 	briskHalfButton = new JButton(briskHalf);
 	briskHalfButton.setBorderPainted(false);
 	briskHalfButton.setContentAreaFilled(false);
 	briskHalfButton.addActionListener(this);
-		
+
 	briskTeaButton = new JButton(brisk);
 	briskTeaButton.setBorderPainted(false);
 	briskTeaButton.setContentAreaFilled(false);
 	briskTeaButton.addActionListener(this);
-		
+
 	wildCherryButton = new JButton(cherry);
 	wildCherryButton.setBorderPainted(false);
 	wildCherryButton.setContentAreaFilled(false);
 	wildCherryButton.addActionListener(this);
-	
+
 	pepsiMaxButton = new JButton(max);
 	pepsiMaxButton.setBorderPainted(false);
 	pepsiMaxButton.setContentAreaFilled(false);
 	pepsiMaxButton.addActionListener(this);
-		
+
 	dietDewButton = new JButton(dewDiet);
 	dietDewButton.setBorderPainted(false);
 	dietDewButton.setContentAreaFilled(false);
 	dietDewButton.addActionListener(this);
-		
+
 	masterBriskButton = new JButton(genericBrisk);
 	masterBriskButton.setBorderPainted(false);
 	masterBriskButton.setContentAreaFilled(false);
 	masterBriskButton.addActionListener(this);
-	
+
 	masterPepsiButton = new JButton(p);
 	masterPepsiButton.setBorderPainted(false);
 	masterPepsiButton.setContentAreaFilled(false);
 	masterPepsiButton.addActionListener(this);
-		
+
 	masterDewButton = new JButton(mountainDew);
 	masterDewButton.setBorderPainted(false);
 	masterDewButton.setContentAreaFilled(false);
 	masterDewButton.addActionListener(this);
-		
+
 	briskHome = new JButton(back);
 	briskHome.setBorderPainted(false);
 	briskHome.setContentAreaFilled(false);
 	briskHome.addActionListener(this);
-		
+
 	pepsiHome = new JButton(back);
 	pepsiHome.setBorderPainted(false);
 	pepsiHome.setContentAreaFilled(false);
 	pepsiHome.addActionListener(this);
-		
+
 	dewHome = new JButton(back);
 	dewHome.setBorderPainted(false);
 	dewHome.setContentAreaFilled(false);
@@ -227,65 +229,65 @@ public class VendingGUI extends JPanel implements ActionListener {
 	    cancelArray[i].setBorderPainted(false);
 	    cancelArray[i].setContentAreaFilled(false);
 	    cancelArray[i].addActionListener(this);
-			
+
 	    switch(i) {
 	    case 0:
 		sodaOption[i] = new JLabel(mountainDew);
 		break;
-				
+
 	    case 1:
-		sodaOption[i] = new JLabel(mug);			
+		sodaOption[i] = new JLabel(mug);
 		break;
-				
+
 	    case 2:
-		sodaOption[i] = new JLabel(pepsi);			
+		sodaOption[i] = new JLabel(pepsi);
 		break;
-				
+
 	    case 3:
 		sodaOption[i] = new JLabel(briskLemonade);			
 		break;
-				
+
 	    case 4:
 		sodaOption[i] = new JLabel(briskRaspberry);		
 		break;
-				
+
 	    case 5:
 		sodaOption[i] = new JLabel(crush);			
 		break;
-				
+
 	    case 6:
 		sodaOption[i] = new JLabel(codeRed);			
 		break;
-				
+
 	    case 7:
 		sodaOption[i] = new JLabel(dietPepsi);			
 		break;
-				
+
 	    case 8:
 		sodaOption[i] = new JLabel(briskHalf);			
 		break;
-				
+
 	    case 9:
 		sodaOption[i] = new JLabel(brisk);			
 		break;
-				
+
 	    case 10:
 		sodaOption[i] = new JLabel(cherry);		
 		break;
-				
+
 	    case 11:
 		sodaOption[i] = new JLabel(max);			
 		break;
-				
+
 	    case 12:
 		sodaOption[i] = new JLabel(dewDiet);			
 		break;
 	    }
 	    pay[i] = new JLabel(sure);
-			
+
 	    payPanels[i] = new JPanel();
 	    payPanels[i].setLayout(new BorderLayout());
-			
+
 	    //Add the combined attributes to the payPanels
 	    payPanels[i].add(pay[i], BorderLayout.NORTH);
 	    payPanels[i].add(sodaOption[i], BorderLayout.CENTER);
@@ -296,19 +298,19 @@ public class VendingGUI extends JPanel implements ActionListener {
 	menuPanel = new JPanel();
 	menuPanel.setLayout(new FlowLayout());
 	menuPanel.setBackground(Color.white);
-	
+
 	briskPanel = new JPanel();
 	briskPanel.setLayout(new FlowLayout());
 	briskPanel.setBackground(Color.white);
-	
+
 	pepsiPanel = new JPanel();
 	pepsiPanel.setLayout(new FlowLayout());
 	pepsiPanel.setBackground(Color.white);
-	
+
 	mountainDewPanel = new JPanel();
 	mountainDewPanel.setLayout(new FlowLayout());
 	mountainDewPanel.setBackground(Color.white);
-		
+
 	waitPanel = new JPanel();
 	waitPanel.setLayout(new FlowLayout());
 	waitPanel.setBackground(Color.white);
@@ -316,13 +318,13 @@ public class VendingGUI extends JPanel implements ActionListener {
 	noSodaPanel = new JPanel();
 	noSodaPanel.setLayout(new BorderLayout());
 	noSodaPanel.setBackground(Color.white);
-	
+
 	cards = new CardLayout();
 
 	//Add all the cards to the display
 	this.setLayout(cards);
 	this.setBackground(Color.blue);
-		
+
 	this.add(menuPanel, "MenuPanel");
 	this.add(briskPanel, "BriskPanel");
 	this.add(pepsiPanel, "PepsiPanel");
@@ -332,33 +334,33 @@ public class VendingGUI extends JPanel implements ActionListener {
 
 	for(int j = 0; j < 13; j++)
 	    this.add(payPanels[j], j + "");
-		
+
 	//Add all the buttons to all the cards
 	cards.show(this, "MenuPanel");		
-		
+
 	briskPanel.add(briskHome);
 	briskPanel.add(briskLemonadeButton);
 	briskPanel.add(briskRaspberryButton);
 	briskPanel.add(briskHalfButton);			
 	briskPanel.add(briskTeaButton);
-		
+
 	pepsiPanel.add(pepsiHome);
 	pepsiPanel.add(pepsiButton);
 	pepsiPanel.add(dietPepsiButton);
 	pepsiPanel.add(wildCherryButton);
 	pepsiPanel.add(pepsiMaxButton);
-		
+
 	mountainDewPanel.add(dewHome);
 	mountainDewPanel.add(mountainDewButton);
 	mountainDewPanel.add(codeRedButton);
 	mountainDewPanel.add(dietDewButton);
-		
+
 	menuPanel.add(mugButton);
 	menuPanel.add(crushButton);
 	menuPanel.add(masterPepsiButton);
 	menuPanel.add(masterBriskButton);
 	menuPanel.add(masterDewButton);
-		
+
 	waitPanel.add(flipLabel, BorderLayout.CENTER);	
 
 	noSodaPanel.add(noSodaLabel, BorderLayout.NORTH);
@@ -418,26 +420,32 @@ public class VendingGUI extends JPanel implements ActionListener {
 	    retVal = Soda.EMPTY;
 	    break;
 	}
-	
+
 	can = Soda.EMPTY;
 	return retVal;
     }
 
-    /**
-     * Methods for main to use to communicate.
-     */
-    public void setFoundStatus(byte status) {
-	sodaExists = status;
-    }
+		/**
+		 * Methods for main to use to communicate.
+		 */
+		public void setFoundStatus(byte status) {
+				sodaExists = status;
+		}
 
-    public void setReceivedStatus(boolean status) {
-	receivedMoney = status;
-    }
-    
-    public boolean getMoneyStatus() {
-	return needMoney;
-    }
-    
+		public void setReceivedStatus(boolean status) {
+				receivedMoney = status;
+		}
+
+		public boolean getMoneyStatus() {
+				return needMoney;
+		}
+
+		public boolean getCancelStatus() {
+				boolean cancel = cancelled;
+				cancelled = false;
+				return cancel;
+		}
+
     /**
      * Deals with all actions.
      */
@@ -452,7 +460,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		    System.err.println(error);
 		}
 	    }
-	    
+
 	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "0");
 		needMoney = true;
@@ -632,7 +640,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		    System.err.println(error);
 		}
 	    }
-	    
+
 	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "9");
 		needMoney = true;
@@ -652,7 +660,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		    System.err.println(error);
 		}
 	    }
-	    
+
 	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "10");
 		needMoney = true;
@@ -692,7 +700,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		    System.err.println(error);
 		}
 	    }
-	    
+
 	    if(sodaExists == 1) {
 		cards.show(VendingGUI.this, "12");
 		needMoney = true;
@@ -731,6 +739,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 		((JButton)e.getSource()).equals(cancelArray[12])) {
 	    cards.show(VendingGUI.this, "MenuPanel");
 	    needMoney = false;
+		cancelled = true;
 	}
 	else {
 	    System.out.println("Uncaught event. The event was: " + (JButton)e.getSource());
