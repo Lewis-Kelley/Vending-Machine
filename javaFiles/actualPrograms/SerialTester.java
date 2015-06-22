@@ -13,12 +13,12 @@ public class SerialTester {
 		    try {Thread.sleep(1000000);} catch (InterruptedException ie) {}
 		}
 	    };
-	t.start();
-	for(short ct = 0; ct < 100; ct++) {
+	    t.start();
+	    for(short ct = 0; ct < 10; ct++) {
 	    //while(true) {
 	    serial.send("STRT");
 	    try {Thread.sleep(50);} catch (InterruptedException ie) {}
-	}
+	    }
 
 	System.out.println("Started");
     }

@@ -12,22 +12,22 @@ exclusive.
 |(STRT)  |(STRT)  |
 |-----------------|
 |        |  Need  |
-| 	     |  Money |
-|	     | (NMNY) |
+| 	 |  Money |
+|	 | (NMNY) |
 |-----------------|
 | Got    | Cancel |
 | Money  |  	  |
 | (GMNY) | (CNCL) |
 |-----------------|
-|	     | Coords |
-|	     | 	      |
-|	     | (#---) |
+|	 | Coords |
+|	 | 	  |
+|	 | (#---) |
 |-----------------|
-|Finished|	      |
-|Delivery|	      |
-| (FNDL) |	      |
+|Finished|	  |
+|Delivery|	  |
+| (FNDL) |	  |
 |-----------------|
 | Error  | Inter- |
-| 	     | rupt	  |
+| 	 | rupt	  |
 | (STOP) | (STOP) |
 -------------------

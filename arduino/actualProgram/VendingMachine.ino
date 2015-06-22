@@ -2,17 +2,17 @@
 #include <Servo.h>
 
 const int TIME_DELAY = 200;
-const int BUF_SIZE = 256;
+const int BUF_SIZE = 4;
 
 const int STEPPER_MAIN = 9;
 const int STEPPER_DIR  = 8;
 
 const int MONEY_HOLDER_SIZE = 10;
 
-const int BACK_LIM_SWITCH = 2;
-const int FRONT_LIM_SWITCH = 3;
-const int MONEY_MCH_OUTPUT = 4;
-const int MONEY_MCH_INPUT = 5;
+const int MONEY_MCH_INPUT = 2;
+const int MONEY_MCH_OUTPUT = 3;
+const int BACK_LIM_SWITCH = 4;
+const int FRONT_LIM_SWITCH = 5;
 
 bool start; //Variable to check communications at startup
 bool cont; //Variable to control if the program should halt
@@ -41,7 +41,8 @@ bool acceptMoney;
  * Called once to set everything up.
  */
 void setup() {
-	start = false;
+    //cont = true;
+    start = false;
 
     Serial.begin(9600);
     // set the PWM and brake pins so that the direction pins  // can be used to control the motor:
@@ -63,25 +64,31 @@ void setup() {
     far.attach(11);
 
     acceptMoney = false;
+    resetHolder();
+    
+    bufLen = 0;
 }
 
 /**
  * Called every tick. Place a delay if need be.
  */
 void loop() {
-		if(cont && start) {
-				if(acceptMoney) {
-						digitalWrite(MONEY_MCH_OUTPUT, HIGH);
-						checkForMoney();
-				} else
-						digitalWrite(MONEY_MCH_OUTPUT, LOW);
-		}
+    digitalWrite(MONEY_MCH_INPUT, HIGH);
+    
+    if(start && cont) {
+        if(acceptMoney) {
+	    digitalWrite(MONEY_MCH_OUTPUT, HIGH);
+	    checkForMoney();
+	} else
+	    digitalWrite(MONEY_MCH_OUTPUT, LOW);
+     }
 }
 
 /**
  * Handles reading from serial.
  */
 void serialEvent() {
+    //Serial.println("In serialEvent");
     char c;
     while (Serial.available() && bufLen < BUF_SIZE) {
 	c = (char)Serial.read();
@@ -100,32 +107,46 @@ void serialEvent() {
  * the transmitted code.
  */
 void readMsg() {
-    if(((String)commBuffer).equals("STOP"))
+    if(((String)commBuffer).indexOf("STOP") >= 0) {
+        Serial.println("Stopping");
 	cont = false;
-    else if (((String)commBuffer).equals("STRT")) {
+        clearCommBuffer();
+    }
+    else if (((String)commBuffer).indexOf("STRT") >= 0) {
         start = true;
+        cont = true;
         Serial.println("STRT");
+        clearCommBuffer();
     }
     else if(commBuffer[0] == '#') {
 	
+        clearCommBuffer();
     }
-    else if(((String)commBuffer).equals("NMNY")) {
+    else if(((String)commBuffer).indexOf("NMNY") >= 0) {
 	Serial.println("Acknowledged need money");
 	acceptMoney = true;
+        clearCommBuffer();
     }
-    else if(((String)commBuffer).equals("CNCL")) {
+    else if(((String)commBuffer).indexOf("CNCL") >= 0) {
 	Serial.print("Acknowledged cancel");
 	acceptMoney = false;
+        clearCommBuffer();
+    }
+    else if(bufLen == 4) {
+        Serial.print("Couldn't recognize ");
+        Serial.println((String)commBuffer);
+        clearCommBuffer();
     }
 }
 
 /**
- * Sends string back to the computer.
+ * Clears commBuffer.
  */
-void sendString(String s) {
-    Serial.println(s);
+void clearCommBuffer() {
+    for(short i = 0; i < BUF_SIZE; i++)
+        commBuffer[i] = NULL;
+    bufLen = 0;
 }
-
 
 /**
  * Checks for money to be added.
@@ -133,26 +154,11 @@ void sendString(String s) {
  */
 void checkForMoney() {
     updateHolder();
+    
     if(sumHolder() < 7) {
 	resetHolder();
 	Serial.println("GMNY");
 	acceptMoney = false;
-    }
-}
-
-/**
- * Waits for a $1 bill to be entered.
- */
-void waitForMoney() {
-    while(true) {
-	digitalWrite(MONEY_MCH_OUTPUT, HIGH);
-
-	updateHolder();
-
-	if(sumHolder() < 7)
-	    break;
-
-	delay(15);
     }
 }
 

@@ -425,27 +425,27 @@ public class VendingGUI extends JPanel implements ActionListener {
 	return retVal;
     }
 
-		/**
-		 * Methods for main to use to communicate.
-		 */
-		public void setFoundStatus(byte status) {
-				sodaExists = status;
-		}
-
-		public void setReceivedStatus(boolean status) {
-				receivedMoney = status;
-		}
-
-		public boolean getMoneyStatus() {
-				return needMoney;
-		}
-
-		public boolean getCancelStatus() {
-				boolean cancel = cancelled;
-				cancelled = false;
-				return cancel;
-		}
-
+    /**
+     * Methods for main to use to communicate.
+     */
+    public void setFoundStatus(byte status) {
+	sodaExists = status;
+    }
+    
+    public void setReceivedStatus(boolean status) {
+	receivedMoney = status;
+    }
+    
+    public boolean getMoneyStatus() {
+	return needMoney;
+    }
+    
+    public boolean getCancelStatus() {
+	boolean cancel = cancelled;
+	cancelled = false;
+	return cancel;
+    }
+    
     /**
      * Deals with all actions.
      */
