@@ -54,7 +54,6 @@ public class VendingMachineRunner {
 	do {
 	    serial.send("STRT");
 	    input = serial.getLine();
-	    System.out.print(input);
 	    try {Thread.sleep(50);} catch (InterruptedException ie) {}
 	} while(!input.equals("STRT"));
 
@@ -122,6 +121,8 @@ public class VendingMachineRunner {
 	if(vGUI.getMoneyStatus()) { //If at pay screen
 	    if(input.equals("GMNY")) {
 		vGUI.setReceivedStatus(true);
+		inv.removeSoda(coord);
+		serial.send("#" + coord.x + "" + coord.y + "" + coord.z);
 		return;
 	    }
 
