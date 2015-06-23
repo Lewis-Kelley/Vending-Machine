@@ -7,6 +7,8 @@ const int BUF_SIZE = 4;
 const int STEPPER_MAIN = 9;
 const int STEPPER_DIR  = 8;
 
+const int STEPS_PER_COLUMN = 50;
+
 const int MONEY_HOLDER_SIZE = 10;
 
 const int MONEY_MCH_INPUT = 2;
@@ -65,7 +67,7 @@ void setup() {
 
     acceptMoney = false;
     resetHolder();
-    
+
     bufLen = 0;
 }
 
@@ -74,7 +76,7 @@ void setup() {
  */
 void loop() {
     digitalWrite(MONEY_MCH_INPUT, HIGH);
-    
+
     if(start && cont) {
         if(acceptMoney) {
 	    digitalWrite(MONEY_MCH_OUTPUT, HIGH);
@@ -111,28 +113,30 @@ void readMsg() {
         Serial.println("Stopping");
 	cont = false;
         clearCommBuffer();
-    }
-    else if (((String)commBuffer).indexOf("STRT") >= 0) {
+    } else if (((String)commBuffer).indexOf("STRT") >= 0) {
         start = true;
         cont = true;
         Serial.println("STRT");
         clearCommBuffer();
-    }
-    else if(commBuffer[0] == '#') {
-	
-        clearCommBuffer();
-    }
-    else if(((String)commBuffer).indexOf("NMNY") >= 0) {
+    } else if(commBuffer[0] == '#') {
+	railToPos(commBuffer[1]);
+	setArms((int)commBuffer[2], (int)commBuffer[3]);
+	armsReturnHome();
+
+	railToBack();
+	armsToDropoff();
+	armsReturnHome();
+
+	clearCommBuffer();
+    } else if(((String)commBuffer).indexOf("NMNY") >= 0) {
 	Serial.println("Acknowledged need money");
 	acceptMoney = true;
         clearCommBuffer();
-    }
-    else if(((String)commBuffer).indexOf("CNCL") >= 0) {
+    } else if(((String)commBuffer).indexOf("CNCL") >= 0) {
 	Serial.print("Acknowledged cancel");
 	acceptMoney = false;
         clearCommBuffer();
-    }
-    else if(bufLen == 4) {
+    } else if(bufLen == 4) {
         Serial.print("Couldn't recognize ");
         Serial.println((String)commBuffer);
         clearCommBuffer();
@@ -154,7 +158,7 @@ void clearCommBuffer() {
  */
 void checkForMoney() {
     updateHolder();
-    
+
     if(sumHolder() < 7) {
 	resetHolder();
 	Serial.println("GMNY");
@@ -169,16 +173,16 @@ void checkForMoney() {
 void updateHolder() {
     for(short i = MONEY_HOLDER_SIZE - 1; i > 0; i--)
 	moneyHolder[i] = moneyHolder[i - 1];
-  
+
     moneyHolder[0] = digitalRead(MONEY_MCH_INPUT);
 }
 
 /**
  * Returns the total sum of holder.
  */
-short  sumHolder() {
+short sumHolder() {
     short sum = 0;
-    
+
     for(short i = 0; i < 10; i++)
 	sum += moneyHolder[i];
 
@@ -191,13 +195,13 @@ void resetHolder() {
 }
 
 /**
- * Moves stepper back until the limit switch is triggered.
+ * Moves stepper back until the back limit switch is triggered.
  */
-void railReturnHome() {
+void railToBack() {
     digitalWrite(STEPPER_DIR, HIGH);
 
     while(true) {
-	if(analogRead(1) > 950)
+	if(analogRead(BACK_LIM_SWITCH) > 950)
 	    break;
 
 	for(short i = 0; i < 10; i++) {
@@ -210,18 +214,51 @@ void railReturnHome() {
 }
 
 /**
- * Steps the steppers forward for a set value.
- * Value 0 is home position.
+ * Steps the steppers forward for a set coordinate.
+ * Value 0 is home position, value 4 is front position.
  */
-void railToPos(int value) {
+void railToPos(short value) {
     digitalWrite(STEPPER_DIR, LOW);
 
-    for(short i = 0; i < value; i++) {
+    if(value == 0)
+	return;
+    else if(value == 4) {
+	railToFront();
+	return;
+    }
+
+    for(short i = 0; i < value * STEPS_PER_COLUMN; i++) {
 	digitalWrite(STEPPER_MAIN, LOW);
 	delayMicroseconds(TIME_DELAY);
 	digitalWrite(STEPPER_MAIN, HIGH);
 	delayMicroseconds(TIME_DELAY);
     }
+}
+
+/**
+ * Moves the stepper forward until the front limit switch is triggered.
+ */
+void railToFront() {
+    digitalWrite(STEPPER_DIR, LOW);
+
+    while(true) {
+        if(analogRead(FRONT_LIM_SWITCH) > 950)
+	    break;
+
+	for(short i = 0; i < 10; i++) {
+	    digitalWrite(STEPPER_MAIN, LOW);
+	    delayMicroseconds(TIME_DELAY);
+	    digitalWrite(STEPPER_MAIN, HIGH);
+	    delayMicroseconds(TIME_DELAY);
+	}
+    }
+}
+
+/**
+ * Takes the y and z portions of a coordinate and calls the necessary methods to grab the can at that position.
+ */
+void armsToCoordinate(int y, int z) {
+
 }
 
 /**
@@ -242,9 +279,7 @@ void armsToDropoff() {
  * Moves arms to 3 values. First is central arm, and so on.
  */
 void setArms(int first, int second, int third) { //May need to stagger into steps so the arms don't bang against the sides.
-    center.writeMicroseconds(first);
-    middle.writeMicroseconds(second);
-    far.writeMicroseconds(third);
+
 }
 
 /**

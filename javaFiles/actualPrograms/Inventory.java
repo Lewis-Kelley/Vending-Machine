@@ -5,11 +5,11 @@ class Inventory {
     private final int COLUMNS = 5;
 
     private String fileVar;
-	
+
     private PrintWriter reader; //The object that will read from and write to the file
-    
+
     private Soda[][][] inv; //The array that actually holds the current inventory
-	
+
     /**
      * Initializes reader and each element in the array to Soda.EMPTY.
      */
@@ -48,17 +48,17 @@ class Inventory {
 
 	if(retVal == null)
 	    return null;
-	
+
 	inv[retVal.x][retVal.y][retVal.z] = Soda.EMPTY;
 	updateFile();
 	return retVal;
     }
-    
+
     /**
      * Returns true if the can at the given coordinates existed, else returns false
      */
     public boolean removeSoda(Coordinate coord) {
-	if(inv[coord.x][coord.y][coord.z] == Soda.EMPTY) 
+	if(inv[coord.x][coord.y][coord.z] == Soda.EMPTY)
 	    return false;
 	else {
 	    inv[coord.x][coord.y][coord.z] = Soda.EMPTY;
@@ -66,7 +66,7 @@ class Inventory {
 	    return true;
 	}
     }
-    
+
     /**
      * Adds a given soda to a given coordinate
      */
@@ -77,7 +77,7 @@ class Inventory {
 	} else
 	    return false;
     }
-    
+
     /**
      * Returns Coordinate if can was found, returns null if it couldn't find it
      */
@@ -89,7 +89,7 @@ class Inventory {
 			return new Coordinate(ctX, ctY, ctZ);
 	return null;
     }
-    
+
     /**
      * Updates file with the current status of the inventory
      */
@@ -97,7 +97,7 @@ class Inventory {
 	PrintWriter writer;
 
 	reader.close();
-	
+
 	try {
 	    writer = new PrintWriter(new FileWriter(fileVar, false));
 	} catch(Exception e) {
@@ -121,7 +121,7 @@ class Inventory {
 	    System.out.println("PrintWriter failed to open");
 	}
     }
-    
+
     /**
      * Reads data from file into current inventory
      */
@@ -133,10 +133,10 @@ class Inventory {
 	    System.out.println("Failed to read from file");
 	    data = null;
 	}
-	
+
 	short lastIndex = 0; //Start of substring
 	short newIndex = 0; //End of substring
-	
+
 	for(short column = 0; column < COLUMNS; column++)
 	    for(short row = 0; row < ROWS; row++) {
 		while(data.charAt(newIndex) != ' ') //Waits to see a space
@@ -144,7 +144,7 @@ class Inventory {
 		inv[column][row][0] = Soda.valueOf(data.substring(lastIndex, newIndex)); //Puts the substring between the last space and the next one into inv
 		lastIndex = ++newIndex;
 	    }
-	
+
 	for(short column = 0; column < COLUMNS; column++)
 	    for(short row = 0; row < ROWS; row++) {
 		while(data.charAt(newIndex) != ' ') //Waits to see a space
@@ -152,9 +152,9 @@ class Inventory {
 		inv[column][row][1] = Soda.valueOf(data.substring(lastIndex, newIndex)); //Puts the substring between the last space and the next one into inv
 		lastIndex = ++newIndex;
 	    }
-	
+
     }
-    
+
     /**
      * Returns the full contents of a given file as a String
      * (Stolen from internet)
@@ -164,7 +164,7 @@ class Inventory {
 	try {
 	    StringBuilder sb = new StringBuilder();
 	    String line = br.readLine();
-	    
+
 	    while (line != null) {
 		sb.append(line);
 		sb.append("\n");
@@ -181,7 +181,7 @@ class Inventory {
      */
     public String toString() {
 	String retVal = "";
-	
+
 	for(short ctZ = 0; ctZ < 2; ctZ++) {
 	    for(short ctY = 0; ctY < ROWS; ctY++) {
 		for(short ctX = 0; ctX < COLUMNS; ctX++)
@@ -190,7 +190,7 @@ class Inventory {
 	    }
 	    retVal += "\n ---\n";
 	}
-	
+
 	return retVal;
     }
 }
