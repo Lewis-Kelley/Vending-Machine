@@ -1,11 +1,11 @@
 * Software
 ** Internals
-*** TODO Main [2/5]
+*** TODO Main [4/5]
     - [X] Implement Inventory
     - [X] Implement GUI
-    - [ ] Implement communications to arduino
+    - [X] Implement communications to arduino
     - [ ] Create main loop
-    - [ ] Implement money machine communications
+    - [X] Implement money machine communications
 
 
 *** DONE Inventory [3/3]
@@ -15,11 +15,11 @@
 
 
 *** TODO GUI [2/4]
-    - [-] Create all necessary cards [4/6]
+    - [-] Create all necessary cards [5/6]
       - [X] Menu cards
       - [X] Confirm card
       - [X] Waiting card
-      - [ ] Soda not found card
+      - [X] Soda not found card
       - [X] Paying card
       - [ ] Disabled card
     - [X] Create communication back to main
@@ -29,15 +29,15 @@
 
 *** TODO Communications [1/3]
     - [X] Establish communications
-    - [ ] Implement all necessary communications from Arduino to Computer
-      - [ ] Start
-      - [ ] Received money
+    - [-] Implement all necessary communications from Arduino to Computer
+      - [X] Start
+      - [X] Received money
       - [ ] Finished delivery
       - [ ] Error
-    - [ ] Implement all necessary communications from Computer to Arduino
-      - [ ] Start
-      - [ ] Accept money
-      - [ ] Stop accepting money
+    - [-] Implement all necessary communications from Computer to Arduino
+      - [X] Start
+      - [X] Accept money
+      - [X] Stop accepting money
       - [ ] Coordinates
       - [ ] Interrupt
       
@@ -89,17 +89,17 @@
    - [ ] Wire servos
      
 
-** TODO Mechanics [2/4]
+** TODO Mechanics [3/4]
    - [ ] Assemble arm
    - [X] Assemble rails
    - [X] Assemble steppers and belt system
-   - [ ] Build can chute and hatch
+   - [X] Build can chute and hatch
 
 
-** TODO Structure [2/6]
+** TODO Structure [3/6]
    - [X] Build the basic structure
    - [X] Build the soda can racks
    - [ ] Install acrylic
    - [ ] Install all electronics, PC, and Arduino
-   - [ ] Install cooling system
+   - [X] Install cooling system
    - [ ] Make it look pretty
