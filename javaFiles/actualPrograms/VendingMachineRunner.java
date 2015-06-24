@@ -122,7 +122,7 @@ public class VendingMachineRunner {
 	    if(input.equals("GMNY")) {
 		vGUI.setReceivedStatus(true);
 		inv.removeSoda(coord);
-		serial.send("#" + coord.x + "" + coord.y + "" + coord.z);
+		serial.send("#" + coord.x + "" + coord.y + "" + coord.z); //Might be problematic
 		return;
 	    }
 

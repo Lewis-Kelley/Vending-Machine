@@ -18,8 +18,8 @@ public class SerialMerge implements SerialPortEventListener {
 	"/dev/ttyACM0", // Raspberry Pi
 	"/dev/ttyUSB0", // Linux
 	"/dev/ttyS0", //Also for Linux
-	"COM3", // Windows
-	"COM8" //Also Windows
+	"COM6", // Windows
+	"COM7" //Also Windows
     };
 
 
