@@ -8,11 +8,8 @@ import java.awt.Font;
 import javax.swing.plaf.FontUIResource;
 
 public class VendingMachineRunner {
-    public enum State { MENU, DELIVERING, DELIVERED, DISABLED };
-
     private static boolean cont;
 
-    private State state;
     private Coordinate coord;
     private Inventory inv;
 
@@ -28,7 +25,6 @@ public class VendingMachineRunner {
     public VendingMachineRunner() {
 	cont = true;
 
-	state = State.MENU;
 	coord = null;
 	inv = new Inventory(true);
 
@@ -65,20 +61,8 @@ public class VendingMachineRunner {
 
 	while(cont) {
 	    vmr.getInput();
-	    switch(vmr.getState()) {
-	    case MENU:
-		vmr.menu();
-		break;
-	    case DELIVERING:
-		vmr.delivering();
-		break;
-	    case DELIVERED:
-		vmr.delivered();
-		break;
-	    case DISABLED:
-		vmr.disabled();
-		break;
-	    }
+
+	    vmr.run();
 
 	    try {
 		Thread.sleep(500);
@@ -88,25 +72,7 @@ public class VendingMachineRunner {
 	}
     }
 
-    /**
-     * Changes the state to the given value.
-     */
-    public void setState(State nState) {
-	state = nState;
-    }
-
-    /**
-     * Gets the current state of the machine.
-     */
-    public State getState() {
-	return state;
-    }
-
-    /**
-     * Ends when option selected.
-     * If timeout is reached, return to sleeping state.
-     */
-    private void menu() {
+    private void run() {
 	selCan = vGUI.getSoda();
 
 	if(!selCan.equals(Soda.EMPTY)) {
@@ -132,34 +98,6 @@ public class VendingMachineRunner {
 	if(vGUI.getCancelStatus()) {
 	    serial.send("CNCL");
 	}
-
-    }
-
-    /**
-     * Changes screen to waiting.
-     * Moves arms to grab can.
-     * Ends when can reaches customer or timeout is reached.
-     * Arm will end up in release position, not home position.
-     * If timeout is reached, return money and display "Needs maintainence" and disable.
-     */
-    private void delivering() {
-	//TODO implement
-    }
-
-    /**
-     * Changes screen to "Come again" and moves arm back to home position.
-     * Ends when arm reaches home position or when timeout is reached.
-     * If timeout is reached, display "Needs maintainence" and disable.
-     */
-    private void delivered() {
-	//TODO implement
-    }
-
-    /**
-     * Display "Needs maintaince" never leave state until rebooted.
-     */
-    private void disabled() {
-	//TODO implement
     }
 
     private void getInput() {
