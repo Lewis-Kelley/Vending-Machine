@@ -16,7 +16,7 @@ public class VendingMachineRunner {
     private Soda selCan;
 
     private JFrame gui;
-    private VendingGUI vGUI;
+    private static VendingGUI vGUI;
 
     private SerialMerge serial;
 
@@ -69,6 +69,8 @@ public class VendingMachineRunner {
 		System.err.println(e);
 	    }
 	}
+
+	vGUI.setIsDisabled(true);
     }
 
     private void run() {
@@ -99,13 +101,13 @@ public class VendingMachineRunner {
 	}
 
 	if(input.equals("FNDL")) {
-		vGUI.setFinishedDelivery(true);
+	    vGUI.setFinishedDelivery(true);
 	}
     }
 
-	private void getInput() {
-		input = serial.getLine();
-		if(input.equals("STOP"))
-			cont = false;
-	}
+    private void getInput() {
+	input = serial.getLine();
+	if(input.equals("STOP"))
+	    cont = false;
     }
+}

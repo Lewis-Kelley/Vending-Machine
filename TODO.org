@@ -27,13 +27,13 @@
     - [ ] Confirm soda list
 
 
-*** TODO Communications [1/3]
+*** TODO Communications [2/3]
     - [X] Establish communications
-    - [-] Implement all necessary communications from Arduino to Computer
+    - [X] Implement all necessary communications from Arduino to Computer
       - [X] Start
       - [X] Received money
       - [X] Finished delivery
-      - [ ] Error
+      - [X] Error
     - [-] Implement all necessary communications from Computer to Arduino
       - [X] Start
       - [X] Accept money
