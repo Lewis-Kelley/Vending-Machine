@@ -70,7 +70,7 @@ public class VendingMachineRunner {
 	    }
 	}
 
-	vGUI.setIsDisabled(true);
+	vGUI.showDisabled();
     }
 
     private void run() {

@@ -8,19 +8,6 @@ import java.awt.Font;
 import javax.swing.plaf.FontUIResource;
 
 public class VendingGUI extends JPanel implements ActionListener {
-    private class CheckForDisabled implements Runnable {
-	public void run() {
-	    while(!isDisabled)
-		try {
-		    Thread.sleep(1000);
-		} catch(Exception e) {
-		    System.err.println("Error waiting in CheckForDisabled");
-		}
-
-	    cards.show(VendingGUI.this, "DisabledPanel");
-	}
-    }
-
     private class AnimatedRunner implements Runnable {
 	public void run() {
 	    cards.show(VendingGUI.this, "WaitPanel");
@@ -109,7 +96,6 @@ public class VendingGUI extends JPanel implements ActionListener {
     private boolean receivedMoney;
     private boolean cancelled;
     private boolean finishedDelivery;
-    private boolean isDisabled;
 
     public void setUp() {
 	this.setPreferredSize(new Dimension(1024, 768));
@@ -139,7 +125,6 @@ public class VendingGUI extends JPanel implements ActionListener {
 	receivedMoney = false;
 	cancelled = false;
 	finishedDelivery = false;
-	isDisabled = false;
 
 	//Initialize all the buttons
 	mountainDewButton = new JButton(mountainDew);
@@ -391,8 +376,6 @@ public class VendingGUI extends JPanel implements ActionListener {
 	noSodaPanel.add(noSodaBackButton, BorderLayout.SOUTH);
 
 	disabledPanel.add(disabledLabel, BorderLayout.CENTER);
-
-	(new Thread(new CheckForDisabled())).start();
     }
 
     /**
@@ -468,8 +451,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	finishedDelivery = status;
     }
 
-    public void setIsDisabled(boolean status) {
-	isDisabled = true;
+    public void showDisabled() {
+	cards.show(VendingGUI.this, "DisabledPanel");
     }
 
     public boolean getMoneyStatus() {
