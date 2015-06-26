@@ -61,7 +61,6 @@ public class VendingMachineRunner {
 
 	while(cont) {
 	    vmr.getInput();
-
 	    vmr.run();
 
 	    try {
@@ -98,11 +97,15 @@ public class VendingMachineRunner {
 	if(vGUI.getCancelStatus()) {
 	    serial.send("CNCL");
 	}
+
+	if(input.equals("FNDL")) {
+		vGUI.setFinishedDelivery(true);
+	}
     }
 
-    private void getInput() {
-	input = serial.getLine();
-	if(input.equals("STOP"))
-	    cont = false;
+	private void getInput() {
+		input = serial.getLine();
+		if(input.equals("STOP"))
+			cont = false;
+	}
     }
-}
