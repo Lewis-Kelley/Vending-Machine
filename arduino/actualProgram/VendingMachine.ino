@@ -1,4 +1,18 @@
 #include <Stepper.h>
+#include <PololuMaestro.h>
+
+#ifdef SERIAL_PORT_HARDWARE_OPEN
+    #define maestroSerial SERIAL_PORT_HARDWARE_OPEN
+#else
+    #include <SoftwareSerial.h>
+    SoftwareSerial maestroSerial(10, 11);
+#endif
+
+const int NUM_ROWS = 15;
+
+//Coordinates of the dropoff
+const int DROPOFF_Y = 7; //Guess
+const int DROPOFF_Z = 1;
 
 const int TIME_DELAY = 200;
 const int BUF_SIZE = 4;
@@ -17,6 +31,8 @@ const int STEPPER_MAIN = 9;
 const int BACK_LIM_SWITCH = 1;
 const int FRONT_LIM_SWITCH = 0;
 
+MicroMaestro maestro(maestroSerial); //May need to be MiniMaestro
+
 bool start; //Variable to check communications at startup
 bool cont; //Variable to control if the program should halt
 
@@ -32,9 +48,10 @@ bool acceptMoney;
  * Called once to set everything up.
  */
 void setup() {
-    //cont = true;
     start = false;
 
+    //These two might be mutually exclusive, but I doubt it
+    maestroSerial.begin(9600);
     Serial.begin(9600);
 
     //Initialize MoneyMachine pins
@@ -60,10 +77,10 @@ void setup() {
 void loop() {
     if(start && cont) {
         if(acceptMoney) {
-	          digitalWrite(MONEY_MCH_OUTPUT, HIGH);
-	          checkForMoney();
-	      } else
-	          digitalWrite(MONEY_MCH_OUTPUT, LOW);
+	    digitalWrite(MONEY_MCH_OUTPUT, HIGH);
+	    checkForMoney();
+	} else
+	    digitalWrite(MONEY_MCH_OUTPUT, LOW);
     }
 }
 
@@ -92,7 +109,7 @@ void serialEvent() {
 void readMsg() {
     if(((String)commBuffer).indexOf("STOP") >= 0) {
         Serial.println("Stopping");
-	      cont = false;
+	cont = false;
         clearCommBuffer();
     } else if (((String)commBuffer).indexOf("STRT") >= 0) {
         start = true;
@@ -101,22 +118,24 @@ void readMsg() {
         clearCommBuffer();
     } else if(commBuffer[0] == '#' && commBuffer[3] != NULL) {
         railToPos((byte)commBuffer[1] - 48); //- 48 from ASCII conversion
-	      armsToCoordinate((byte)commBuffer[2] - 48, (byte)commBuffer[3] - 48);
-	      armsReturnHome();
+	armsToCoordinate((byte)commBuffer[2] - 48, (byte)commBuffer[3] - 48);
+	closeClaw();
+	armsReturnHome();
 
-	      railToBack();
-	      armsToDropoff();
-	      armsReturnHome();
+	railToBack();
+	armsToDropoff();
+	openClaw();
+	armsReturnHome();
 
-	      clearCommBuffer();
+	clearCommBuffer();
         Serial.println("FNDL");
     } else if(((String)commBuffer).indexOf("NMNY") >= 0) {
-	      Serial.println("Acknowledged need money");
-	      acceptMoney = true;
+	Serial.println("Acknowledged need money");
+	acceptMoney = true;
         clearCommBuffer();
     } else if(((String)commBuffer).indexOf("CNCL") >= 0) {
-	      Serial.print("Acknowledged cancel");
-	      acceptMoney = false;
+	Serial.print("Acknowledged cancel");
+	acceptMoney = false;
         clearCommBuffer();
     } else if(bufLen == 4) {
         Serial.print("Couldn't recognize ");
@@ -142,9 +161,9 @@ void checkForMoney() {
     updateHolder();
 
     if(sumHolder() < 7) {
-	      resetHolder();
-	      Serial.println("GMNY");
-	      acceptMoney = false;
+	resetHolder();
+	Serial.println("GMNY");
+	acceptMoney = false;
     }
 }
 
@@ -173,7 +192,7 @@ short sumHolder() {
 
 void resetHolder() {
     for(short i = 0; i < MONEY_HOLDER_SIZE; i++)
-      moneyHolder[i] = 1;
+	moneyHolder[i] = 1;
 }
 
 /**
@@ -183,15 +202,15 @@ void railToBack() {
     digitalWrite(STEPPER_DIR, HIGH);
 
     while(true) {
-	      if(analogRead(BACK_LIM_SWITCH) >= 1020)
-	          break;
+	if(analogRead(BACK_LIM_SWITCH) >= 1020)
+	    break;
 
-	      for(short i = 0; i < 10; i++) {
-	          digitalWrite(STEPPER_MAIN, LOW);
-	          delayMicroseconds(TIME_DELAY);
-	          digitalWrite(STEPPER_MAIN, HIGH);
-	          delayMicroseconds(TIME_DELAY);
-	      }
+	for(short i = 0; i < 10; i++) {
+	    digitalWrite(STEPPER_MAIN, LOW);
+	    delayMicroseconds(TIME_DELAY);
+	    digitalWrite(STEPPER_MAIN, HIGH);
+	    delayMicroseconds(TIME_DELAY);
+	}
     }
 }
 
@@ -204,11 +223,11 @@ void railToPos(byte value) {
 
     if(value == 0) {
         railToBack();
-	      return;
+	return;
     }
     else if(value == 4) {
-	      railToFront();
-	      return;
+	railToFront();
+	return;
     }
 
     for(short ct = 0; ct < value * STEPS_PER_COLUMN / 10; ct++) {
@@ -218,10 +237,10 @@ void railToPos(byte value) {
             break;
         }
         for(short i = 0; i < 10; i++) {
-	          digitalWrite(STEPPER_MAIN, LOW);
-	          delayMicroseconds(TIME_DELAY);
-	          digitalWrite(STEPPER_MAIN, HIGH);
-	          delayMicroseconds(TIME_DELAY);
+	    digitalWrite(STEPPER_MAIN, LOW);
+	    delayMicroseconds(TIME_DELAY);
+	    digitalWrite(STEPPER_MAIN, HIGH);
+	    delayMicroseconds(TIME_DELAY);
         }
     }
 }
@@ -234,43 +253,51 @@ void railToFront() {
 
     while(true) {
         if(analogRead(FRONT_LIM_SWITCH) >= 1020)
-	      break;
+	    break;
 
-	      for(short i = 0; i < 10; i++) {
-	          digitalWrite(STEPPER_MAIN, LOW);
-	          delayMicroseconds(TIME_DELAY);
-	          digitalWrite(STEPPER_MAIN, HIGH);
-	          delayMicroseconds(TIME_DELAY);
-	      }
+	for(short i = 0; i < 10; i++) {
+	    digitalWrite(STEPPER_MAIN, LOW);
+	    delayMicroseconds(TIME_DELAY);
+	    digitalWrite(STEPPER_MAIN, HIGH);
+	    delayMicroseconds(TIME_DELAY);
+	}
     }
 }
 
 /**
  * Takes the y and z portions of a coordinate and calls the necessary methods to grab the can at that position.
+ * Assumes that there is one script for each y-z combo and that they are numbered as:
+ * y:z:script
+ * 0:0:0
+ * 1:0:1
+ * 2:0:2
+ * ...
+ * 14:0:14
+ * 0:1:15
+ * 1:1:16
+ * ...
+ * home:30
  */
 void armsToCoordinate(byte y, byte z) {
-    delay(1000);
+    maestro.restartScript(NUM_ROWS * z + y);
+    while(maestro.getScriptStatus() == 0); //Waits for script to finish
+    maestro.stopScript();
 }
 
 /**
  * Moves arms back to home position.
  */
 void armsReturnHome() {
-
+    maestro.restartScript(NUM_ROWS * z + y + 1);
+    while(maestro.getScriptStatus() == 0); //Waits for script to finish
+    maestro.stopScript();
 }
 
 /**
  * Moves arms into dropoff position.
  */
 void armsToDropoff() {
-
-}
-
-/**
- * Moves arms to 3 values. First is central arm, and so on.
- */
-void setArms(int first, int second, int third) { //May need to stagger into steps so the arms don't bang against the sides.
-
+    armsToCoordinate(DROPOFF_Y, DROPOFF_Z);
 }
 
 /**
@@ -284,12 +311,5 @@ void openClaw() {
  * Closes claw.
  */
 void closeClaw() {
-
-}
-
-/**
- * Returns signal to PC saying that the current step is completed.
- */
-void sayFinished() {
 
 }
