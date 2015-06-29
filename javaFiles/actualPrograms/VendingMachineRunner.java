@@ -76,6 +76,9 @@ public class VendingMachineRunner {
     private void run() {
 	selCan = vGUI.getSoda();
 
+	if(input.equals("RSET"))
+	    inv.reset();
+
 	if(!selCan.equals(Soda.EMPTY)) {
 	    coord = inv.findSoda(selCan);
 

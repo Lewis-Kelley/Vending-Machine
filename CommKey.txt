@@ -11,6 +11,10 @@ exclusive.
 |Program |Program |
 |(STRT)  |(STRT)  |
 |-----------------|
+|Reset	 |	  |
+|	 |	  |
+|(RSET)  |	  |
+|-----------------|
 |        |  Need  |
 | 	 |  Money |
 |	 | (NMNY) |

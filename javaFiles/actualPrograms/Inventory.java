@@ -41,6 +41,19 @@ class Inventory {
     }
 
     /**
+     * Reads from DefaultInventory.txt and copies it onto inventory.txt.
+     */
+    public void reset() {
+	String holder = new String(fileVar);
+	fileVar = new String("DefaultInventory.txt");
+
+	readFile();
+
+	fileVar = new String(holder);
+	updateFile();
+    }
+
+    /**
      * Returns the coordinate object of the can if it was removed, returns null if it couldn't find it
      */
     public Coordinate removeSoda(Soda soda) {

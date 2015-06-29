@@ -76,19 +76,26 @@ void setup() {
  */
 void loop() {
     if(start && cont) {
+	if(analogRead(FRONT_LIMIT_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
+	    Serial.println("RSET");
+	    railToPos(1);
+	    railToBack();
+	}
+	
         if(acceptMoney) {
 	    digitalWrite(MONEY_MCH_OUTPUT, HIGH);
 	    checkForMoney();
 	} else
 	    digitalWrite(MONEY_MCH_OUTPUT, LOW);
     }
+
+    delay(500);
 }
 
 /**
  * Handles reading from serial.
  */
 void serialEvent() {
-    //Serial.println("In serialEvent");
     char c;
     while (Serial.available() && bufLen < BUF_SIZE) {
 	c = (char)Serial.read();
