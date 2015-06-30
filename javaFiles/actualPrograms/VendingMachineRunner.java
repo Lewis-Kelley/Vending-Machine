@@ -53,7 +53,12 @@ public class VendingMachineRunner {
 	    try {Thread.sleep(50);} catch (InterruptedException ie) {}
 	} while(!input.equals("STRT"));
 
-	System.out.println("Received start signal from arduino");
+	if(input.equals("STRT")
+	   System.out.println("Received start signal from arduino");
+	else {
+	    System.out.println("Failed to receive start signal. Quitting");
+	    cont = false;
+	}
     }
 
     public static void main(String[] args) {
