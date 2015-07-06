@@ -11,7 +11,7 @@
 const int NUM_ROWS = 15;
 
 //Coordinates of the dropoff
-const int DROPOFF_Y = 7; //Guess
+const int DROPOFF_Y = 9;
 const int DROPOFF_Z = 1;
 
 const int TIME_DELAY = 200;
@@ -24,8 +24,8 @@ const int MONEY_HOLDER_SIZE = 10;
 //Digital
 const int MONEY_MCH_INPUT = 2;
 const int MONEY_MCH_OUTPUT = 3;
-const int STEPPER_DIR = 8;
-const int STEPPER_MAIN = 9;
+const int STEPPER_DIR = 7;
+const int STEPPER_MAIN = 8;
 
 //Analog
 const int BACK_LIM_SWITCH = 1;
@@ -48,15 +48,15 @@ bool acceptMoney;
  * Called once to set everything up.
  */
 void setup() {
-    start = false;
+    //start = false;
 
     //These two might be mutually exclusive, but I doubt it
-    maestroSerial.begin(9600);
+    //maestroSerial.begin(9600);
     Serial.begin(9600);
 
     //Initialize MoneyMachine pins
-    pinMode(MONEY_MCH_OUTPUT, INPUT);
-    pinMode(MONEY_MCH_INPUT, OUTPUT);
+    pinMode(MONEY_MCH_INPUT, INPUT);
+    pinMode(MONEY_MCH_OUTPUT, OUTPUT);
     digitalWrite(MONEY_MCH_INPUT, HIGH);
 
     //Initialize stepper pins
@@ -83,13 +83,15 @@ void loop() {
 	}
 	
         if(acceptMoney) {
+            Serial.println(digitalRead(MONEY_MCH_INPUT));
+            digitalWrite(MONEY_MCH_INPUT, HIGH);
 	    digitalWrite(MONEY_MCH_OUTPUT, HIGH);
 	    checkForMoney();
 	} else
 	    digitalWrite(MONEY_MCH_OUTPUT, LOW);
     }
 
-    delay(500);
+    delay(15);
 }
 
 /**
@@ -119,6 +121,7 @@ void readMsg() {
 	cont = false;
         clearCommBuffer();
     } else if (((String)commBuffer).indexOf("STRT") >= 0) {
+        setup();
         start = true;
         cont = true;
         Serial.println("STRT");
@@ -141,7 +144,7 @@ void readMsg() {
 	acceptMoney = true;
         clearCommBuffer();
     } else if(((String)commBuffer).indexOf("CNCL") >= 0) {
-	Serial.print("Acknowledged cancel");
+	Serial.println("Acknowledged cancel");
 	acceptMoney = false;
         clearCommBuffer();
     } else if(bufLen == 4) {
@@ -286,7 +289,7 @@ void railToFront() {
  * home:30
  */
 void armsToCoordinate(byte y, byte z) {
-    maestro.restartScript(NUM_ROWS * z + y);
+    maestro.restartScript(NUM_ROWS * z + y );
     while(maestro.getScriptStatus() == 0); //Waits for script to finish
     maestro.stopScript();
 }
@@ -295,7 +298,7 @@ void armsToCoordinate(byte y, byte z) {
  * Moves arms back to home position.
  */
 void armsReturnHome() {
-    maestro.restartScript(NUM_ROWS + 9); //Coordinate for dropoff
+    maestro.restartScript(30);
     while(maestro.getScriptStatus() == 0); //Waits for script to finish
     maestro.stopScript();
 }
