@@ -76,7 +76,7 @@ void setup() {
  */
 void loop() {
     if(start && cont) {
-	if(analogRead(FRONT_LIMIT_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
+	if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
 	    Serial.println("RSET");
 	    railToPos(1);
 	    railToBack();
@@ -295,7 +295,7 @@ void armsToCoordinate(byte y, byte z) {
  * Moves arms back to home position.
  */
 void armsReturnHome() {
-    maestro.restartScript(NUM_ROWS * z + y + 1);
+    maestro.restartScript(NUM_ROWS + 9); //Coordinate for dropoff
     while(maestro.getScriptStatus() == 0); //Waits for script to finish
     maestro.stopScript();
 }
