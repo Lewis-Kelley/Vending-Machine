@@ -23,9 +23,9 @@ const int MONEY_HOLDER_SIZE = 10;
 
 //Digital
 const int MONEY_MCH_INPUT = 2;
-const int MONEY_MCH_OUTPUT = 3;
-const int STEPPER_DIR = 7;
-const int STEPPER_MAIN = 8;
+const int MONEY_MCH_OUTPUT = 11;
+const int STEPPER_DIR = 8;
+const int STEPPER_MAIN = 9;
 
 //Analog
 const int BACK_LIM_SWITCH = 1;
@@ -48,7 +48,7 @@ bool acceptMoney;
  * Called once to set everything up.
  */
 void setup() {
-    //start = false;
+    start = false;
 
     //These two might be mutually exclusive, but I doubt it
     //maestroSerial.begin(9600);
@@ -58,6 +58,7 @@ void setup() {
     pinMode(MONEY_MCH_INPUT, INPUT);
     pinMode(MONEY_MCH_OUTPUT, OUTPUT);
     digitalWrite(MONEY_MCH_INPUT, HIGH);
+    digitalWrite(MONEY_MCH_OUTPUT, LOW);
 
     //Initialize stepper pins
     pinMode(STEPPER_MAIN, OUTPUT);
@@ -83,7 +84,7 @@ void loop() {
 	}
 	
         if(acceptMoney) {
-            Serial.println(digitalRead(MONEY_MCH_INPUT));
+            Serial.println("Trying to get money");
             digitalWrite(MONEY_MCH_INPUT, HIGH);
 	    digitalWrite(MONEY_MCH_OUTPUT, HIGH);
 	    checkForMoney();
