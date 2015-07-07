@@ -23,6 +23,7 @@ public class VendingMachineRunner {
     private String input;
 
     private short commCounter = 1; //A counter that is incremented on every tick. Used to prevent the same message from being sent many more times than necessary
+    private short pingCounter = 1000; //A counter to measure how long it's been since the last ping. Pings on 0.
     
     public VendingMachineRunner() {
 	cont = true;
@@ -58,7 +59,7 @@ public class VendingMachineRunner {
 	if(input.equals("STRT"))
 	    System.out.println("Received start signal from arduino");
 	else {
-	    System.out.println("Failed to receive start signal. Quitting");
+	    System.err.println("Failed to receive start signal. Quitting");
 	    cont = false;
 	}
     }
@@ -81,12 +82,24 @@ public class VendingMachineRunner {
     }
 
     private void run() {
+	if(--pingCounter == 0) {
+	    serial.send("PING");
+	    pingCounter = -1;
+	} else if(pingCounter < -100) {
+	    serial.send("STOP");
+	    System.err.println("Arduino failed to respond to PING. Quitting.");
+	    cont= false;
+	}
+	
 	if(--commCounter < 0)
 	    commCounter = 0;
 	selCan = vGUI.getSoda();
 
 	if(input.equals("RSET"))
 	    inv.reset();
+
+	if(input.equals("PONG"))
+	   pingCounter = 1000;
 
 	if(!selCan.equals(Soda.EMPTY)) {
 	    coord = inv.findSoda(selCan);
@@ -122,7 +135,9 @@ public class VendingMachineRunner {
 
     private void getInput() {
 	input = serial.getLine();
-	if(input.equals("STOP"))
+	if(input.equals("STOP")) {
+	    System.err.println("Arduino has signalled all-stop. Quitting.");
 	    cont = false;
+	}
     }
 }

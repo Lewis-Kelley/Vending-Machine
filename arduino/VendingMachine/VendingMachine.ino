@@ -28,8 +28,8 @@ const int STEPPER_DIR = 8;
 const int STEPPER_MAIN = 9;
 
 //Analog
-const int BACK_LIM_SWITCH = 1;
-const int FRONT_LIM_SWITCH = 0;
+const int BACK_LIM_SWITCH = 2;
+const int FRONT_LIM_SWITCH = 1;
 
 MicroMaestro maestro(maestroSerial); //May need to be MiniMaestro
 
@@ -51,7 +51,7 @@ void setup() {
     start = false;
 
     //These two might be mutually exclusive, but I doubt it
-    //maestroSerial.begin(9600);
+    maestroSerial.begin(9600);
     Serial.begin(9600);
 
     //Initialize MoneyMachine pins
@@ -76,19 +76,19 @@ void setup() {
  * Called every tick. Place a delay if need be.
  */
 void loop() {
-    if(start && cont) {
+    if(start && cont) {        
 	      if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
-	      Serial.println("RSET");
-	      railToPos(1);
-	      railToBack();
-	  }
+	          Serial.println("RSET");
+	          railToPos(1);
+	          railToBack();
+	      }
 	
-    if(acceptMoney) {
-        digitalWrite(MONEY_MCH_INPUT, HIGH);
-	      digitalWrite(MONEY_MCH_OUTPUT, HIGH);
-	      checkForMoney();
-	  } else
-	      digitalWrite(MONEY_MCH_OUTPUT, LOW);
+        if(acceptMoney) {
+            digitalWrite(MONEY_MCH_INPUT, HIGH);
+	          digitalWrite(MONEY_MCH_OUTPUT, HIGH);
+	          checkForMoney();
+	      } else
+	          digitalWrite(MONEY_MCH_OUTPUT, LOW);
     }
 
     delay(15);
@@ -100,12 +100,12 @@ void loop() {
 void serialEvent() {
     char c;
     while (Serial.available() && bufLen < BUF_SIZE) {
-	c = (char)Serial.read();
-	if (c == (char)'q') {
-	    sentString = 1;
-	    return;
-	}
-	commBuffer[bufLen++] = c;
+	      c = (char)Serial.read();
+	      if (c == (char)'q') {
+	          sentString = 1;
+	          return;
+	      }
+	      commBuffer[bufLen++] = c;
     }
 
     readMsg();
@@ -118,7 +118,7 @@ void serialEvent() {
 void readMsg() {
     if(((String)commBuffer).indexOf("STOP") >= 0) {
         Serial.println("Stopping");
-	cont = false;
+	      cont = false;
         clearCommBuffer();
     } else if (((String)commBuffer).indexOf("STRT") >= 0) {
         setup();
@@ -126,26 +126,33 @@ void readMsg() {
         cont = true;
         Serial.println("STRT");
         clearCommBuffer();
+    } else if (((String)commBuffer).indexOf("PING") >= 0) {
+        Serial.println("PONG");
+        clearCommBuffer();
     } else if(commBuffer[0] == '#' && commBuffer[3] != NULL) {
+        Serial.println("Received coordinate ");
+        Serial.println(commBuffer[1]);
+        Serial.println(commBuffer[2]);
+        Serial.println(commBuffer[3]);
         railToPos((byte)commBuffer[1] - 48); //- 48 from ASCII conversion
-	armsToCoordinate((byte)commBuffer[2] - 48, (byte)commBuffer[3] - 48);
-	closeClaw();
-	armsReturnHome();
+	      armsToCoordinate((byte)commBuffer[2] - 48, (byte)commBuffer[3] - 48);
+	      closeClaw();
+	      armsReturnHome();
 
-	railToBack();
-	armsToDropoff();
-	openClaw();
-	armsReturnHome();
+	      railToBack();
+	      armsToDropoff();
+	      openClaw();
+	      armsReturnHome();
 
-	clearCommBuffer();
+	      clearCommBuffer();
         Serial.println("FNDL");
     } else if(((String)commBuffer).indexOf("NMNY") >= 0) {
-	Serial.println("Acknowledged need money");
-	acceptMoney = true;
+	      Serial.println("Acknowledged need money");
+	      acceptMoney = true;
         clearCommBuffer();
     } else if(((String)commBuffer).indexOf("CNCL") >= 0) {
-	Serial.println("Acknowledged cancel");
-	acceptMoney = false;
+	      Serial.println("Acknowledged cancel");
+	      acceptMoney = false;
         clearCommBuffer();
     } else if(bufLen == 4) {
         Serial.print("Couldn't recognize ");
@@ -183,7 +190,7 @@ void checkForMoney() {
  */
 void updateHolder() {
     for(short i = MONEY_HOLDER_SIZE - 1; i > 0; i--)
-	moneyHolder[i] = moneyHolder[i - 1];
+	      moneyHolder[i] = moneyHolder[i - 1];
 
     moneyHolder[0] = digitalRead(MONEY_MCH_INPUT);
 }
@@ -229,28 +236,30 @@ void railToBack() {
  * Value 0 is home position, value 4 is front position.
  */
 void railToPos(byte value) {
+    Serial.println(value);
     digitalWrite(STEPPER_DIR, LOW);
 
     if(value == 0) {
         railToBack();
-	return;
+	      return;
     }
     else if(value == 4) {
-	railToFront();
-	return;
+	      railToFront();
+	      return;
     }
 
     for(short ct = 0; ct < value * STEPS_PER_COLUMN / 10; ct++) {
         if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Hit front limit switch; there's a problem so try again
+            Serial.println("Hit front limit switch");
             railToBack();
             railToPos(value);
             break;
         }
         for(short i = 0; i < 10; i++) {
-	    digitalWrite(STEPPER_MAIN, LOW);
-	    delayMicroseconds(TIME_DELAY);
-	    digitalWrite(STEPPER_MAIN, HIGH);
-	    delayMicroseconds(TIME_DELAY);
+	          digitalWrite(STEPPER_MAIN, LOW);
+	          delayMicroseconds(TIME_DELAY);
+	          digitalWrite(STEPPER_MAIN, HIGH);
+	          delayMicroseconds(TIME_DELAY);
         }
     }
 }

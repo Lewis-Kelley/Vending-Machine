@@ -63,7 +63,7 @@ public class SerialMerge implements SerialPortEventListener {
 	    System.out.println("Could not find COM port.");
 	    return;
 	} else
-	    System.out.println("Found port named " + portId);
+	    System.out.println("Found port named " + portId.getName());
 
 	try {
 	    // open serial port, and use class name for the appName.
