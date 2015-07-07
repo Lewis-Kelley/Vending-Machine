@@ -22,6 +22,8 @@ public class VendingMachineRunner {
 
     private String input;
 
+    private short commCounter = 1; //A counter that is incremented on every tick. Used to prevent the same message from being sent many more times than necessary
+    
     public VendingMachineRunner() {
 	cont = true;
 
@@ -69,7 +71,7 @@ public class VendingMachineRunner {
 	    vmr.run();
 
 	    try {
-		Thread.sleep(500);
+		Thread.sleep(15);
 	    } catch(InterruptedException e) {
 		System.err.println(e);
 	    }
@@ -79,6 +81,8 @@ public class VendingMachineRunner {
     }
 
     private void run() {
+	if(--commCounter < 0)
+	    commCounter = 0;
 	selCan = vGUI.getSoda();
 
 	if(input.equals("RSET"))
@@ -101,7 +105,10 @@ public class VendingMachineRunner {
 		return;
 	    }
 
-	    serial.send("NMNY");
+	    if(commCounter == 0) {
+		serial.send("NMNY");
+		commCounter = 20;
+	    }
 	}
 
 	if(vGUI.getCancelStatus()) {

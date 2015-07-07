@@ -77,19 +77,18 @@ void setup() {
  */
 void loop() {
     if(start && cont) {
-	if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
-	    Serial.println("RSET");
-	    railToPos(1);
-	    railToBack();
-	}
+	      if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
+	      Serial.println("RSET");
+	      railToPos(1);
+	      railToBack();
+	  }
 	
-        if(acceptMoney) {
-            Serial.println("Trying to get money");
-            digitalWrite(MONEY_MCH_INPUT, HIGH);
-	    digitalWrite(MONEY_MCH_OUTPUT, HIGH);
-	    checkForMoney();
-	} else
-	    digitalWrite(MONEY_MCH_OUTPUT, LOW);
+    if(acceptMoney) {
+        digitalWrite(MONEY_MCH_INPUT, HIGH);
+	      digitalWrite(MONEY_MCH_OUTPUT, HIGH);
+	      checkForMoney();
+	  } else
+	      digitalWrite(MONEY_MCH_OUTPUT, LOW);
     }
 
     delay(15);
@@ -172,9 +171,9 @@ void checkForMoney() {
     updateHolder();
 
     if(sumHolder() < 7) {
-	resetHolder();
-	Serial.println("GMNY");
-	acceptMoney = false;
+	      resetHolder();
+	      Serial.println("GMNY");
+	      acceptMoney = false;
     }
 }
 

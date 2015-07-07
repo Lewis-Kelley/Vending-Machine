@@ -111,6 +111,7 @@ public class SerialMerge implements SerialPortEventListener {
 	    try {
 		String inputLine=in.readLine();
 		input = new String(inputLine);
+		System.out.println(input);
 	    } catch (Exception e) {
 		System.err.println(e.toString());
 	    }
