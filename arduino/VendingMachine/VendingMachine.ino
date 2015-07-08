@@ -35,6 +35,7 @@ MicroMaestro maestro(maestroSerial); //May need to be MiniMaestro
 
 bool start; //Variable to check communications at startup
 bool cont; //Variable to control if the program should halt
+int state; //Used to check which portion of the program is running
 
 char commBuffer[BUF_SIZE]; //Holds messsages from the computer
 int bufLen;
@@ -49,6 +50,7 @@ bool acceptMoney;
  */
 void setup() {
     start = false;
+    state = 0;
 
     //These two might be mutually exclusive, but I doubt it
     maestroSerial.begin(9600);
@@ -76,19 +78,51 @@ void setup() {
  * Called every tick. Place a delay if need be.
  */
 void loop() {
-    if(start && cont) {        
-	      if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
-	          Serial.println("RSET");
-	          railToPos(1);
-	          railToBack();
-	      }
+    if(start && cont) {
+	switch(state) {
+	case 0: //Default state; not really doing anything
+	    if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
+		Serial.println("RSET");
+		railToPos(1);
+		railToBack();
+	    }
 	
-        if(acceptMoney) {
-            digitalWrite(MONEY_MCH_INPUT, HIGH);
-	          digitalWrite(MONEY_MCH_OUTPUT, HIGH);
-	          checkForMoney();
-	      } else
-	          digitalWrite(MONEY_MCH_OUTPUT, LOW);
+	    if(acceptMoney) {
+		digitalWrite(MONEY_MCH_INPUT, HIGH);
+		digitalWrite(MONEY_MCH_OUTPUT, HIGH);
+		checkForMoney();
+	    } else
+		digitalWrite(MONEY_MCH_OUTPUT, LOW);
+	    break;
+	case 1: //Moving arms to coordinate
+	    if(maestro.getScriptStatus() == 0) { //If script is finished
+		maestro.stopScript();
+		armsReturnHome();
+		state++;
+	    }
+	    break;
+	case 2: //Moving arms to home
+	    if(maestro.getScriptStatus() == 0) { //If script is finished
+		maestro.stopScript();
+		railToBack();
+		state++;
+	    }
+	    break;
+	case 3: //Moving arms to dropoff
+	    if(maestro.getScriptStatus() == 0) { //If script is finished
+		maestro.stopScript();
+		armsReturnHome();
+		state++;
+	    }
+	    break;
+	case 4: //Moving arms back to home then sends FNDL
+	    if(maestro.getScriptStatus() == 0) { //If script is finished
+		maestro.stopScript();
+		Serial.println("FNDL");
+		state = 0;
+	    }
+	    break;
+	}
     }
 
     delay(15);
@@ -130,29 +164,22 @@ void readMsg() {
         Serial.println("PONG");
         clearCommBuffer();
     } else if(commBuffer[0] == '#' && commBuffer[3] != NULL) {
-        Serial.println("Received coordinate ");
-        Serial.println(commBuffer[1]);
-        Serial.println(commBuffer[2]);
+        Serial.print("Received coordinate ");
+        Serial.print(commBuffer[1]);
+        Serial.print(commBuffer[2]);
         Serial.println(commBuffer[3]);
         railToPos((byte)commBuffer[1] - 48); //- 48 from ASCII conversion
-	      armsToCoordinate((byte)commBuffer[2] - 48, (byte)commBuffer[3] - 48);
-	      closeClaw();
-	      armsReturnHome();
+	armsToCoordinate((byte)commBuffer[2] - 48, (byte)commBuffer[3] - 48);
+	state = 1;
 
-	      railToBack();
-	      armsToDropoff();
-	      openClaw();
-	      armsReturnHome();
-
-	      clearCommBuffer();
-        Serial.println("FNDL");
+	clearCommBuffer();
     } else if(((String)commBuffer).indexOf("NMNY") >= 0) {
-	      Serial.println("Acknowledged need money");
-	      acceptMoney = true;
+	Serial.println("Acknowledged need money");
+	acceptMoney = true;
         clearCommBuffer();
     } else if(((String)commBuffer).indexOf("CNCL") >= 0) {
-	      Serial.println("Acknowledged cancel");
-	      acceptMoney = false;
+	Serial.println("Acknowledged cancel");
+	acceptMoney = false;
         clearCommBuffer();
     } else if(bufLen == 4) {
         Serial.print("Couldn't recognize ");
@@ -241,11 +268,11 @@ void railToPos(byte value) {
 
     if(value == 0) {
         railToBack();
-	      return;
+	return;
     }
     else if(value == 4) {
-	      railToFront();
-	      return;
+	railToFront();
+	return;
     }
 
     for(short ct = 0; ct < value * STEPS_PER_COLUMN / 10; ct++) {
@@ -256,10 +283,10 @@ void railToPos(byte value) {
             break;
         }
         for(short i = 0; i < 10; i++) {
-	          digitalWrite(STEPPER_MAIN, LOW);
-	          delayMicroseconds(TIME_DELAY);
-	          digitalWrite(STEPPER_MAIN, HIGH);
-	          delayMicroseconds(TIME_DELAY);
+	    digitalWrite(STEPPER_MAIN, LOW);
+	    delayMicroseconds(TIME_DELAY);
+	    digitalWrite(STEPPER_MAIN, HIGH);
+	    delayMicroseconds(TIME_DELAY);
         }
     }
 }
@@ -296,11 +323,10 @@ void railToFront() {
  * 1:1:16
  * ...
  * home:30
+ * dropoff:31
  */
 void armsToCoordinate(byte y, byte z) {
     maestro.restartScript(NUM_ROWS * z + y );
-    while(maestro.getScriptStatus() == 0); //Waits for script to finish
-    maestro.stopScript();
 }
 
 /**
@@ -308,27 +334,11 @@ void armsToCoordinate(byte y, byte z) {
  */
 void armsReturnHome() {
     maestro.restartScript(30);
-    while(maestro.getScriptStatus() == 0); //Waits for script to finish
-    maestro.stopScript();
 }
 
 /**
  * Moves arms into dropoff position.
  */
 void armsToDropoff() {
-    armsToCoordinate(DROPOFF_Y, DROPOFF_Z);
-}
-
-/**
- * Opens claw.
- */
-void openClaw() {
-
-}
-
-/**
- * Closes claw.
- */
-void closeClaw() {
-
+    maestro.restartScript(31);
 }

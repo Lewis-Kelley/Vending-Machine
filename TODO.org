@@ -1,10 +1,10 @@
 * Software
 ** Internals
-*** TODO Main [4/5]
+*** DONE Main [5/5]
     - [X] Implement Inventory
     - [X] Implement GUI
     - [X] Implement communications to arduino
-    - [ ] Create main loop
+    - [X] Create main loop
     - [X] Implement money machine communications
 
 
@@ -14,14 +14,14 @@
     - [X] Implement search function
 
 
-*** TODO GUI [2/4]
-    - [-] Create all necessary cards [5/6]
+*** TODO GUI [3/4]
+    - [X] Create all necessary cards [6/6]
       - [X] Menu cards
       - [X] Confirm card
       - [X] Waiting card
       - [X] Soda not found card
       - [X] Paying card
-      - [ ] Disabled card
+      - [X] Disabled card
     - [X] Create communication back to main
     - [X] Resize to fullscreen
     - [ ] Confirm soda list
@@ -29,17 +29,20 @@
 
 *** TODO Communications [2/3]
     - [X] Establish communications
-    - [X] Implement all necessary communications from Arduino to Computer
+    - [-] Implement all necessary communications from Arduino to Computer
       - [X] Start
       - [X] Received money
       - [X] Finished delivery
+      - [ ] Reset inventory
+      - [X] Pong
       - [X] Error
-    - [-] Implement all necessary communications from Computer to Arduino
+    - [X] Implement all necessary communications from Computer to Arduino
       - [X] Start
       - [X] Accept money
       - [X] Stop accepting money
-      - [ ] Coordinates
-      - [ ] Interrupt
+      - [X] Coordinates
+      - [X] Interrupt
+      - [X] Ping
       
 
 ** Hardware interactions
@@ -65,11 +68,6 @@
 *** DONE Touchscreen [2/2]
     - [X] Confirm that GUI displays on the screen
     - [X] Confirm that GUI accepts touchscreen input
-
-
-*** TODO Claw [0/2]
-    - [ ] Map open and close positions
-    - [ ] Implement into main code
 
 
 * Hardware
