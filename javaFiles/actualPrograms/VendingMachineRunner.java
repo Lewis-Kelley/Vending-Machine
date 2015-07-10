@@ -25,6 +25,10 @@ public class VendingMachineRunner {
     private short commCounter = 1; //A counter that is incremented on every tick. Used to prevent the same message from being sent many more times than necessary
     private short pingCounter = 1000; //A counter to measure how long it's been since the last ping. Pings on 0.
 
+    public VendingMachineRunner(boolean nothing) { //Just used to access the static cont variable
+	cont = false;
+    }
+    
     public VendingMachineRunner() {
 	cont = true;
 
@@ -51,7 +55,13 @@ public class VendingMachineRunner {
 
 	input = "";
 	do {
-	    serial.send("STRT");
+	    try {
+		serial.send("STRT");
+	    } catch(Exception e) {
+		System.out.println("Failed to send STRT to arduino. Quitting.");
+		cont = false;
+		break;
+	    }
 	    input = serial.getLine();
 	    try {Thread.sleep(50);} catch (InterruptedException ie) {}
 	} while(!input.equals("STRT"));
@@ -78,19 +88,26 @@ public class VendingMachineRunner {
 	    }
 	}
 
+	System.out.println("Showing disabled screen");
 	vGUI.showDisabled();
-    }
-
-    public void stop() {
-	cont = false;
     }
 
     private void run() {
 	if(--pingCounter == 0) {
-	    serial.send("PING");
+	    try {
+		serial.send("PING");
+	    } catch(Exception e) {
+		System.err.println("Failed to send PING to arduino. Quitting.");
+		cont = false;
+	    }
 	    pingCounter = -1;
 	} else if(pingCounter < -100) {
-	    serial.send("STOP");
+	    try {
+		serial.send("STOP");
+	    } catch(Exception e) {
+		System.out.println("Failed to send STOP. Quitting");
+		cont = false;
+	    }
 	    System.err.println("Arduino failed to respond to PING. Quitting.");
 	    cont= false;
 	}
@@ -118,18 +135,33 @@ public class VendingMachineRunner {
 	    if(input.equals("GMNY")) {
 		vGUI.setReceivedStatus(true);
 		inv.removeSoda(coord);
-		serial.send("#" + coord.x + "" + coord.y + "" + coord.z); //Might be problematic
+		try {
+		    serial.send("#" + coord.x + "" + coord.y + "" + coord.z); //Might be problematic
+		} catch(Exception e) {
+		    System.out.println("Failed to send coordinates. Quitting");
+		    cont = false;
+		}
 		return;
 	    }
 
 	    if(commCounter == 0) {
-		serial.send("NMNY");
+		try {
+		    serial.send("NMNY");
+		} catch(Exception e) {
+		    System.out.println("Failed to send NMNY signal. Quitting");
+		    cont = false;
+		}
 		commCounter = 20;
 	    }
 	}
 
 	if(vGUI.getCancelStatus()) {
-	    serial.send("CNCL");
+	    try {
+		serial.send("CNCL");
+	    } catch(Exception e) {
+		System.out.println("Failed to send CNCL. Quitting");
+		cont = false;
+	    }
 	}
 
 	if(input.equals("FNDL")) {
