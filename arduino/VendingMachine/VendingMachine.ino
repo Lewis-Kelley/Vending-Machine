@@ -51,6 +51,10 @@ bool acceptMoney;
 int goalRailPos;
 int currRailPos;
 
+//Variables used for the arms
+int holderY;
+int holderZ;
+
 /**
  * Called once to set everything up.
  */
@@ -159,7 +163,7 @@ void loop() {
 	    case 1: //Moving to back as a dropoff
 		digitalWrite(STEPPER_DIR, HIGH);
 		
-		if(analogRead(BACK_LIMIT_SWITCH) >= 1020) {
+		if(analogRead(BACK_LIM_SWITCH) >= 1020) {
 		    Serial.println("Hit back limit switch");
 		    railState = 0;
 		    armState = 3;
@@ -178,7 +182,7 @@ void loop() {
 	    case 2: //Moving rail to given position. Uses currRailPos and increments it
 		digitalWrite(STEPPER_DIR, LOW);
 		
-		if(analogRead(FRONT_LIMIT_SWITCH) >= 1020) {
+		if(analogRead(FRONT_LIM_SWITCH) >= 1020) {
 		    Serial.println("Hit front limit switch");
 		    currRailPos = 0;
 		    railState = 4;
@@ -205,12 +209,12 @@ void loop() {
 	    case 3: //Moving rail to the front to grab can
 		digitalWrite(STEPPER_DIR, LOW);
 		
-		if(analogRead(FRONT_LIMIT_SWITCH) >= 1020) {
+		if(analogRead(FRONT_LIM_SWITCH) >= 1020) {
 		    Serial.println("Hit front limit switch");
 		    railState = 0;
 		    armState = 1;
 
-		    masetro.restartScript(calcScript(holderY, holderZ)); //Start grabbing can at given coordinate
+		    maestro.restartScript(calcScript(holderY, holderZ)); //Start grabbing can at given coordinate
 		    holderY = -1;
 		    holderZ = -1;
 		} else {
@@ -225,7 +229,7 @@ void loop() {
 	    case 4: //Move to back to reset position
 		digitalWrite(STEPPER_DIR, HIGH);
 		
-		if(analogRead(BACK_LIMIT_SWITCH) >= 1020) {
+		if(analogRead(BACK_LIM_SWITCH) >= 1020) {
 		    Serial.println("Hit back limit switch");
 		    railState = 2;
 		} else {
