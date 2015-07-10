@@ -11,6 +11,10 @@ exclusive.
 |Program |Program |
 |(STRT)  |(STRT)  |
 |-----------------|
+|Return  |Check   |
+|ping	 |arduino |
+| (PONG) | (PING) |
+|-----------------|
 |Reset	 |	  |
 |	 |	  |
 |(RSET)  |	  |
@@ -34,4 +38,9 @@ exclusive.
 | Error  | Inter- |
 | 	 | rupt	  |
 | (STOP) | (STOP) |
+|-----------------|
+|Send arm|Get arm |
+|and rail|and rail| <-- Purely convinience;
+|states	 |states  |     never called by comp.
+| (A-R-) | (STAT) |
 -------------------

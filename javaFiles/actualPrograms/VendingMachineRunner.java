@@ -24,7 +24,7 @@ public class VendingMachineRunner {
 
     private short commCounter = 1; //A counter that is incremented on every tick. Used to prevent the same message from being sent many more times than necessary
     private short pingCounter = 1000; //A counter to measure how long it's been since the last ping. Pings on 0.
-    
+
     public VendingMachineRunner() {
 	cont = true;
 
@@ -81,6 +81,10 @@ public class VendingMachineRunner {
 	vGUI.showDisabled();
     }
 
+    public void stop() {
+	cont = false;
+    }
+
     private void run() {
 	if(--pingCounter == 0) {
 	    serial.send("PING");
@@ -90,7 +94,7 @@ public class VendingMachineRunner {
 	    System.err.println("Arduino failed to respond to PING. Quitting.");
 	    cont= false;
 	}
-	
+
 	if(--commCounter < 0)
 	    commCounter = 0;
 	selCan = vGUI.getSoda();

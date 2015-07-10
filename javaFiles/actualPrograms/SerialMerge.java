@@ -60,7 +60,9 @@ public class SerialMerge implements SerialPortEventListener {
 	    }
 	}
 	if (portId == null) {
-	    System.out.println("Could not find COM port.");
+	    System.out.println("Could not find COM port. Quitting");
+	    VendingMachineRunner vmr = new VendingMachineRunner();
+	    vmr.stop();
 	    return;
 	} else
 	    System.out.println("Found port named " + portId.getName());
@@ -83,6 +85,9 @@ public class SerialMerge implements SerialPortEventListener {
 	    serialPort.addEventListener(this);
 	    serialPort.notifyOnDataAvailable(true);
 	} catch (Exception e) {
+	    System.err.println("Failed to open port. Quitting");
+	    VendingMachineRunner vmr = new VendingMachineRunner();
+	    vmr.stop();
 	    System.err.println(e.toString());
 	}
     }
@@ -113,7 +118,7 @@ public class SerialMerge implements SerialPortEventListener {
 		input = new String(inputLine);
 		System.out.println(input);
 	    } catch (Exception e) {
-		System.err.println(e.toString());
+		//System.err.println(e.toString());
 	    }
 	}
 	// Ignore all the other eventTypes, but you should consider the other ones.
