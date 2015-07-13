@@ -103,19 +103,17 @@ void reset() {
   resetHolder();
 
   bufLen = 0;
-
-  Serial.print(5);
 }
 
 /**
  * Called every tick. Place a delay if need be.
  */
 void loop() {
-  if(maestro.getScriptStatus() != 0) {
+  /*if(maestro.getScriptStatus() != 0) {
       Serial.println("Restarting script");
       maestro.stopScript();
       maestro.restartScript(0);
-  }
+  }*/
   
   if(start && cont) {
     Serial.println("In main loop");

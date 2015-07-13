@@ -64,7 +64,7 @@ public class VendingMachineRunner {
 	    }
 	    input = serial.getLine();
 	    try {Thread.sleep(50);} catch (InterruptedException ie) {}
-	} while(!input.equals("STRT"));
+	} while(!input.equals("STRT") && ++ct <= 50);
 
 	if(input.equals("STRT"))
 	    System.out.println("Received start signal from arduino");
