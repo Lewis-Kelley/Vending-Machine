@@ -14,8 +14,8 @@ const int NUM_ROWS = 15;
 const int DROPOFF_Y = 9;
 const int DROPOFF_Z = 1;
 
-const int TIME_DELAY = 200;
-const int BUF_SIZE = 4;
+const int TIME_DELAY = 75;
+const int BUF_SIZE = 8;
 
 const int STEPS_PER_COLUMN = 6000;
 
@@ -79,14 +79,14 @@ void setup() {
   digitalWrite(STEPPER_MAIN, HIGH);
   digitalWrite(STEPPER_DIR, LOW);
 
-  reset();
+  startup();
 }
 
 /**
  * Does variable resetting and stops scripts.
  * To be called in setup() and upon STOP and STRT commands.
  */
-void reset() {
+void startup() {
   start = false;
   armState = 0;
   railState = 0;
@@ -99,7 +99,6 @@ void reset() {
     
   acceptMoney = false;
   digitalWrite(MONEY_MCH_OUTPUT, LOW);
-  //maestro.stopScript();
   resetHolder();
 
   bufLen = 0;
@@ -109,158 +108,148 @@ void reset() {
  * Called every tick. Place a delay if need be.
  */
 void loop() {
-  /*if(maestro.getScriptStatus() != 0) {
-      Serial.println("Restarting script");
-      maestro.stopScript();
-      maestro.restartScript(0);
-  }*/
-  
-  if(start && cont) {
-    Serial.println("In main loop");
-    if(armState == 0 && railState == 0) { //Nothing moving
-      if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
-	Serial.println("RSET");
-	railToPos(1);
-	railToBack();
-      }
-	
-      if(acceptMoney) {
-	digitalWrite(MONEY_MCH_INPUT, HIGH);
-	digitalWrite(MONEY_MCH_OUTPUT, HIGH);
-	checkForMoney();
-      } else
-	digitalWrite(MONEY_MCH_OUTPUT, LOW);
-    } else {
-      Serial.print("A");
-      Serial.print(armState);
-      Serial.print("R");
-      Serial.println(railState);
-	    
-      switch(armState) {
-      case 0: //Not doing anything
-	break;
-      case 1: //Moving arms to coordinate
-	if(maestro.getScriptStatus() == 0) { //If script is finished
-	  maestro.stopScript();
-	  maestro.restartScript(30); //Start moving arms to home
-	  armState = 2;
-	}
-	break;
-      case 2: //Moving arms to home
-	if(maestro.getScriptStatus() == 0) { //If script is finished
-	  maestro.stopScript();
-	  armState = 0;
-	  railState = 1;
-	}
-	break;
-      case 3: //Moving arms to dropoff
-	if(maestro.getScriptStatus() == 0) { //If script is finished
-	  maestro.stopScript();
-	  maestro.restartScript(30); //Start moving arms to home
-	  armState = 4;
-	}
-	break;
-      case 4: //Moving arms back to home then sends FNDL
-	if(maestro.getScriptStatus() == 0) { //If script is finished
-	  maestro.stopScript();
-	  Serial.println("FNDL");
-	  armState = 0;
-	}
-	break;
-      }
-
-      switch(railState) {
-      case 0: //Not doing anything
-	break;
-      case 1: //Moving to back as a dropoff
-	digitalWrite(STEPPER_DIR, HIGH);
-		
-	if(analogRead(BACK_LIM_SWITCH) >= 1020) {
-	  Serial.println("Hit back limit switch");
-	  railState = 0;
-	  armState = 3;
-
-	  maestro.restartScript(31); //Start moving arms to dropoff
-	} else {
-	  for(short i = 0; i < 20; i++) {
-	    digitalWrite(STEPPER_MAIN, LOW);
-	    delayMicroseconds(TIME_DELAY);
-	    digitalWrite(STEPPER_MAIN, HIGH);
-	    delayMicroseconds(TIME_DELAY);
-	  }
-	}
-	break;
-		
-      case 2: //Moving rail to given position. Uses currRailPos and increments it
-	digitalWrite(STEPPER_DIR, LOW);
-		
-	if(analogRead(FRONT_LIM_SWITCH) >= 1020) {
-	  Serial.println("Hit front limit switch");
-	  currRailPos = 0;
-	  railState = 4;
-	} else if(currRailPos >= goalRailPos) { //Reached target
-	  goalRailPos = -1;
-	  currRailPos = -1;
-
-	  railState = 0;
-	  armState = 1;
-
-	  maestro.restartScript(calcScript(holderY, holderZ)); //Start grabbing can at given coordinate
-	  holderY = -1;
-	  holderZ = -1;
-	} else {
-	  for(short i = 0; i < 20; i++) {
-	    digitalWrite(STEPPER_MAIN, LOW);
-	    delayMicroseconds(TIME_DELAY);
-	    digitalWrite(STEPPER_MAIN, HIGH);
-	    delayMicroseconds(TIME_DELAY);
-	  }
-
-	  currRailPos += 20;
-	}
-	break;
-      case 3: //Moving rail to the front to grab can
-	digitalWrite(STEPPER_DIR, LOW);
-		
-	if(analogRead(FRONT_LIM_SWITCH) >= 1020) {
-	  Serial.println("Hit front limit switch");
-	  railState = 0;
-	  armState = 1;
-
-	  maestro.restartScript(calcScript(holderY, holderZ)); //Start grabbing can at given coordinate
-	  holderY = -1;
-	  holderZ = -1;
-	} else {
-	  for(short i = 0; i < 20; i++) {
-	    digitalWrite(STEPPER_MAIN, LOW);
-	    delayMicroseconds(TIME_DELAY);
-	    digitalWrite(STEPPER_MAIN, HIGH);
-	    delayMicroseconds(TIME_DELAY);
-	  }
-	}
-	break;
-      case 4: //Move to back to reset position
-	digitalWrite(STEPPER_DIR, HIGH);
-		
-	if(analogRead(BACK_LIM_SWITCH) >= 1020) {
-	  Serial.println("Hit back limit switch");
-	  railState = 2;
-	} else {
-	  for(short i = 0; i < 20; i++) {
-	    digitalWrite(STEPPER_MAIN, LOW);
-	    delayMicroseconds(TIME_DELAY);
-	    digitalWrite(STEPPER_MAIN, HIGH);
-	    delayMicroseconds(TIME_DELAY);
-	  }
-	}
-	break;
-      }
+    digitalWrite(MONEY_MCH_OUTPUT, LOW);
+    
+    if(start && cont) {
+        if(armState == 0 && railState == 0) { //Nothing moving
+            if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
+      	        Serial.println("RSET");
+      	        railToPos(1);
+      	        railToBack();
+            }
+      	
+            if(acceptMoney) {
+      	        digitalWrite(MONEY_MCH_INPUT, HIGH);
+      	        digitalWrite(MONEY_MCH_OUTPUT, HIGH);
+      	        checkForMoney();
+            }
+         } else {
+              switch(armState) {
+              case 0: //Not doing anything
+    	           break;
+              case 1: //Moving arms to coordinate
+        	        if(maestro.getScriptStatus() != 0) { //If script is finished
+        	            maestro.stopScript();
+        	            maestro.restartScript(30); //Start moving arms to home
+        	            armState = 2;
+                      Serial.println("Moving arms to coordinate");
+        	        }
+        	        break;
+              case 2: //Moving arms to home
+        	        if(maestro.getScriptStatus() != 0) { //If script is finished
+        	            maestro.stopScript();
+        	            armState = 0;
+        	            railState = 1;
+                      Serial.println("Moving arms to home");
+        	        }
+        	        break;
+              case 3: //Moving arms to dropoff
+        	        if(maestro.getScriptStatus() != 0) { //If script is finished
+        	            maestro.stopScript();
+        	            maestro.restartScript(30); //Start moving arms to home
+        	            armState = 4;
+                      Serial.println("Moving arms to dropoff");
+        	        }
+        	        break;
+              case 4: //Moving arms back to home then sends FNDL
+        	        if(maestro.getScriptStatus() != 0) { //If script is finished
+        	            maestro.stopScript();
+        	            Serial.println("FNDL");
+        	            armState = 0;
+        	        }
+        	        break;
+              }
+        
+              switch(railState) {
+              case 0: //Not doing anything
+        	        break;
+              case 1: //Moving to back as a dropoff
+        	        digitalWrite(STEPPER_DIR, HIGH);
+        		
+        	        if(analogRead(BACK_LIM_SWITCH) >= 1020) {
+        	            Serial.println("Hit back limit switch");
+        	            railState = 0;
+        	            armState = 3;
+        
+        	            maestro.restartScript(31); //Start moving arms to dropoff
+        	        } else {
+        	            for(short i = 0; i < 40; i++) {
+        	                digitalWrite(STEPPER_MAIN, LOW);
+        	                delayMicroseconds(TIME_DELAY);
+        	                digitalWrite(STEPPER_MAIN, HIGH);
+        	                delayMicroseconds(TIME_DELAY);
+        	            }
+        	        }
+        	        break;
+        		
+              case 2: //Moving rail to given position. Uses currRailPos and increments it
+        	        digitalWrite(STEPPER_DIR, LOW);
+        		
+        	        if(analogRead(FRONT_LIM_SWITCH) >= 1020) {
+        	            Serial.println("Hit front limit switch");
+        	            currRailPos = 0;
+        	            railState = 4;
+        	        } else if(currRailPos >= goalRailPos) { //Reached target
+        	            goalRailPos = -1;
+        	            currRailPos = -1;
+        
+        	            railState = 0;
+        	            armState = 1;
+        
+        	            calcScript(holderY, holderZ); //Start grabbing can at given coordinate
+        	            holderY = -1;
+        	            holderZ = -1;
+        	        } else {
+        	            for(short i = 0; i < 40; i++) {
+        	                digitalWrite(STEPPER_MAIN, LOW);
+        	                delayMicroseconds(TIME_DELAY);
+        	                digitalWrite(STEPPER_MAIN, HIGH);
+        	                delayMicroseconds(TIME_DELAY);
+        	            }
+        
+        	            currRailPos += 40;
+        	        }
+        	        break;
+              case 3: //Moving rail to the front to grab can
+        	        digitalWrite(STEPPER_DIR, LOW);
+        		
+        	        if(analogRead(FRONT_LIM_SWITCH) >= 1020) {
+        	            Serial.println("Hit front limit switch");
+        	            railState = 0;
+        	            armState = 1;
+        
+        	            calcScript(holderY, holderZ); //Start grabbing can at given coordinate
+        	            holderY = -1;
+        	            holderZ = -1;
+        	        } else {
+        	            for(short i = 0; i < 40; i++) {
+        	              digitalWrite(STEPPER_MAIN, LOW);
+        	              delayMicroseconds(TIME_DELAY);
+        	              digitalWrite(STEPPER_MAIN, HIGH);
+        	              delayMicroseconds(TIME_DELAY);
+        	            }
+        	        }
+        	        break;
+              case 4: //Move to back to reset position
+        	        digitalWrite(STEPPER_DIR, HIGH);
+        		
+        	        if(analogRead(BACK_LIM_SWITCH) >= 1020) {
+        	            Serial.println("Hit back limit switch");
+        	            railState = 2;
+        	        } else {
+        	            for(short i = 0; i < 40; i++) {
+        	                digitalWrite(STEPPER_MAIN, LOW);
+        	                delayMicroseconds(TIME_DELAY);
+        	                digitalWrite(STEPPER_MAIN, HIGH);
+        	                delayMicroseconds(TIME_DELAY);
+        	            }
+        	        }
+        	        break;
+              }
+        }
     }
-  }
-
-  delay(15);
+    delay(15);
 }
-
 /**
  * Handles reading from serial.
  */
@@ -287,11 +276,11 @@ void serialEvent() {
 void readMsg() {
   if(((String)commBuffer).indexOf("STOP") >= 0) {
     Serial.println("Stopping");
-    reset();
+    startup();
     cont = false;
     clearCommBuffer();
   } else if (((String)commBuffer).indexOf("STRT") >= 0) {
-    reset();
+    startup();
     start = true;
     cont = true;
     Serial.println("STRT");
@@ -335,10 +324,13 @@ void readMsg() {
       railState = 2;
       armState = 0;
     } else { //Back row
+      Serial.println("Coordinate in back row");
       railState = 0;
       armState = 1;
 
-      maestro.restartScript(calcScript(holderY, holderZ));
+      calcScript(holderY, holderZ);
+      Serial.println("Started script");
+      
       holderY = -1;
       holderZ = -1;
     }
@@ -347,6 +339,7 @@ void readMsg() {
   } else if(((String)commBuffer).indexOf("NMNY") >= 0) {
     Serial.println("Acknowledged need money");
     acceptMoney = true;
+    Serial.println(acceptMoney);
     clearCommBuffer();
   } else if(((String)commBuffer).indexOf("CNCL") >= 0) {
     Serial.println("Acknowledged cancel");
@@ -355,6 +348,7 @@ void readMsg() {
   } else if(bufLen == 4) {
     Serial.print("Couldn't recognize ");
     Serial.println((String)commBuffer);
+    Serial.println("----");
     clearCommBuffer();
   }
 }
@@ -379,7 +373,8 @@ void checkForMoney() {
     resetHolder();
     Serial.println("GMNY");
     acceptMoney = false;
-  }
+  } //else
+    //Serial.println("Checking money");
 }
 
 /**
@@ -502,4 +497,12 @@ void armsToCoordinate(byte y, byte z) {
 /**
  * Convinience function to calculate the appropriate script call given y and z coordinates.
  */
-int calcScript(byte y, byte z) { Serial.println("Running script"); return 0; }//return z * NUM_ROWS + y; }
+void calcScript(byte y, byte z) {
+  Serial.println("Running script");
+  maestro.restartScript(0);
+  maestro.restartScript(0);
+  Serial.print("A");
+  Serial.print(armState);
+  Serial.print("R");
+  Serial.println(railState);
+}//z * NUM_ROWS + y;

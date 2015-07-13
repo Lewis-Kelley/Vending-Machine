@@ -8,6 +8,8 @@ import java.awt.Font;
 import javax.swing.plaf.FontUIResource;
 
 public class VendingMachineRunner {
+    private final boolean DEBUG = false;
+    
     private static boolean cont;
 
     private Coordinate coord;
@@ -93,9 +95,11 @@ public class VendingMachineRunner {
     }
 
     private void run() {
-	if(--pingCounter == 0) {
+	if(--pingCounter <= 0) {
 	    try {
 		serial.send("PING");
+		System.out.println("Sending PING");
+		try { Thread.sleep(50); } catch(InterruptedException e) {}
 	    } catch(Exception e) {
 		System.err.println("Failed to send PING to arduino. Quitting.");
 		cont = false;
@@ -132,7 +136,7 @@ public class VendingMachineRunner {
 	}
 
 	if(vGUI.getMoneyStatus()) { //If at pay screen
-	    if(input.equals("GMNY")) {
+	    if(input.equals("GMNY") || DEBUG) {
 		vGUI.setReceivedStatus(true);
 		inv.removeSoda(coord);
 		try {
