@@ -14,7 +14,7 @@ class Inventory {
      * Initializes reader and each element in the array to Soda.EMPTY.
      */
     public Inventory(boolean readAtStartup) {
-	this("inventory.txt", readAtStartup); //TODO confirm filename
+	this("inventory.txt", readAtStartup);
     }
 
     public Inventory(String fileVar, boolean readAtStartup) {
