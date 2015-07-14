@@ -135,7 +135,7 @@ void loop() {
               case 1: //Moving arms to coordinate
         	        if(maestro.getScriptStatus() != 0) { //If script is finished
         	            maestro.stopScript();
-        	            maestro.restartScript(0);//30); //Start moving arms to home
+        	            maestro.restartScript(30); //Start moving arms to home
         	            armState = 2;
                       Serial.println("Moving arms home");
         	        }
@@ -151,7 +151,7 @@ void loop() {
               case 3: //Moving arms to dropoff
         	        if(maestro.getScriptStatus() != 0) { //If script is finished
         	            maestro.stopScript();
-        	            maestro.restartScript(0);//30); //Start moving arms to home
+        	            maestro.restartScript(30); //Start moving arms to home
         	            armState = 4;
                       Serial.println("Moving arms home again");
         	        }
@@ -178,8 +178,8 @@ void loop() {
         	            railState = 0;
         	            armState = 3;
         
-        	            maestro.restartScript(0);//31); //Start moving arms to dropoff
-                      maestro.restartScript(0);//31); //Start moving arms to dropoff
+        	            maestro.restartScript(31); //Start moving arms to dropoff
+                      maestro.restartScript(31); //Start moving arms to dropoff
                       Serial.println("Moving to dropoff");
         	        } else {
         	            for(short i = 0; i < RAIL_STEPS; i++) {
@@ -465,6 +465,6 @@ void armsToCoordinate(byte y, byte z) {
  * Convinience function to calculate the appropriate script call given y and z coordinates.
  */
 void calcScript(byte y, byte z) {
-  maestro.restartScript(0);
-  maestro.restartScript(0);
-}//z * NUM_ROWS + y;
+  maestro.restartScript(z * NUM_ROWS + y);
+  maestro.restartScript(z * NUM_ROWS + y);
+}
