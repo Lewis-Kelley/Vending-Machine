@@ -8,7 +8,7 @@ import java.awt.Font;
 import javax.swing.plaf.FontUIResource;
 
 public class VendingMachineRunner {
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
     
     private static boolean cont;
 
@@ -98,7 +98,6 @@ public class VendingMachineRunner {
 	if(--pingCounter <= 0) {
 	    try {
 		serial.send("PING");
-		System.out.println("Sending PING\npingCounter is now " + pingCounter);
 		try { Thread.sleep(50); } catch(InterruptedException e) {}
 	    } catch(Exception e) {
 		System.err.println("Failed to send PING to arduino. Quitting.");
@@ -171,14 +170,14 @@ public class VendingMachineRunner {
 		return;
 	    }
 
-	    if(commCounter == 0) {
+	    if(commCounter <= 0) {
 		try {
 		    serial.send("NMNY");
 		} catch(Exception e) {
 		    System.err.println("Failed to send NMNY signal. Quitting");
 		    cont = false;
 		}
-		commCounter = 20;
+		commCounter = 200;
 	    }
 	}
 

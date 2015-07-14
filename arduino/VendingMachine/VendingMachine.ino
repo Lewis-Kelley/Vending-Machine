@@ -9,7 +9,7 @@
 #endif
 
 const int NUM_ROWS = 15;
-const int RAIL_STEPS = 100; //Number of steps to take in a single loop
+const int RAIL_STEPS = 500; //Number of steps to take in a single loop
 
 //Coordinates of the dropoff
 const int DROPOFF_Y = 9;
@@ -264,8 +264,6 @@ void loop() {
  * Handles reading from serial.
  */
 void serialEvent() {
-  //maestro.restartScript(0);
-  //Serial.println("Started script");
   char c;
   while (Serial.available() && bufLen < BUF_SIZE) {
     c = (char)Serial.read();
@@ -314,7 +312,9 @@ void readMsg() {
 
     Serial.print("Received coordinate ");
     Serial.print(holderX);
+    Serial.print("-");
     Serial.print(holderY);
+    Serial.print("-");
     Serial.println(holderZ);
 	
     if(holderX == 4) { //Front row
@@ -332,7 +332,6 @@ void readMsg() {
       armState = 1;
 
       calcScript(holderY, holderZ);
-      Serial.println("Started script");
       
       holderY = -1;
       holderZ = -1;
@@ -433,41 +432,7 @@ void railToBack() {
 void railToPos(byte value) {
   digitalWrite(STEPPER_DIR, LOW);
 
-  if(value == 0) {
-    railToBack();
-    return;
-  }
-  else if(value == 4) {
-    railToFront();
-    return;
-  }
-
   for(short ct = 0; ct < value * STEPS_PER_COLUMN / 10; ct++) {
-    if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Hit front limit switch; there's a problem so try again
-      Serial.println("Hit front limit switch");
-      railToBack();
-      railToPos(value);
-      break;
-    }
-    for(short i = 0; i < 10; i++) {
-      digitalWrite(STEPPER_MAIN, LOW);
-      delayMicroseconds(TIME_DELAY);
-      digitalWrite(STEPPER_MAIN, HIGH);
-      delayMicroseconds(TIME_DELAY);
-    }
-  }
-}
-
-/**
- * Moves the stepper forward until the front limit switch is triggered.
- */
-void railToFront() {
-  digitalWrite(STEPPER_DIR, LOW);
-
-  while(true) {
-    if(analogRead(FRONT_LIM_SWITCH) >= 1020)
-      break;
-
     for(short i = 0; i < 10; i++) {
       digitalWrite(STEPPER_MAIN, LOW);
       delayMicroseconds(TIME_DELAY);

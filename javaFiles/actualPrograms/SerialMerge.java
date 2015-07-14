@@ -14,34 +14,9 @@ public class SerialMerge implements SerialPortEventListener {
     private BufferedReader in;
 
     private static final String PORT_NAMES[] = {
-	"/dev/tty.usbserial-A9007UX1", // Mac OS X
-	"/dev/ttyACM0", // Raspberry Pi
-	"/dev/ttyUSB0", // Linux
-	"/dev/ttyS0", //Also for Linux
-	"COM6", // Windows
-	"COM7" //Also Windows
+	"COM6",
+	"COM7"
     };
-
-
-    /*public SerialMerge() {
-      try {
-      CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier("COM3");
-      CommPort commPort = portID.open("name" , 6000);
-      serialPort = (SerialPort) commPort;
-
-      out = serialPort.getOutputStream();
-      in = new BufferedReader(new InputStreamReader(serialPort.getInputStream()));
-      } catch (NoSuchPortException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-      } catch (PortInUseException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-      } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-      }
-      }*/
 
     public void initialize() {
 	input = "";
@@ -63,8 +38,10 @@ public class SerialMerge implements SerialPortEventListener {
 	    System.out.println("Could not find COM port. Quitting");
 	    VendingMachineRunner vmr = new VendingMachineRunner(true);
 	    return;
-	} else
+	} else {
 	    System.out.println("Found port named " + portId.getName());
+	    System.out.println("=========================================");
+	}
 
 	try {
 	    // open serial port, and use class name for the appName.
@@ -91,6 +68,7 @@ public class SerialMerge implements SerialPortEventListener {
     }
 
     public void send(String msg) throws Exception {
+	System.out.println("C: " + msg);
 	byte[] buffer = new byte[1024];
 	buffer = msg.getBytes();
 
@@ -109,7 +87,7 @@ public class SerialMerge implements SerialPortEventListener {
 	    try {
 		String inputLine=in.readLine();
 		input = new String(inputLine);
-		System.out.println(input);
+		System.out.println("A: " + input);
 	    } catch (Exception e) {
 		//System.err.println(e.toString());
 	    }
