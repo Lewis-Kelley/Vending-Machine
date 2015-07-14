@@ -8,7 +8,7 @@ import java.awt.Font;
 import javax.swing.plaf.FontUIResource;
 
 public class VendingMachineRunner {
-    private final boolean DEBUG = false;
+    private final boolean DEBUG = true;
     
     private static boolean cont;
 
@@ -121,8 +121,29 @@ public class VendingMachineRunner {
 	    commCounter = 0;
 	selCan = vGUI.getSoda();
 
-	if(input.equals("RSET"))
+	if(input.equals("RSET")) {
 	    inv.reset();
+	    int ct = 0;
+	    
+	    do {
+		try {
+		    serial.send("STRT");
+		} catch(Exception e) {
+		    System.err.println("Failed to send STRT to arduino. Quitting.");
+		    cont = false;
+		    break;
+		}
+		input = serial.getLine();
+		try {Thread.sleep(50);} catch (InterruptedException ie) {}
+	    } while(!input.equals("STRT") && ++ct <= 50);
+
+	    if(input.equals("STRT"))
+		System.out.println("Received start signal from arduino");
+	    else {
+		System.err.println("Failed to receive start signal. Quitting");
+		cont = false;
+	    } 
+	}
 
 	if(input.equals("PONG"))
 	   pingCounter = 1000;

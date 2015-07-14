@@ -57,14 +57,6 @@ int holderY;
 int holderZ;
 
 /**
- * Resets the program.
- */
-void softwareReset() {
-    asm volatile(" jmp 0");
-}
-
-
-/**
  * Called once to set everything up.
  */
 void setup() {
@@ -126,6 +118,8 @@ void loop() {
       	        Serial.println("RSET");
       	        railToPos(1);
       	        railToBack();
+                delay(100);
+                asm volatile(" jmp 0");
             }
       	
             if(acceptMoney) {
@@ -168,7 +162,7 @@ void loop() {
         	            Serial.println("FNDL");
         	            armState = 0;
                       delay(100);
-                      softwareReset();
+                      asm volatile(" jmp 0"); //Resets things
         	        }
         	        break;
               }
