@@ -161,8 +161,9 @@ public class VendingMachineRunner {
 	    if(input.equals("GMNY") || DEBUG) {
 		vGUI.setReceivedStatus(true);
 		inv.removeSoda(coord);
+		
 		try {
-		    serial.send("#" + coord.x + "" + coord.y + "" + coord.z);
+		    serial.send("#" + coord.x + "" + (char)coord.y + "" + coord.z);
 		} catch(Exception e) {
 		    System.err.println("Failed to send coordinates. Quitting");
 		    cont = false;

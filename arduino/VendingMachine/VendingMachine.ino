@@ -305,17 +305,17 @@ void readMsg() {
     Serial.println(railState);
     clearCommBuffer();
   } else if(commBuffer[0] == '#' && commBuffer[3] != NULL) {
-    Serial.print("Received coordinate ");
-    Serial.print(commBuffer[1]);
-    Serial.print(commBuffer[2]);
-    Serial.println(commBuffer[3]);
-        
     int holderX;
 
 
     holderX = (byte)commBuffer[1] - 48; //Note this is a local variable; - 48 from ASCII conversion
-    holderY = (byte)commBuffer[2] - 48;
+    holderY = (byte)commBuffer[2];
     holderZ = (byte)commBuffer[3] - 48;
+
+    Serial.print("Received coordinate ");
+    Serial.print(holderX);
+    Serial.print(holderY);
+    Serial.println(holderZ);
 	
     if(holderX == 4) { //Front row
       railState = 3;
