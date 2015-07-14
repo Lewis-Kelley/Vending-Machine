@@ -60,7 +60,7 @@ public class VendingMachineRunner {
 	    try {
 		serial.send("STRT");
 	    } catch(Exception e) {
-		System.out.println("Failed to send STRT to arduino. Quitting.");
+		System.err.println("Failed to send STRT to arduino. Quitting.");
 		cont = false;
 		break;
 	    }
@@ -90,7 +90,7 @@ public class VendingMachineRunner {
 	    }
 	}
 
-	System.out.println("Showing disabled screen");
+	System.err.println("Showing disabled screen");
 	vGUI.showDisabled();
     }
 
@@ -98,22 +98,23 @@ public class VendingMachineRunner {
 	if(--pingCounter <= 0) {
 	    try {
 		serial.send("PING");
-		System.out.println("Sending PING");
+		System.out.println("Sending PING\npingCounter is now " + pingCounter);
 		try { Thread.sleep(50); } catch(InterruptedException e) {}
 	    } catch(Exception e) {
 		System.err.println("Failed to send PING to arduino. Quitting.");
 		cont = false;
 	    }
-	    pingCounter = -1;
-	} else if(pingCounter < -100) {
-	    try {
-		serial.send("STOP");
-	    } catch(Exception e) {
-		System.out.println("Failed to send STOP. Quitting");
-		cont = false;
+	    
+	    if(pingCounter < -100) {
+		try {
+		    serial.send("STOP");
+		} catch(Exception e) {
+		    System.err.println("Failed to send STOP. Quitting");
+		    cont = false;
+		}
+		System.err.println("Arduino failed to respond to PING. Quitting.");
+		cont= false;
 	    }
-	    System.err.println("Arduino failed to respond to PING. Quitting.");
-	    cont= false;
 	}
 
 	if(--commCounter < 0)
@@ -140,9 +141,9 @@ public class VendingMachineRunner {
 		vGUI.setReceivedStatus(true);
 		inv.removeSoda(coord);
 		try {
-		    serial.send("#" + coord.x + "" + coord.y + "" + coord.z); //Might be problematic
+		    serial.send("#" + coord.x + "" + coord.y + "" + coord.z);
 		} catch(Exception e) {
-		    System.out.println("Failed to send coordinates. Quitting");
+		    System.err.println("Failed to send coordinates. Quitting");
 		    cont = false;
 		}
 		return;
@@ -152,7 +153,7 @@ public class VendingMachineRunner {
 		try {
 		    serial.send("NMNY");
 		} catch(Exception e) {
-		    System.out.println("Failed to send NMNY signal. Quitting");
+		    System.err.println("Failed to send NMNY signal. Quitting");
 		    cont = false;
 		}
 		commCounter = 20;
@@ -163,18 +164,41 @@ public class VendingMachineRunner {
 	    try {
 		serial.send("CNCL");
 	    } catch(Exception e) {
-		System.out.println("Failed to send CNCL. Quitting");
+		System.err.println("Failed to send CNCL. Quitting");
 		cont = false;
 	    }
 	}
 
 	if(input.equals("FNDL")) {
 	    vGUI.setFinishedDelivery(true);
+	    int ct = 0;
+	    
+	    do {
+		try {
+		    serial.send("STRT");
+		} catch(Exception e) {
+		    System.err.println("Failed to send STRT to arduino. Quitting.");
+		    cont = false;
+		    break;
+		}
+		input = serial.getLine();
+		try {Thread.sleep(50);} catch (InterruptedException ie) {}
+	    } while(!input.equals("STRT") && ++ct <= 50);
+	    
+	    if(input.equals("STRT"))
+		System.out.println("Received start signal from arduino");
+	    else {
+		System.err.println("Failed to receive start signal. Quitting");
+		cont = false;
+	    }
 	}
     }
 
     private void getInput() {
 	input = serial.getLine();
+	if(input.length() > 0)
+	    pingCounter = 1000;
+	
 	if(input.equals("STOP")) {
 	    System.err.println("Arduino has signalled all-stop. Quitting.");
 	    cont = false;
