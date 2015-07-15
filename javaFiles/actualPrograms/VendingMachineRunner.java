@@ -8,7 +8,8 @@ import java.awt.Font;
 import javax.swing.plaf.FontUIResource;
 
 public class VendingMachineRunner {
-    private final boolean DEBUG = false;
+    private final boolean DEBUG = true;
+    private final int STRT_WAIT = 100;
     
     private static boolean cont;
 
@@ -66,7 +67,7 @@ public class VendingMachineRunner {
 	    }
 	    input = serial.getLine();
 	    try {Thread.sleep(50);} catch (InterruptedException ie) {}
-	} while(!input.equals("STRT") && ++ct <= 50);
+	} while(!input.equals("STRT") && ++ct <= STRT_WAIT);
 
 	if(input.equals("STRT"))
 	    System.out.println("Received start signal from arduino");
@@ -134,7 +135,7 @@ public class VendingMachineRunner {
 		}
 		input = serial.getLine();
 		try {Thread.sleep(50);} catch (InterruptedException ie) {}
-	    } while(!input.equals("STRT") && ++ct <= 50);
+	    } while(!input.equals("STRT") && ++ct <= STRT_WAIT);
 
 	    if(input.equals("STRT"))
 		System.out.println("Received start signal from arduino");
@@ -204,7 +205,7 @@ public class VendingMachineRunner {
 		}
 		input = serial.getLine();
 		try {Thread.sleep(50);} catch (InterruptedException ie) {}
-	    } while(!input.equals("STRT") && ++ct <= 50);
+	    } while(!input.equals("STRT") && ++ct <= STRT_WAIT);
 	    
 	    if(input.equals("STRT"))
 		System.out.println("Received start signal from arduino");

@@ -37,7 +37,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 		    receivedMoney = false;
 		    needMoney = false;
 
-		    (new Thread(new AnimatedRunner())).start();
+		    //(new Thread(new AnimatedRunner())).start();
+		    cards.show(VendingGUI.this, "WaitPanel");
 		    (new Thread(new WaitToReturn())).start();
 		}
 
@@ -54,7 +55,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 
     public Soda can; //Holds the currently selected can after the user confirms. Set to EMPTY when no can has been confirmed.
 
-    public JLabel flipLabel; //Holds the spinning can gif
+    public JLabel creditsLabel; //Holds the credits
     public JLabel noSodaLabel; //Holds the noSoda image
     public JLabel disabledLabel; //Holds the disabled image
 
@@ -88,6 +89,7 @@ public class VendingGUI extends JPanel implements ActionListener {
     public ImageIcon sure = new ImageIcon("pay.png");
     public ImageIcon noSoda = new ImageIcon("noSoda.png");
     public ImageIcon disabled = new ImageIcon("disabled.png");
+    public ImageIcon credits = new ImageIcon("Credits.png");
 
     public ImageIcon spinningCan = new ImageIcon("sodaSpin.gif");
 
@@ -100,9 +102,9 @@ public class VendingGUI extends JPanel implements ActionListener {
     public void setUp() {
 	this.setPreferredSize(new Dimension(1024, 768));
 
-	//Initialize flipLabel
-	flipLabel = new JLabel(spinningCan);
-	flipLabel.setIcon(spinningCan);
+	//Initialize creditsLabel
+	creditsLabel = new JLabel(credits);
+	creditsLabel.setIcon(credits);
 
 	//Initialize noSodaLabel
 	noSodaLabel = new JLabel(noSoda);
@@ -370,7 +372,7 @@ public class VendingGUI extends JPanel implements ActionListener {
 	menuPanel.add(masterBriskButton);
 	menuPanel.add(masterDewButton);
 
-	waitPanel.add(flipLabel, BorderLayout.CENTER);
+	waitPanel.add(creditsLabel, BorderLayout.CENTER);
 
 	noSodaPanel.add(noSodaLabel, BorderLayout.NORTH);
 	noSodaPanel.add(noSodaBackButton, BorderLayout.SOUTH);
