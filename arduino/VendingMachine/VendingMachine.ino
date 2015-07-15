@@ -104,6 +104,9 @@ void startup() {
   resetHolder();
 
   bufLen = 0;
+
+  if(analogRead(BACK_LIM_SWITCH) < 500) //Problem; rail is at front when it should be at the back
+      railState = 5;
 }
 
 /**
@@ -114,9 +117,7 @@ void loop() {
     
     if(start && cont) {
         if(armState == 0 && railState == 0) { //Nothing moving
-            if(analogRead(BACK_LIM_SWITCH) < 1020) //Problem; rail is at front when it should be at the back
-                railState = 5;
-            else if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
+            if(analogRead(FRONT_LIM_SWITCH) >= 1020) { //Check if front limit switch is triggered for a reset
       	        Serial.println("RSET");
       	        railToPos(1);
       	        railToBack();
@@ -259,6 +260,9 @@ void loop() {
         	        break;
               case 5: //Moving to back then stopping
                   digitalWrite(STEPPER_DIR, HIGH);
+  
+                  Serial.print("Moving backwards. Back lim switch is ");
+                  Serial.println(analogRead(BACK_LIM_SWITCH));
             
                   if(analogRead(BACK_LIM_SWITCH) >= 1020) {
                       Serial.println("Hit back limit switch");

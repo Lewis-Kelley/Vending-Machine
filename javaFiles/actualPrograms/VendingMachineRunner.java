@@ -21,7 +21,7 @@ public class VendingMachineRunner {
     private JFrame gui;
     private static VendingGUI vGUI;
 
-    private SerialMerge serial;
+    private static SerialMerge serial;
 
     private String input;
 
@@ -78,6 +78,14 @@ public class VendingMachineRunner {
     }
 
     public static void main(String[] args) {
+	Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+		public void run() {
+		    try {
+			serial.send("STOP");
+		    } catch(Exception e) {}
+		}
+	    }, "Shutdown-thread"));
+	
 	VendingMachineRunner vmr = new VendingMachineRunner();
 
 	while(cont) {
