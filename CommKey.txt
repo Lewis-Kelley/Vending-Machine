@@ -31,6 +31,14 @@ exclusive.
 |	 | 	  |
 |	 | (#---) |
 |-----------------|
+|Reached |        |
+| Coord	 |	  |
+| (ATCO) |	  |
+|-----------------|
+|Reached |	  |
+|  Back	 |	  |
+| (ATBK) |	  |
+|-----------------|
 |Finished|	  |
 |Delivery|	  |
 | (FNDL) |	  |

@@ -199,6 +199,12 @@ public class VendingMachineRunner {
 	    }
 	}
 
+	if(input.equals("ATCO"))
+	    vGUI.setReachedFront(true);
+
+	if(input.equals("ATBK"))
+	    vGUI.setReachedBack(true);
+	
 	if(input.equals("FNDL")) {
 	    vGUI.setFinishedDelivery(true);
 	    int ct = 0;

@@ -10,11 +10,43 @@ import javax.swing.plaf.FontUIResource;
 public class VendingGUI extends JPanel implements ActionListener {
     private class AnimatedRunner implements Runnable {
 	public void run() {
-	    cards.show(VendingGUI.this, "WaitPanel");
+	    cards.show(VendingGUI.this, "Credits1Panel");
 	    spinningCan.getImage().flush();
 	}
     }
 
+    private class WaitForFront implements Runnable {
+	public void run() {
+	    while(!reachedFront) {
+		try {
+		    Thread.sleep(100);
+		} catch(Exception e) {
+		    System.out.println("Error waiting in WaitForFront");
+		}
+	    }
+
+	    reachedFront = false;
+	    cards.show(VendingGUI.this, "Credits2Panel");
+	    (new Thread(new WaitForBack())).start();
+	}
+    }
+
+    private class WaitForBack implements Runnable {
+	public void run() {
+	    while(!reachedBack) {
+		try {
+		    Thread.sleep(100);
+		} catch(Exception e) {
+		    System.out.println("Error waiting in WaitForBack");
+		}
+	    }
+
+	    reachedBack = false;
+	    cards.show(VendingGUI.this, "Credits3Panel");
+	    (new Thread(new WaitToReturn())).start();
+	}
+    }
+    
     private class WaitToReturn implements Runnable {
 	public void run() {
 	    while(!finishedDelivery) {
@@ -38,8 +70,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 		    needMoney = false;
 
 		    //(new Thread(new AnimatedRunner())).start();
-		    cards.show(VendingGUI.this, "WaitPanel");
-		    (new Thread(new WaitToReturn())).start();
+		    cards.show(VendingGUI.this, "Credits1Panel");
+		    (new Thread(new WaitForFront())).start();
 		}
 
 		try {
@@ -55,13 +87,17 @@ public class VendingGUI extends JPanel implements ActionListener {
 
     public Soda can; //Holds the currently selected can after the user confirms. Set to EMPTY when no can has been confirmed.
 
-    public JLabel creditsLabel; //Holds the credits
+    //Holds credits
+    public JLabel credits1Label;
+    public JLabel credits2Label;
+    public JLabel credits3Label;
+    
     public JLabel noSodaLabel; //Holds the noSoda image
     public JLabel disabledLabel; //Holds the disabled image
 
     public JButton mountainDewButton, mugButton, pepsiButton, briskLemonadeButton, briskRaspberryButton, crushButton, codeRedButton, dietPepsiButton, briskHalfButton, masterBriskButton, masterPepsiButton, briskHome, pepsiHome, dewHome, wildCherryButton, pepsiMaxButton, briskTeaButton, masterDewButton, dietDewButton, noSodaBackButton; //All the various buttons used on each of the cards
 
-    public JPanel menuPanel, briskPanel, pepsiPanel, mountainDewPanel, waitPanel, noSodaPanel, disabledPanel; //The various cards.
+    public JPanel menuPanel, briskPanel, pepsiPanel, mountainDewPanel, credits1Panel, credits2Panel, credits3Panel, noSodaPanel, disabledPanel; //The various cards.
 
     public JLabel[] sodaOption = new JLabel[13]; //Holds the images for the soda icons on the confirm screen.
     public JButton[] cancelArray = new JButton[13]; //Holds the cancel buttons
@@ -89,7 +125,9 @@ public class VendingGUI extends JPanel implements ActionListener {
     public ImageIcon sure = new ImageIcon("pay.png");
     public ImageIcon noSoda = new ImageIcon("noSoda.png");
     public ImageIcon disabled = new ImageIcon("disabled.png");
-    public ImageIcon credits = new ImageIcon("Credits.png");
+    public ImageIcon credits1 = new ImageIcon("Credits1.png");
+    public ImageIcon credits2 = new ImageIcon("Credits2.png");
+    public ImageIcon credits3 = new ImageIcon("Credits3.png");
 
     public ImageIcon spinningCan = new ImageIcon("sodaSpin.gif");
 
@@ -98,14 +136,24 @@ public class VendingGUI extends JPanel implements ActionListener {
     private boolean receivedMoney;
     private boolean cancelled;
     private boolean finishedDelivery;
-
+    private boolean reachedFront;
+    private boolean reachedBack;
+    
     public void setUp() {
 	this.setPreferredSize(new Dimension(1024, 768));
 
-	//Initialize creditsLabel
-	creditsLabel = new JLabel(credits);
-	creditsLabel.setIcon(credits);
+	//Initialize credits1Label
+	credits1Label = new JLabel(credits1);
+	credits1Label.setIcon(credits1);
 
+	//Initialize credits2Label
+	credits2Label = new JLabel(credits2);
+	credits2Label.setIcon(credits2);
+
+	//Initialize credits3Label
+	credits3Label = new JLabel(credits3);
+	credits3Label.setIcon(credits3);
+	
 	//Initialize noSodaLabel
 	noSodaLabel = new JLabel(noSoda);
 	noSodaLabel.setIcon(noSoda);
@@ -127,6 +175,8 @@ public class VendingGUI extends JPanel implements ActionListener {
 	receivedMoney = false;
 	cancelled = false;
 	finishedDelivery = false;
+	reachedFront = false;
+	reachedBack = false;
 
 	//Initialize all the buttons
 	mountainDewButton = new JButton(mountainDew);
@@ -317,9 +367,17 @@ public class VendingGUI extends JPanel implements ActionListener {
 	mountainDewPanel.setLayout(new FlowLayout());
 	mountainDewPanel.setBackground(Color.white);
 
-	waitPanel = new JPanel();
-	waitPanel.setLayout(new FlowLayout());
-	waitPanel.setBackground(Color.white);
+	credits1Panel = new JPanel();
+	credits1Panel.setLayout(new FlowLayout());
+	credits1Panel.setBackground(Color.white);
+
+	credits2Panel = new JPanel();
+	credits2Panel.setLayout(new FlowLayout());
+	credits2Panel.setBackground(Color.white);
+
+	credits3Panel = new JPanel();
+	credits3Panel.setLayout(new FlowLayout());
+	credits3Panel.setBackground(Color.white);
 
 	noSodaPanel = new JPanel();
 	noSodaPanel.setLayout(new BorderLayout());
@@ -339,7 +397,9 @@ public class VendingGUI extends JPanel implements ActionListener {
 	this.add(briskPanel, "BriskPanel");
 	this.add(pepsiPanel, "PepsiPanel");
 	this.add(mountainDewPanel, "MountainDewPanel");
-	this.add(waitPanel, "WaitPanel");
+	this.add(credits1Panel, "Credits1Panel");
+	this.add(credits2Panel, "Credits2Panel");
+	this.add(credits3Panel, "Credits3Panel");
 	this.add(noSodaPanel, "NoSodaPanel");
 	this.add(disabledPanel, "DisabledPanel");
 
@@ -372,7 +432,9 @@ public class VendingGUI extends JPanel implements ActionListener {
 	menuPanel.add(masterBriskButton);
 	menuPanel.add(masterDewButton);
 
-	waitPanel.add(creditsLabel, BorderLayout.CENTER);
+	credits1Panel.add(credits1Label, BorderLayout.CENTER);
+	credits2Panel.add(credits2Label, BorderLayout.CENTER);
+	credits3Panel.add(credits3Label, BorderLayout.CENTER);
 
 	noSodaPanel.add(noSodaLabel, BorderLayout.NORTH);
 	noSodaPanel.add(noSodaBackButton, BorderLayout.SOUTH);
@@ -451,6 +513,14 @@ public class VendingGUI extends JPanel implements ActionListener {
 
     public void setFinishedDelivery(boolean status) {
 	finishedDelivery = status;
+    }
+
+    public void setReachedFront(boolean status) {
+	reachedFront = status;
+    }
+
+    public void setReachedBack(boolean status) {
+	reachedBack = status;
     }
 
     public void showDisabled() {

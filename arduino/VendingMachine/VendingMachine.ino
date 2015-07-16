@@ -105,7 +105,7 @@ void startup() {
 
   bufLen = 0;
 
-  if(analogRead(BACK_LIM_SWITCH) < 500) //Problem; rail is at front when it should be at the back
+  if(analogRead(BACK_LIM_SWITCH) < 1020) //Problem; rail is at front when it should be at the back
       railState = 5;
 }
 
@@ -149,6 +149,7 @@ void loop() {
         	            armState = 0;
         	            railState = 1;
                       Serial.println("Moving rail to back");
+                      Serial.println("ATCO");
         	        }
         	        break;
               case 3: //Moving arms to dropoff
@@ -184,6 +185,7 @@ void loop() {
         	            maestro.restartScript(31); //Start moving arms to dropoff
                       maestro.restartScript(31); //Start moving arms to dropoff
                       Serial.println("Moving to dropoff");
+                      Serial.println("ATBK");
         	        } else {
         	            for(short i = 0; i < RAIL_STEPS; i++) {
         	                digitalWrite(STEPPER_MAIN, LOW);
@@ -260,9 +262,6 @@ void loop() {
         	        break;
               case 5: //Moving to back then stopping
                   digitalWrite(STEPPER_DIR, HIGH);
-  
-                  Serial.print("Moving backwards. Back lim switch is ");
-                  Serial.println(analogRead(BACK_LIM_SWITCH));
             
                   if(analogRead(BACK_LIM_SWITCH) >= 1020) {
                       Serial.println("Hit back limit switch");
