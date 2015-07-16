@@ -8,7 +8,7 @@ import java.awt.Font;
 import javax.swing.plaf.FontUIResource;
 
 public class VendingMachineRunner {
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
     private final int STRT_WAIT = 100;
     
     private static boolean cont;
