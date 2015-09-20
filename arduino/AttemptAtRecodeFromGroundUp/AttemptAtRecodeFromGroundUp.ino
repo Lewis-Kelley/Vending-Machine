@@ -358,7 +358,7 @@ void readMsg() {
     clearCommBuffer();
   } else if(((String)commBuffer).indexOf("NMNY") >= 0) {
     Serial.println("Acknowledged need money");
-    acceptMoney = true; // zOODGJKDGSLGDSLDGSDGSJIOGDSJIOGDJIOSJIDGOSJGDHJIPGDJIOPJDGIJGDIPDGP
+    acceptMoney = true; // I think we changed this
     clearCommBuffer();
   } else if(((String)commBuffer).indexOf("CNCL") >= 0) {
     Serial.println("Acknowledged cancel");
