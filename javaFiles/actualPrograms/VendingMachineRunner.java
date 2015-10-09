@@ -8,7 +8,7 @@ import java.awt.Font;
 import javax.swing.plaf.FontUIResource;
 
 public class VendingMachineRunner {
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
     private final int STRT_WAIT = 100;
     
     private static boolean cont;
@@ -199,13 +199,13 @@ public class VendingMachineRunner {
 	    }
 	}
 
-	if(input.equals("ATCO"))
+	if(input.contains("ATCO"))
 	    vGUI.setReachedFront(true);
 
-	if(input.equals("ATBK"))
+	if(input.contains("ATBK"))
 	    vGUI.setReachedBack(true);
 	
-	if(input.equals("FNDL")) {
+	if(input.contains("FNDL")) {
 	    vGUI.setFinishedDelivery(true);
 	    int ct = 0;
 	    

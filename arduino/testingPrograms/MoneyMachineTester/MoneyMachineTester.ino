@@ -12,8 +12,8 @@ void setup() {
 
 void loop() {
  // put your main code here, to run repeatedly:
- digitalWrite(2, HIGH);
- digitalWrite(3, HIGH);
+ //digitalWrite(2, HIGH);
+ digitalWrite(3, LOW);
  //Serial.println(digitalRead(2));
  //if(digitalRead(2) == 0)
  //  Serial.println("Dollar accepted!");
